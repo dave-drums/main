@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Dave D'Amore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/config/typography.css">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    html{font-size:16px}
+    
+    :root{
+      --accent:#06b3fd;
+      --text-primary:#1a1a1a;
+      --text-secondary:#6c757d;
+      --surface:#fff;
+      --border:#e9ecef;
+      --shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f8f9fa;
+      color:var(--text-primary);
+    }
+    
+    /* HERO */
+    .hero{
+      position:relative;
+      background:#1a1a2e;
+      padding:0;
+      overflow:hidden;
+      height:400px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero:after{
+      content:'';
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      height:4px;
+      background:linear-gradient(90deg, #06b3fd, #38bdf8, #06b3fd);
+      background-size:200% auto;
+      animation:gradient-shift 3s linear infinite;
+      z-index:3;
+    }
+    @keyframes gradient-shift{
+      0%{background-position:0% center}
+      100%{background-position:200% center}
+    }
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      background-image:url('/assets/about-hero.jpg');
+      background-size:cover;
+      background-position:center;
+      opacity:0.25;
+      z-index:0;
+    }
+    .hero-content{
+      position:relative;
+      text-align:center;
+      z-index:1;
+      padding:20px;
+    }
+    .hero-title{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-hero-desktop);
+      font-weight:400;
+      background:linear-gradient(135deg, #fff 0%, #e0f2fe 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:0 0 16px;
+      letter-spacing:-1px;
+      line-height:1.1;
+      text-transform:uppercase;
+    }
+    .hero-subtitle{
+      font-family:'Inter',sans-serif;
+      font-size:var(--text-large);
+      color:#b0c4de;
+      font-weight:400;
+      letter-spacing:0.5px;
+    }
+    
+    @media(max-width:768px){
+      .hero{height:300px}
+      .hero-title{font-size:var(--heading-hero-mobile)}
+    }
+    
+    /* TIMELINE */
+    .timeline{
+      max-width:900px;
+      margin:0 auto;
+      padding:80px 20px;
+      position:relative;
+    }
+    .timeline:before{
+      content:'';
+      position:absolute;
+      left:50%;
+      top:0;
+      bottom:0;
+      width:3px;
+      background:var(--accent);
+      transform:translateX(-50%);
+    }
+    
+    .timeline-item{
+      position:relative;
+      margin-bottom:60px;
+    }
+    .timeline-item:last-child{
+      margin-bottom:0;
+    }
+    
+    .timeline-card{
+      position:relative;
+      width:50%;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    
+    /* Alternating sides */
+    .timeline-item:nth-child(odd) .timeline-card{
+      margin-left:0;
+      margin-right:auto;
+    }
+    .timeline-item:nth-child(even) .timeline-card{
+      margin-left:auto;
+      margin-right:0;
+    }
+    
+    /* Dot on timeline */
+    .timeline-dot{
+      position:absolute;
+      top:80px;
+      width:20px;
+      height:20px;
+      background:var(--accent);
+      border:4px solid #fff;
+      border-radius:50%;
+      box-shadow:0 0 0 3px var(--accent);
+      z-index:2;
+    }
+    .timeline-item:nth-child(odd) .timeline-dot{
+      right:calc(-50% - 10px);
+    }
+    .timeline-item:nth-child(even) .timeline-dot{
+      left:calc(-50% - 10px);
+    }
+    
+    .timeline-header{
+      background:#3a3a4e;
+      color:#fff;
+      padding:16px 24px;
+      text-align:center;
+    }
+    .timeline-title{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-card);
+      font-weight:400;
+      text-transform:uppercase;
+      letter-spacing:-0.5px;
+      margin:0;
+    }
+    
+    .timeline-image{
+      width:100%;
+      height:200px;
+      background-size:cover;
+      background-position:center;
+    }
+    
+    .timeline-content{
+      padding:24px;
+    }
+    .timeline-year{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-card);
+      color:var(--text-secondary);
+      margin:0 0 16px;
+      text-align:center;
+    }
+    .timeline-text{
+      font-size:var(--text-body);
+      line-height:1.7;
+      color:var(--text-secondary);
+      margin:0 0 16px;
+    }
+    .timeline-text:last-child{
+      margin-bottom:0;
+    }
+    .timeline-text a{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    .timeline-text a:hover{
+      text-decoration:underline;
+    }
+    .timeline-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    .timeline-list li{
+      font-size:var(--text-body);
+      line-height:1.7;
+      color:var(--text-secondary);
+      margin-bottom:8px;
+      padding-left:20px;
+      position:relative;
+    }
+    .timeline-list li:before{
+      content:'•';
+      position:absolute;
+      left:0;
+      color:var(--accent);
+      font-weight:bold;
+    }
+    
+    @media(max-width:768px){
+      .timeline:before{
+        left:30px;
+      }
+      .timeline-card{
+        width:calc(100% - 60px);
+        margin-left:60px !important;
+        margin-right:0 !important;
+        padding-left:0 !important;
+        padding-right:0 !important;
+      }
+      .timeline-dot{
+        left:20px !important;
+        right:auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Navigation will be inserted here via components.js -->
+  <div id="vault-nav"></div>
+  
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Dave D'Amore</h1>
+      <p class="hero-subtitle">Drummer, educator, multi-instrumentalist</p>
+    </div>
+  </div>
+  
+  <!-- TIMELINE -->
+  <div class="timeline">
+    
+    <!-- EARLY YEARS -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Early Years</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-early.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">1995</p>
+          <p class="timeline-text">At 8 years old, I was tapping on every surface I could find, sparking an early fascination with rhythm and sound.</p>
+          <p class="timeline-text">By age 11, I got my first drum kit – a defining moment that set me on a path of musical discovery and dedication behind the kit.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- HITTING THE STAGE -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Hitting the Stage</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-stage.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">2001-2013</p>
+          <p class="timeline-text">From age 14 and through my teens and twenties, I performed in bands across Melbourne's vibrant live rock and metal scene.</p>
+          <p class="timeline-text">From local pubs to iconic venues, I shared stages with some of Australia's top heavy acts – experiences that shaped by craft and versatility as a drummer.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- MOVING NORTH -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Moving North</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-north.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">2014</p>
+          <p class="timeline-text">I relocated to tropical Cairns, Queensland, inspired by its vibrant community and stunning surroundings.</p>
+          <p class="timeline-text">The move inspired fresh collaborations, projects, and the foundations of what would become my drum school.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- DRUM SCHOOL -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Drum School</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-school.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">2019-Present</p>
+          <p class="timeline-text">I launched my drum school to help drummers of all levels develop solid technique, musicality, and confidence– from their first pair of sticks to their first gig.</p>
+          <p class="timeline-text">That same year, I proudly partnered with Australian brand <a href="https://rechcymbals.com" target="_blank">Rech Cymbals</a>, contributing to the creation of the <a href="https://rechcymbals.com/inferno" target="_blank">Inferno</a>, <a href="https://rechcymbals.com/synergy" target="_blank">Synergy</a>, <a href="https://rechcymbals.com/raw" target="_blank">Raw</a>, and <a href="https://rechcymbals.com/sand" target="_blank">Sand</a> series.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ABI MUIR -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Abi Muir</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-abi.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">2020-Present</p>
+          <p class="timeline-text">I began collaborating with award-winning vocalist Abi Muir as drummer and songwriter, co-producing a 5-track EP that achieved international recognition:</p>
+          <ul class="timeline-list">
+            <li>"Stockholm" – Grand Prize Winner, 2021 John Lennon International Songwriting Competition (Rock category).</li>
+            <li>"Forgot About Me" – Top 10 Semi-finalist, 2022 Road to Nashville International Songwriting Competition.</li>
+            <li>2022 Passport to Airlie Competition Winner – Main stage performance at Airlie Beach Festival of Music.</li>
+            <li>"Still The Same" – Finalist, 2022 Queensland Music Awards.</li>
+          </ul>
+          <p class="timeline-text">Since then, our partnership has continued to evolve as I perform as Abi's live drummer — including a main-stage performance at Be Social Fest (2025) in Cairns, sharing the bill with Matt Corby, Bliss n Eso, Baauer (USA), Petit Biscuit (FRA), and Karnivool.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- DARKSHORE -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Darkshore</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-darkshore.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-year">2023-Present</p>
+          <p class="timeline-text">I founded Darkshore with vocalist and guitarist Owen Jacob (formerly of Kingsman, UK).</p>
+          <p class="timeline-text">Blending heavy, alternative, and progressive influences, Darkshore embraces creative boundaries with intricate rhythms and evocative songwriting. Beyond drums, I contribute to songwriting and recording for bass and rhythm guitar to shape our sound.</p>
+          <p class="timeline-text">Our singles <a href="https://open.spotify.com/track/hopeless" target="_blank">"Hopeless"</a> and <a href="https://open.spotify.com/track/thecost" target="_blank">"The Cost"</a> are streaming on all major platforms.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- BEYOND MUSIC -->
+    <div class="timeline-item">
+      <div class="timeline-card">
+        <div class="timeline-dot"></div>
+        <div class="timeline-header">
+          <h2 class="timeline-title">Beyond Music</h2>
+        </div>
+        <div class="timeline-image" style="background-image:url('/assets/timeline-beyond.jpg')"></div>
+        <div class="timeline-content">
+          <p class="timeline-text">Alongside drumming, I've worked as a strength, conditioning, and mobility coach for over 15 years.</p>
+          <p class="timeline-text">I own and run <a href="https://shoshinmovement.com.au" target="_blank">Shoshin Movement Studio</a> in Cairns, Australia, founded in 2014, where we help people develop physical skills through calisthenics, strength, flexibility, and movement-based training.</p>
+          <p class="timeline-text">This background allows me to help drummers play with efficiency, balance, and longevity – merging movement science with the art of drumming to teach correct ergonomics, injury-free playing, and long-term success behind the kit.</p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <!-- Footer will be inserted here via components.js -->
+  <div id="vault-footer"></div>
+  
+  <script src="/config/components.js"></script>
+  
+</body>
+</html>
