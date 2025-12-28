@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dave D'Amore | Drummer & Educator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/config/typography.css">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    
+    html{font-size:16px}
+    
+    :root{
+      --accent:#06b3fd;
+      --text-primary:#1a1a1a;
+      --text-secondary:#6c757d;
+      --surface:#fff;
+      --surface-hover:#f8f9fa;
+      --border:#e9ecef;
+      --shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f8f9fa;
+      color:var(--text-primary);
+    }
+    
+    /* HERO */
+    .hero{
+      position:relative;
+      background:#1a1a2e;
+      padding:0;
+      overflow:hidden;
+      height:600px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero:after{
+      content:'';
+      position:absolute;
+      bottom:0;
+      left:0;
+      right:0;
+      height:4px;
+      background:linear-gradient(90deg, #06b3fd, #38bdf8, #06b3fd);
+      background-size:200% auto;
+      animation:gradient-shift 3s linear infinite;
+      z-index:3;
+    }
+    @keyframes gradient-shift{
+      0%{background-position:0% center}
+      100%{background-position:200% center}
+    }
+    .hero-bg{
+      position:absolute;
+      inset:0;
+      background-image:url('/assets/hero-drums.jpg');
+      background-size:cover;
+      background-position:center;
+      opacity:0.3;
+      z-index:0;
+    }
+    .hero-bg:after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(ellipse at center, rgba(6,179,253,0.05) 0%, transparent 70%);
+    }
+    .hero-content{
+      position:relative;
+      text-align:center;
+      z-index:1;
+      padding:20px;
+    }
+    .hero-title{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-hero-desktop);
+      font-weight:400;
+      background:linear-gradient(135deg, #fff 0%, #e0f2fe 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin:0 0 16px;
+      letter-spacing:-1px;
+      line-height:1.1;
+      text-transform:uppercase;
+    }
+    .hero-subtitle{
+      font-family:'Inter',sans-serif;
+      font-size:var(--text-large);
+      color:#b0c4de;
+      font-weight:400;
+      letter-spacing:0.5px;
+    }
+    
+    @media(max-width:768px){
+      .hero{height:500px}
+      .hero-title{font-size:var(--heading-hero-mobile)}
+    }
+    
+    /* INTRO SECTION */
+    .intro{
+      max-width:800px;
+      margin:0 auto;
+      padding:60px 20px;
+      text-align:center;
+    }
+    .intro-text{
+      font-size:var(--text-large);
+      line-height:1.8;
+      color:var(--text-secondary);
+    }
+    
+    /* SERVICES GRID */
+    .services{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px 80px;
+    }
+    .services-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:32px;
+    }
+    
+    .service-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform 0.2s, box-shadow 0.2s;
+    }
+    .service-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    }
+    .service-image{
+      width:100%;
+      height:240px;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+    .service-image:after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
+    }
+    .service-icon{
+      position:absolute;
+      top:20px;
+      left:20px;
+      font-size:32px;
+      z-index:1;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    .service-content{
+      padding:28px;
+    }
+    .service-title{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-card);
+      font-weight:400;
+      text-transform:uppercase;
+      margin:0 0 12px;
+      letter-spacing:-0.5px;
+    }
+    .service-desc{
+      font-size:var(--text-body);
+      color:var(--text-secondary);
+      line-height:1.6;
+      margin:0 0 24px;
+    }
+    .service-btn{
+      display:inline-block;
+      padding:12px 28px;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      border-radius:8px;
+      font-size:var(--text-ui);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      transition:background 0.2s;
+    }
+    .service-btn:hover{
+      background:#0590d1;
+    }
+    
+    @media(max-width:768px){
+      .services-grid{
+        grid-template-columns:1fr;
+        gap:24px;
+      }
+    }
+    
+    /* CTA SECTION */
+    .cta{
+      background:#1a1a2e;
+      padding:80px 20px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .cta:before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(ellipse at center, rgba(6,179,253,0.1) 0%, transparent 70%);
+    }
+    .cta-content{
+      position:relative;
+      max-width:600px;
+      margin:0 auto;
+      z-index:1;
+    }
+    .cta-title{
+      font-family:'Oswald',sans-serif;
+      font-size:var(--heading-section);
+      font-weight:400;
+      color:#fff;
+      text-transform:uppercase;
+      margin:0 0 16px;
+      letter-spacing:-1px;
+    }
+    .cta-text{
+      font-size:var(--text-large);
+      color:#b0c4de;
+      margin:0 0 32px;
+      line-height:1.6;
+    }
+    .cta-btn{
+      display:inline-block;
+      padding:16px 40px;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      border-radius:8px;
+      font-size:var(--text-ui);
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+      transition:background 0.2s;
+    }
+    .cta-btn:hover{
+      background:#0590d1;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Navigation will be inserted here via components.js -->
+  <div id="vault-nav"></div>
+  
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Dave D'Amore</h1>
+      <p class="hero-subtitle">Drummer & Educator</p>
+    </div>
+  </div>
+  
+  <!-- INTRO -->
+  <div class="intro">
+    <p class="intro-text">
+      Professional drummer and educator based in Cairns, Australia. Specializing in personalized drum instruction, online learning platforms, session work, and drum maintenance services.
+    </p>
+  </div>
+  
+  <!-- SERVICES -->
+  <div class="services">
+    <div class="services-grid">
+      
+      <!-- Practice Vault -->
+      <div class="service-card">
+        <div class="service-image" style="background-image:url('/assets/practice-vault-card.jpg')">
+          <div class="service-icon">🔒</div>
+        </div>
+        <div class="service-content">
+          <h2 class="service-title">The Practice Vault</h2>
+          <p class="service-desc">Online lessons each week, with practice tools to keep you progressing.</p>
+          <a href="/online-lessons" class="service-btn">Online Lessons</a>
+        </div>
+      </div>
+      
+      <!-- Cairns Drum Lessons -->
+      <div class="service-card">
+        <div class="service-image" style="background-image:url('/assets/cairns-lessons-card.jpg')">
+          <div class="service-icon">🎓</div>
+        </div>
+        <div class="service-content">
+          <h2 class="service-title">Cairns Drum Lessons</h2>
+          <p class="service-desc">Private or small-group lessons in a pro studio with real guidance.</p>
+          <a href="/cairns-lessons" class="service-btn">Get Started</a>
+        </div>
+      </div>
+      
+      <!-- Session Drumming -->
+      <div class="service-card">
+        <div class="service-image" style="background-image:url('/assets/session-drumming-card.jpg')">
+          <div class="service-icon">🎵</div>
+        </div>
+        <div class="service-content">
+          <h2 class="service-title">Session Drumming</h2>
+          <p class="service-desc">Available for professional drum recordings and live show performances.</p>
+          <a href="/session-drumming" class="service-btn">Hire Dave</a>
+        </div>
+      </div>
+      
+      <!-- Drum Doctor -->
+      <div class="service-card">
+        <div class="service-image" style="background-image:url('/assets/drum-doctor-card.jpg')">
+          <div class="service-icon">🔧</div>
+        </div>
+        <div class="service-content">
+          <h2 class="service-title">Drum Doctor</h2>
+          <p class="service-desc">Get your drums sounding their best with expert tuning and maintenance.</p>
+          <a href="/contact" class="service-btn">Fix My Drums</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to Get Started?</h2>
+      <p class="cta-text">Whether you're looking for lessons, session work, or drum services, let's talk about how I can help you achieve your goals.</p>
+      <a href="/contact" class="cta-btn">Get In Touch</a>
+    </div>
+  </div>
+  
+  <!-- Footer will be inserted here via components.js -->
+  <div id="vault-footer"></div>
+  
+  <script src="/config/components.js"></script>
+  
+</body>
+</html>
