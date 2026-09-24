@@ -3,349 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dave D'Amore | Drummer & Educator</title>
+  <meta name="description" content="David D'Amore — Melbourne-based professional drummer, session musician and educator.">
+  <title>Dave Drums | David D'Amore</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="/config/typography.css">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    
-    html{font-size:16px}
-    
     :root{
-      --accent:#06b3fd;
-      --text-primary:#1a1a1a;
-      --text-secondary:#6c757d;
-      --surface:#fff;
-      --surface-hover:#f8f9fa;
-      --border:#e9ecef;
-      --shadow:0 2px 8px rgba(0,0,0,0.08);
+      --navy:#1f1f37;
+      --navy-deep:#19192d;
+      --navy-soft:#282840;
+      --blue:#10b7f2;
+      --blue-soft:#183d59;
+      --white:#f8f9fb;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:rgba(255,255,255,.11);
+      --max:1180px;
     }
-    
-    body{
-      font-family:'Inter',sans-serif;
-      background:#f8f9fa;
-      color:var(--text-primary);
-    }
-    
-    /* HERO */
-    .hero{
-      position:relative;
-      background:#1a1a2e;
-      padding:0;
-      overflow:hidden;
-      height:600px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .hero:after{
-      content:'';
-      position:absolute;
-      bottom:0;
-      left:0;
-      right:0;
-      height:4px;
-      background:linear-gradient(90deg, #06b3fd, #38bdf8, #06b3fd);
-      background-size:200% auto;
-      animation:gradient-shift 3s linear infinite;
-      z-index:3;
-    }
-    @keyframes gradient-shift{
-      0%{background-position:0% center}
-      100%{background-position:200% center}
-    }
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      background-image:url('/assets/hero-drums.jpg');
-      background-size:cover;
-      background-position:center;
-      opacity:0.3;
-      z-index:0;
-    }
-    .hero-bg:after{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:radial-gradient(ellipse at center, rgba(6,179,253,0.05) 0%, transparent 70%);
-    }
-    .hero-content{
-      position:relative;
-      text-align:center;
-      z-index:1;
-      padding:20px;
-    }
-    .hero-title{
-      font-family:'Oswald',sans-serif;
-      font-size:var(--heading-hero-desktop);
-      font-weight:400;
-      background:linear-gradient(135deg, #fff 0%, #e0f2fe 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      background-clip:text;
-      margin:0 0 16px;
-      letter-spacing:-1px;
-      line-height:1.1;
-      text-transform:uppercase;
-    }
-    .hero-subtitle{
-      font-family:'Inter',sans-serif;
-      font-size:var(--text-large);
-      color:#b0c4de;
-      font-weight:400;
-      letter-spacing:0.5px;
-    }
-    
-    @media(max-width:768px){
-      .hero{height:500px}
-      .hero-title{font-size:var(--heading-hero-mobile)}
-    }
-    
-    /* INTRO SECTION */
-    .intro{
-      max-width:800px;
-      margin:0 auto;
-      padding:60px 20px;
-      text-align:center;
-    }
-    .intro-text{
-      font-size:var(--text-large);
-      line-height:1.8;
-      color:var(--text-secondary);
-    }
-    
-    /* SERVICES GRID */
-    .services{
-      max-width:1200px;
-      margin:0 auto;
-      padding:0 20px 80px;
-    }
-    .services-grid{
-      display:grid;
-      grid-template-columns:repeat(2, 1fr);
-      gap:32px;
-    }
-    
-    .service-card{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      transition:transform 0.2s, box-shadow 0.2s;
-    }
-    .service-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 8px 24px rgba(0,0,0,0.12);
-    }
-    .service-image{
-      width:100%;
-      height:240px;
-      background-size:cover;
-      background-position:center;
-      position:relative;
-    }
-    .service-image:after{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
-    }
-    .service-icon{
-      position:absolute;
-      top:20px;
-      left:20px;
-      font-size:32px;
-      z-index:1;
-      filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-    .service-content{
-      padding:28px;
-    }
-    .service-title{
-      font-family:'Oswald',sans-serif;
-      font-size:var(--heading-card);
-      font-weight:400;
-      text-transform:uppercase;
-      margin:0 0 12px;
-      letter-spacing:-0.5px;
-    }
-    .service-desc{
-      font-size:var(--text-body);
-      color:var(--text-secondary);
-      line-height:1.6;
-      margin:0 0 24px;
-    }
-    .service-btn{
-      display:inline-block;
-      padding:12px 28px;
-      background:var(--accent);
-      color:#fff;
-      text-decoration:none;
-      border-radius:8px;
-      font-size:var(--text-ui);
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      transition:background 0.2s;
-    }
-    .service-btn:hover{
-      background:#0590d1;
-    }
-    
-    @media(max-width:768px){
-      .services-grid{
-        grid-template-columns:1fr;
-        gap:24px;
-      }
-    }
-    
-    /* CTA SECTION */
-    .cta{
-      background:#1a1a2e;
-      padding:80px 20px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .cta:before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:radial-gradient(ellipse at center, rgba(6,179,253,0.1) 0%, transparent 70%);
-    }
-    .cta-content{
-      position:relative;
-      max-width:600px;
-      margin:0 auto;
-      z-index:1;
-    }
-    .cta-title{
-      font-family:'Oswald',sans-serif;
-      font-size:var(--heading-section);
-      font-weight:400;
-      color:#fff;
-      text-transform:uppercase;
-      margin:0 0 16px;
-      letter-spacing:-1px;
-    }
-    .cta-text{
-      font-size:var(--text-large);
-      color:#b0c4de;
-      margin:0 0 32px;
-      line-height:1.6;
-    }
-    .cta-btn{
-      display:inline-block;
-      padding:16px 40px;
-      background:var(--accent);
-      color:#fff;
-      text-decoration:none;
-      border-radius:8px;
-      font-size:var(--text-ui);
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      transition:background 0.2s;
-    }
-    .cta-btn:hover{
-      background:#0590d1;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Lato',Arial,sans-serif;background:var(--white);color:var(--ink);line-height:1.55}
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(calc(100% - 48px),var(--max));margin:auto}
+
+    nav{height:86px;background:var(--navy);border-bottom:1px solid var(--line);display:flex;align-items:center;position:relative;z-index:10}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between}
+    .brand{font-family:'Oswald',sans-serif;font-size:1.35rem;font-weight:500;letter-spacing:.03em;color:#fff}
+    .brand span{color:var(--blue)}
+    .nav-links{display:flex;align-items:center;gap:30px;color:#fff;font-weight:700;font-size:.92rem}
+    .nav-links a:not(.nav-btn){opacity:.82}.nav-links a:hover{opacity:1;color:var(--blue)}
+    .nav-btn{padding:11px 18px;border:1px solid rgba(16,183,242,.55);border-radius:9px;color:var(--blue);background:rgba(16,183,242,.08)}
+
+    .hero{min-height:610px;display:flex;align-items:center;position:relative;background:url('dave-festival.jpg') center 42%/cover no-repeat;border-bottom:4px solid var(--blue)}
+    .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(31,31,55,.96) 0%,rgba(31,31,55,.86) 37%,rgba(31,31,55,.35) 66%,rgba(31,31,55,.12) 100%)}
+    .hero-content{position:relative;z-index:1;padding:92px 0;max-width:660px;color:#fff}
+    .location{font-size:.76rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+    h1,h2,.display{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500}
+    .hero h1{font-size:clamp(4.2rem,8vw,7rem);line-height:.94;margin:0 0 18px;letter-spacing:-.02em}
+    .hero .role{font-size:1.15rem;margin:0 0 30px;color:rgba(255,255,255,.88);font-weight:700}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:10px;border:1px solid var(--blue);font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;transition:.2s}
+    .btn.primary{background:rgba(16,183,242,.12);color:var(--blue)}
+    .btn.primary:hover{background:var(--blue);color:var(--navy)}
+    .btn.light{background:#fff;color:var(--navy);border-color:#fff}.btn.light:hover{color:var(--blue)}
+
+    .about{padding:86px 0 96px;background:#fff}
+    .about-grid{display:grid;grid-template-columns:260px 1fr;gap:70px}
+    .section-kicker{font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#8a8a9a;padding-top:8px}
+    .section-kicker:before{content:"";display:block;width:42px;height:3px;background:var(--blue);margin-bottom:16px;border-radius:3px}
+    .about h2{font-size:clamp(2.6rem,5vw,4.5rem);line-height:1.02;margin:0 0 28px;color:var(--navy)}
+    .about-copy{max-width:760px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
+    .notice{margin-top:34px;padding:20px 22px;border:1.5px solid var(--blue);background:#eaf7fe;border-radius:11px;color:#064b73;font-weight:700}.notice strong{color:#064b73}.notice a{color:#009ee0}
+
+    .feature{background:var(--navy);color:#fff;padding:90px 0}
+    .feature-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:0;overflow:hidden;border-radius:12px;background:var(--navy-soft);box-shadow:0 16px 50px rgba(11,11,25,.24)}
+    .feature-photo{min-height:540px;background:url('davedrums-2024.jpg') center 42%/cover no-repeat}
+    .feature-copy{padding:62px 58px;display:flex;flex-direction:column;justify-content:center}
+    .feature-copy .section-kicker{color:#9c9cad}.feature-copy h2{font-size:clamp(2.4rem,4vw,4rem);line-height:1.03;margin:0 0 22px}.feature-copy p{color:#c8c8d4;font-size:1.06rem;margin:0 0 32px}
+
+    footer{background:var(--navy-deep);color:#9d9daf;padding:26px 0;font-size:.82rem}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+    @media(max-width:800px){
+      nav{height:74px}.nav-links a:not(.nav-btn){display:none}.wrap{width:min(calc(100% - 32px),var(--max))}
+      .hero{min-height:620px;background-position:62% center}.hero:before{background:linear-gradient(0deg,rgba(31,31,55,.97) 0%,rgba(31,31,55,.78) 48%,rgba(31,31,55,.2) 100%)}.hero-content{align-self:flex-end;padding:80px 0 58px}.hero h1{font-size:4.25rem}
+      .about{padding:65px 0}.about-grid{grid-template-columns:1fr;gap:24px}.section-kicker{padding-top:0}
+      .feature{padding:40px 0}.feature-grid{grid-template-columns:1fr}.feature-photo{min-height:260px}.feature-copy{padding:34px 28px 40px}
     }
   </style>
 </head>
 <body>
-  
-  <!-- Navigation will be inserted here via components.js -->
-  <div id="vault-nav"></div>
-  
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">Dave D'Amore</h1>
-      <p class="hero-subtitle">Drummer & Educator</p>
+  <nav>
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top"><span>DAVE</span> DRUMS</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">Instagram</a>
+        <a class="nav-btn" href="https://vault.davedrums.com.au/contact">Contact</a>
+      </div>
     </div>
-  </div>
-  
-  <!-- INTRO -->
-  <div class="intro">
-    <p class="intro-text">
-      Professional drummer and educator based in Cairns, Australia. Specializing in personalized drum instruction, online learning platforms, session work, and drum maintenance services.
-    </p>
-  </div>
-  
-  <!-- SERVICES -->
-  <div class="services">
-    <div class="services-grid">
-      
-      <!-- Practice Vault -->
-      <div class="service-card">
-        <div class="service-image" style="background-image:url('/assets/practice-vault-card.jpg')">
-          <div class="service-icon">🔒</div>
-        </div>
-        <div class="service-content">
-          <h2 class="service-title">The Practice Vault</h2>
-          <p class="service-desc">Online lessons each week, with practice tools to keep you progressing.</p>
-          <a href="/online-lessons" class="service-btn">Online Lessons</a>
-        </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-content">
+        <div class="location">Melbourne, Australia</div>
+        <h1>David D'Amore</h1>
+        <p class="role">Professional Drummer &nbsp;•&nbsp; Session Musician &nbsp;•&nbsp; Educator</p>
+        <a class="btn primary" href="https://vault.davedrums.com.au/contact">Get in touch</a>
       </div>
-      
-      <!-- Cairns Drum Lessons -->
-      <div class="service-card">
-        <div class="service-image" style="background-image:url('/assets/cairns-lessons-card.jpg')">
-          <div class="service-icon">🎓</div>
-        </div>
-        <div class="service-content">
-          <h2 class="service-title">Cairns Drum Lessons</h2>
-          <p class="service-desc">Private or small-group lessons in a pro studio with real guidance.</p>
-          <a href="/cairns-lessons" class="service-btn">Get Started</a>
-        </div>
-      </div>
-      
-      <!-- Session Drumming -->
-      <div class="service-card">
-        <div class="service-image" style="background-image:url('/assets/session-drumming-card.jpg')">
-          <div class="service-icon">🎵</div>
-        </div>
-        <div class="service-content">
-          <h2 class="service-title">Session Drumming</h2>
-          <p class="service-desc">Available for professional drum recordings and live show performances.</p>
-          <a href="/session-drumming" class="service-btn">Hire Dave</a>
-        </div>
-      </div>
-      
-      <!-- Drum Doctor -->
-      <div class="service-card">
-        <div class="service-image" style="background-image:url('/assets/drum-doctor-card.jpg')">
-          <div class="service-icon">🔧</div>
-        </div>
-        <div class="service-content">
-          <h2 class="service-title">Drum Doctor</h2>
-          <p class="service-desc">Get your drums sounding their best with expert tuning and maintenance.</p>
-          <a href="/contact" class="service-btn">Fix My Drums</a>
-        </div>
-      </div>
-      
     </div>
-  </div>
-  
-  <!-- CTA -->
-  <div class="cta">
-    <div class="cta-content">
-      <h2 class="cta-title">Ready to Get Started?</h2>
-      <p class="cta-text">Whether you're looking for lessons, session work, or drum services, let's talk about how I can help you achieve your goals.</p>
-      <a href="/contact" class="cta-btn">Get In Touch</a>
-    </div>
-  </div>
-  
-  <!-- Footer will be inserted here via components.js -->
-  <div id="vault-footer"></div>
-  
-  <script src="/config/components.js"></script>
-  
+  </header>
+
+  <main>
+    <section class="about" id="about">
+      <div class="wrap about-grid">
+        <div class="section-kicker">About Dave</div>
+        <div class="about-copy">
+          <h2>30 years behind the kit.</h2>
+          <p>Melbourne-based drummer with 30 years behind the kit, specialising in <strong>modern progressive music, rock, metal and groove-based playing.</strong></p>
+          <p>I've worked across <strong>studio recording and live performance</strong>, from intimate venues through to large-scale festivals.</p>
+          <p>Alongside performing and recording, I've spent <strong>almost a decade running a drum school</strong> and teaching drummers of all ages and levels.</p>
+          <p>Available for <strong>session recording, live work, collaborations and drum education.</strong></p>
+          <div class="notice"><strong>This site is currently under construction.</strong> In the meantime, check out my Instagram <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">@drumswithdave</a> or get in touch below.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="wrap">
+        <div class="feature-grid">
+          <div class="feature-photo" role="img" aria-label="David D'Amore recording drums in the studio"></div>
+          <div class="feature-copy">
+            <div class="section-kicker">Recording • Live • Education</div>
+            <h2>Behind the kit, on stage or in studio.</h2>
+            <p>For session work, live opportunities, collaborations, education or anything drum-related, send me a message.</p>
+            <div><a class="btn primary" href="https://vault.davedrums.com.au/contact">Get in touch</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner"><span>© 2026 David D'Amore</span><span>Melbourne, Australia</span></div>
+  </footer>
 </body>
 </html>
