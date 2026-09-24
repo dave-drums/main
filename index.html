@@ -27,15 +27,7 @@
     a{text-decoration:none;color:inherit}
     .wrap{width:min(calc(100% - 48px),var(--max));margin:auto}
 
-    nav{height:86px;background:var(--navy);border-bottom:1px solid var(--line);display:flex;align-items:center;position:relative;z-index:10}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between}
-    .brand{font-family:'Oswald',sans-serif;font-size:1.35rem;font-weight:500;letter-spacing:.03em;color:#fff}
-    .brand span{color:var(--blue)}
-    .nav-links{display:flex;align-items:center;gap:30px;color:#fff;font-weight:700;font-size:.92rem}
-    .nav-links a:not(.nav-btn){opacity:.82}.nav-links a:hover{opacity:1;color:var(--blue)}
-    .nav-btn{padding:11px 18px;border:1px solid rgba(16,183,242,.55);border-radius:9px;color:var(--blue);background:rgba(16,183,242,.08)}
-
-    .hero{min-height:610px;display:flex;align-items:center;position:relative;background:url('dave-festival.jpg') center 42%/cover no-repeat;border-bottom:4px solid var(--blue)}
+    .hero{min-height:760px;display:flex;align-items:center;position:relative;background:url('dave-festival.jpg') center 42%/cover no-repeat;border-bottom:4px solid var(--blue)}
     .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(31,31,55,.96) 0%,rgba(31,31,55,.86) 37%,rgba(31,31,55,.35) 66%,rgba(31,31,55,.12) 100%)}
     .hero-content{position:relative;z-index:1;padding:92px 0;max-width:660px;color:#fff}
     .location{font-size:.76rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
@@ -48,11 +40,11 @@
     .btn.light{background:#fff;color:var(--navy);border-color:#fff}.btn.light:hover{color:var(--blue)}
 
     .about{padding:86px 0 96px;background:#fff}
-    .about-grid{display:grid;grid-template-columns:260px 1fr;gap:70px}
+    .about-grid{display:block}
     .section-kicker{font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#8a8a9a;padding-top:8px}
     .section-kicker:before{content:"";display:block;width:42px;height:3px;background:var(--blue);margin-bottom:16px;border-radius:3px}
     .about h2{font-size:clamp(2.6rem,5vw,4.5rem);line-height:1.02;margin:0 0 28px;color:var(--navy)}
-    .about-copy{max-width:760px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
+    .about-copy{max-width:950px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
     .notice{margin-top:34px;padding:20px 22px;border:1.5px solid var(--blue);background:#eaf7fe;border-radius:11px;color:#064b73;font-weight:700}.notice strong{color:#064b73}.notice a{color:#009ee0}
 
     .feature{background:var(--navy);color:#fff;padding:90px 0}
@@ -65,29 +57,18 @@
     .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
     @media(max-width:800px){
-      nav{height:74px}.nav-links a:not(.nav-btn){display:none}.wrap{width:min(calc(100% - 32px),var(--max))}
-      .hero{min-height:620px;background-position:62% center}.hero:before{background:linear-gradient(0deg,rgba(31,31,55,.97) 0%,rgba(31,31,55,.78) 48%,rgba(31,31,55,.2) 100%)}.hero-content{align-self:flex-end;padding:80px 0 58px}.hero h1{font-size:4.25rem}
-      .about{padding:65px 0}.about-grid{grid-template-columns:1fr;gap:24px}.section-kicker{padding-top:0}
+      .wrap{width:min(calc(100% - 32px),var(--max))}
+      .hero{min-height:720px;background-position:62% 42%}.hero:before{background:linear-gradient(0deg,rgba(31,31,55,.97) 0%,rgba(31,31,55,.78) 48%,rgba(31,31,55,.2) 100%)}.hero-content{align-self:flex-end;padding:80px 0 58px}.hero h1{font-size:4.25rem}
+      .about{padding:65px 0}.section-kicker{padding-top:0}
       .feature{padding:40px 0}.feature-grid{grid-template-columns:1fr}.feature-photo{min-height:260px}.feature-copy{padding:34px 28px 40px}
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="wrap nav-inner">
-      <a class="brand" href="#top"><span>DAVE</span> DRUMS</a>
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">Instagram</a>
-        <a class="nav-btn" href="https://vault.davedrums.com.au/contact">Contact</a>
-      </div>
-    </div>
-  </nav>
 
   <header class="hero" id="top">
     <div class="wrap">
       <div class="hero-content">
-        <div class="location">Melbourne, Australia</div>
         <h1>David D'Amore</h1>
         <p class="role">Professional Drummer &nbsp;•&nbsp; Session Musician &nbsp;•&nbsp; Educator</p>
         <a class="btn primary" href="https://vault.davedrums.com.au/contact">Get in touch</a>
@@ -98,14 +79,12 @@
   <main>
     <section class="about" id="about">
       <div class="wrap about-grid">
-        <div class="section-kicker">About Dave</div>
         <div class="about-copy">
-          <h2>30 years behind the kit.</h2>
-          <p>Melbourne-based drummer with 30 years behind the kit, specialising in <strong>modern progressive music, rock, metal and groove-based playing.</strong></p>
+          <h2>About</h2>
+          <p>Melbourne-based drummer with 30 years of experience, specialising in <strong>modern progressive music, rock, metal and groove-based playing.</strong></p>
           <p>I've worked across <strong>studio recording and live performance</strong>, from intimate venues through to large-scale festivals.</p>
           <p>Alongside performing and recording, I've spent <strong>almost a decade running a drum school</strong> and teaching drummers of all ages and levels.</p>
-          <p>Available for <strong>session recording, live work, collaborations and drum education.</strong></p>
-          <div class="notice"><strong>This site is currently under construction.</strong> In the meantime, check out my Instagram <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">@drumswithdave</a> or get in touch below.</div>
+          <div class="notice"><strong>This site is currently under construction.</strong> In the meantime, check out my Instagram <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">@drumswithdave</a>, explore the <a href="https://vault.davedrums.com.au/" target="_blank" rel="noopener">Practice Vault</a>, or get in touch.</div>
         </div>
       </div>
     </section>
@@ -116,8 +95,8 @@
           <div class="feature-photo" role="img" aria-label="David D'Amore recording drums in the studio"></div>
           <div class="feature-copy">
             <div class="section-kicker">Recording • Live • Education</div>
-            <h2>Behind the kit, on stage or in studio.</h2>
-            <p>For session work, live opportunities, collaborations, education or anything drum-related, send me a message.</p>
+            <h2>Let's work together.</h2>
+            <p>For session work, live opportunities, collaborations or education, get in touch.</p>
             <div><a class="btn primary" href="https://vault.davedrums.com.au/contact">Get in touch</a></div>
           </div>
         </div>
