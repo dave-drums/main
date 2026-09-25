@@ -5,637 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Dave D'Amore — Melbourne drummer, session musician and educator specialising in progressive music, rock, metal and groove.">
   <title>Dave Drums | Dave D'Amore</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --navy:#1f1f37;
-      --navy-deep:#19192d;
-      --navy-soft:#282840;
-      --blue:#10b7f2;
-      --white:#f8f9fb;
-      --ink:#111827;
-      --max:1180px;
-    }
+    :root{--navy:#1f1f37;--navy-deep:#19192d;--navy-soft:#282840;--blue:#10b7f2;--white:#f8f9fb;--ink:#111827;--max:1180px}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:'Lato',Arial,sans-serif;background:var(--white);color:var(--ink);line-height:1.55} a{text-decoration:none;color:inherit}.wrap{width:min(calc(100% - 48px),var(--max));margin:auto}
+    .hero{min-height:760px;display:flex;align-items:center;position:relative;background:url('dave-1.jpg') center 42%/cover no-repeat;border-bottom:4px solid var(--blue)}
+    .hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(31,31,55,.96) 0%,rgba(31,31,55,.86) 37%,rgba(31,31,55,.35) 66%,rgba(31,31,55,.12) 100%)}
+    .hero-content{position:relative;z-index:1;padding:92px 0;max-width:660px;color:#fff} h1,h2,.display{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500}
+    .hero h1{font-size:clamp(3.5rem,6.5vw,5.8rem);line-height:.94;margin:0 0 18px;letter-spacing:-.02em}.hero .role{font-size:1.15rem;margin:0 0 32px;color:rgba(255,255,255,.9);font-weight:700}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:10px;border:1px solid var(--blue);font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;transition:.2s}.btn.primary{background:rgba(16,183,242,.12);color:var(--blue)}.btn.primary:hover{background:var(--blue);color:var(--navy)}.btn.ghost{color:#fff;border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.04)}.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.12)}
+    .about{padding:86px 0 96px;background:#fff}.about-grid{display:block}.about h2,.beyond h2{font-size:clamp(2.6rem,5vw,4.5rem);line-height:1.02;margin:0 0 28px;color:var(--navy)}.about-copy{max-width:950px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
+    .notice{margin-top:36px;padding-top:22px;border-top:1px solid #dfe3e8;color:#667085;font-size:.95rem}.notice-label{display:block;margin-bottom:5px;color:var(--navy);font-size:.76rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.notice a{color:#009ee0;font-weight:900}
 
-    *{box-sizing:border-box}
+    .beyond{padding:86px 0 96px;background:#f3f5f8;border-top:1px solid #e5e7eb}
+    .beyond-intro{max-width:900px;margin-bottom:38px}
+    .beyond-intro p{font-size:1.08rem;color:#4b5563;margin:0}
+    .beyond-intro strong{color:var(--navy)}
+    .tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .track-card{background:var(--navy);border-radius:14px;padding:26px;box-shadow:0 12px 35px rgba(20,20,40,.12)}
+    .track-label{font-size:.72rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin:0 0 7px}
+    .track-card h3{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:1.75rem;font-weight:500;line-height:1.1;color:#fff;margin:0 0 6px}
+    .track-credit{color:#aaaabd;font-size:.88rem;font-weight:700;margin:0 0 20px}.track-award{color:#fff;font-size:.82rem;line-height:1.45;margin:-7px 0 20px;padding-left:12px;border-left:2px solid var(--blue)}
+    .track-card iframe{display:block;width:100%;border:0;border-radius:12px}
 
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:'Lato',Arial,sans-serif;
-      background:var(--white);
-      color:var(--ink);
-      line-height:1.55;
-    }
-
-    a{
-      text-decoration:none;
-      color:inherit;
-    }
-
-    .wrap{
-      width:min(calc(100% - 48px),var(--max));
-      margin:auto;
-    }
-
-    /* HERO */
-
-    .hero{
-      min-height:760px;
-      display:flex;
-      align-items:center;
-      position:relative;
-      background:url('dave-1.jpg') center 42%/cover no-repeat;
-      border-bottom:4px solid var(--blue);
-    }
-
-    .hero:before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        90deg,
-        rgba(31,31,55,.96) 0%,
-        rgba(31,31,55,.86) 37%,
-        rgba(31,31,55,.35) 66%,
-        rgba(31,31,55,.12) 100%
-      );
-    }
-
-    .hero-content{
-      position:relative;
-      z-index:1;
-      padding:92px 0;
-      max-width:660px;
-      color:#fff;
-    }
-
-    h1,
-    h2,
-    .display{
-      font-family:'Oswald',sans-serif;
-      text-transform:uppercase;
-      font-weight:500;
-    }
-
-    .hero h1{
-      font-size:clamp(3.5rem,6.5vw,5.8rem);
-      line-height:.94;
-      margin:0 0 18px;
-      letter-spacing:-.02em;
-    }
-
-    .hero .role{
-      font-size:1.15rem;
-      margin:0 0 32px;
-      color:rgba(255,255,255,.9);
-      font-weight:700;
-    }
-
-    .hero-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    /* BUTTONS */
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:50px;
-      padding:0 24px;
-      border-radius:10px;
-      border:1px solid var(--blue);
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-size:.82rem;
-      transition:.2s;
-    }
-
-    .btn.primary{
-      background:rgba(16,183,242,.12);
-      color:var(--blue);
-    }
-
-    .btn.primary:hover{
-      background:var(--blue);
-      color:var(--navy);
-    }
-
-    .btn.ghost{
-      color:#fff;
-      border-color:rgba(255,255,255,.42);
-      background:rgba(255,255,255,.04);
-    }
-
-    .btn.ghost:hover{
-      border-color:#fff;
-      background:rgba(255,255,255,.12);
-    }
-
-    /* ABOUT */
-
-    .about{
-      padding:86px 0 96px;
-      background:#fff;
-    }
-
-    .about-grid{
-      display:block;
-    }
-
-    .about h2,
-    .beyond h2{
-      font-size:clamp(2.6rem,5vw,4.5rem);
-      line-height:1.02;
-      margin:0 0 28px;
-      color:var(--navy);
-    }
-
-    .about-copy{
-      max-width:950px;
-    }
-
-    .about p{
-      font-size:1.08rem;
-      color:#4b5563;
-      margin:0 0 17px;
-    }
-
-    .about strong{
-      color:var(--navy);
-    }
-
-    .notice{
-      margin-top:36px;
-      padding-top:22px;
-      border-top:1px solid #dfe3e8;
-      color:#667085;
-      font-size:.95rem;
-    }
-
-    .notice-label{
-      display:block;
-      margin-bottom:5px;
-      color:var(--navy);
-      font-size:.76rem;
-      font-weight:900;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .notice a{
-      color:#009ee0;
-      font-weight:900;
-    }
-
-    /* BEYOND THE KIT */
-
-    .beyond{
-      padding:86px 0 96px;
-      background:#f3f5f8;
-      border-top:1px solid #e5e7eb;
-    }
-
-    .beyond-intro{
-      max-width:900px;
-      margin-bottom:38px;
-    }
-
-    .beyond-intro p{
-      font-size:1.08rem;
-      color:#4b5563;
-      margin:0;
-    }
-
-    .beyond-intro strong{
-      color:var(--navy);
-    }
-
-    .tracks{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:22px;
-    }
-
-    .track-card{
-      background:var(--navy);
-      border-radius:14px;
-      padding:26px;
-      box-shadow:0 12px 35px rgba(20,20,40,.12);
-      display:flex;
-      flex-direction:column;
-    }
-
-    .track-label{
-      font-size:.72rem;
-      font-weight:900;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color:var(--blue);
-      margin:0 0 7px;
-    }
-
-    .track-card h3{
-      font-family:'Oswald',sans-serif;
-      text-transform:uppercase;
-      font-size:1.75rem;
-      font-weight:500;
-      line-height:1.1;
-      color:#fff;
-      margin:0 0 6px;
-    }
-
-    .track-credit{
-      color:#aaaabd;
-      font-size:.88rem;
-      font-weight:700;
-      margin:0 0 20px;
-    }
-
-    .track-award{
-      color:#fff;
-      font-size:.82rem;
-      line-height:1.45;
-      margin:-7px 0 20px;
-      padding-left:12px;
-      border-left:2px solid var(--blue);
-    }
-
-    .track-card iframe{
-      display:block;
-      width:100%;
-      border:0;
-      border-radius:12px;
-      margin-top:auto;
-    }
-
-    /* FINAL FEATURE */
-
-    .feature{
-      background:var(--navy);
-      color:#fff;
-      padding:90px 0;
-    }
-
-    .feature-grid{
-      display:grid;
-      grid-template-columns:1.12fr .88fr;
-      gap:0;
-      overflow:hidden;
-      border-radius:12px;
-      background:var(--navy-soft);
-      box-shadow:0 16px 50px rgba(11,11,25,.24);
-    }
-
-    .feature-photo{
-      min-height:540px;
-      background:url('dave-2.jpg') center 42%/cover no-repeat;
-    }
-
-    .feature-copy{
-      padding:62px 58px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-
-    .feature-copy h2{
-      font-size:clamp(2.4rem,4vw,4rem);
-      line-height:1.03;
-      margin:0 0 22px;
-    }
-
-    .feature-copy p{
-      color:#c8c8d4;
-      font-size:1.06rem;
-      margin:0 0 32px;
-    }
-
-    /* FOOTER */
-
-    footer{
-      background:var(--navy-deep);
-      color:#9d9daf;
-      padding:26px 0;
-      font-size:.82rem;
-    }
-
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      flex-wrap:wrap;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:900px){
-      .tracks{
-        grid-template-columns:1fr;
-      }
-    }
-
+    .feature{background:var(--navy);color:#fff;padding:90px 0}.feature-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:0;overflow:hidden;border-radius:12px;background:var(--navy-soft);box-shadow:0 16px 50px rgba(11,11,25,.24)}.feature-photo{min-height:540px;background:url('dave-2.jpg') center 42%/cover no-repeat}.feature-copy{padding:62px 58px;display:flex;flex-direction:column;justify-content:center}.feature-copy h2{font-size:clamp(2.4rem,4vw,4rem);line-height:1.03;margin:0 0 22px}.feature-copy p{color:#c8c8d4;font-size:1.06rem;margin:0 0 32px}
+    footer{background:var(--navy-deep);color:#9d9daf;padding:26px 0;font-size:.82rem}.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    @media(max-width:900px){.tracks{grid-template-columns:1fr}}
     @media(max-width:800px){
-
-      .wrap{
-        width:min(calc(100% - 32px),var(--max));
-      }
-
-      .hero{
-        min-height:720px;
-        background-position:68% center;
-        background-size:auto 100%;
-        background-color:var(--navy);
-        background-repeat:no-repeat;
-      }
-
-      .hero:before{
-        background:linear-gradient(
-          0deg,
-          rgba(31,31,55,.97) 0%,
-          rgba(31,31,55,.78) 48%,
-          rgba(31,31,55,.2) 100%
-        );
-      }
-
-      .hero-content{
-        align-self:flex-end;
-        padding:80px 0 58px;
-      }
-
-      .hero h1{
-        font-size:3.45rem;
-      }
-
-      .about,
-      .beyond{
-        padding:65px 0;
-      }
-
-      .track-card{
-        padding:20px;
-      }
-
-      .feature{
-        padding:40px 0;
-      }
-
-      .feature-grid{
-        grid-template-columns:1fr;
-      }
-
-      .feature-photo{
-        min-height:260px;
-      }
-
-      .feature-copy{
-        padding:34px 28px 40px;
-      }
+      .wrap{width:min(calc(100% - 32px),var(--max))}
+      .hero{min-height:720px;background-position:68% center;background-size:auto 100%;background-color:var(--navy);background-repeat:no-repeat}
+      .hero:before{background:linear-gradient(0deg,rgba(31,31,55,.97) 0%,rgba(31,31,55,.78) 48%,rgba(31,31,55,.2) 100%)}
+      .hero-content{align-self:flex-end;padding:80px 0 58px}.hero h1{font-size:3.45rem}
+      .about,.beyond{padding:65px 0}
+      .tracks{grid-template-columns:1fr}
+      .track-card{padding:20px}
+      .feature{padding:40px 0}.feature-grid{grid-template-columns:1fr}.feature-photo{min-height:260px}.feature-copy{padding:34px 28px 40px}
     }
   </style>
 </head>
-
 <body>
-
-  <header class="hero" id="top">
-    <div class="wrap">
-      <div class="hero-content">
-
-        <h1>Dave D'Amore</h1>
-
-        <p class="role">
-          Drummer &nbsp;•&nbsp; Session Musician &nbsp;•&nbsp; Educator
-        </p>
-
-        <div class="hero-actions">
-
-          <a
-            class="btn primary"
-            href="https://www.instagram.com/drumswithdave/"
-            target="_blank"
-            rel="noopener"
-          >
-            View my playing
-          </a>
-
-          <a
-            class="btn ghost"
-            href="https://vault.davedrums.com.au/contact"
-          >
-            Get in touch
-          </a>
-
-        </div>
-      </div>
-    </div>
-  </header>
-
-
+  <header class="hero" id="top"><div class="wrap"><div class="hero-content"><h1>Dave D'Amore</h1><p class="role">Drummer &nbsp;•&nbsp; Session Musician &nbsp;•&nbsp; Educator</p><div class="hero-actions"><a class="btn primary" href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">View my playing</a><a class="btn ghost" href="https://vault.davedrums.com.au/contact">Get in touch</a></div></div></div></header>
   <main>
-
-    <section class="about" id="about">
-      <div class="wrap about-grid">
-        <div class="about-copy">
-
-          <h2>Behind the drums</h2>
-
-          <p>
-            I’ve been playing drums for 30 years, with a background spanning
-            <strong>live performance, studio and remote recording, original music and education.</strong>
-            My roots are in metal, rock and progressive music, with a broader
-            vocabulary shaped by fusion, funk, pop and groove-based playing.
-          </p>
-
-          <p>
-            I’m drawn to music where the drums have a voice.
-            <strong>Pocket, dynamics and feel come first</strong>, with odd metres,
-            displacement, polyrhythms and more adventurous rhythmic ideas there
-            when the music calls for them. Technique and complexity are tools;
-            <strong>the part still has to serve the song.</strong>
-          </p>
-
-          <p>
-            My work has taken me from
-            <strong>small venues to large-scale festivals</strong>, studio and remote
-            sessions, and collaborations on
-            <strong>internationally recognised and award-winning original music.</strong>
-            Whether I’m developing a part for a recording or stepping into a live
-            set, the goal is the same: bring something musical, considered and
-            distinctly human to the drums.
-          </p>
-
-          <p>
-            Education has also been a major part of my career. I spent
-            <strong>almost a decade running a drum school</strong>, helping players
-            develop their technique, vocabulary, musicianship and, ultimately,
-            their own voice behind the kit.
-          </p>
-
-          <div class="notice">
-            <span class="notice-label">Full site coming soon</span>
-            In the meantime, follow
-            <a
-              href="https://www.instagram.com/drumswithdave/"
-              target="_blank"
-              rel="noopener"
-            >@drumswithdave</a>
-            for performances, covers and current work.
-          </div>
-
-        </div>
-      </div>
-    </section>
-
+    <section class="about" id="about"><div class="wrap about-grid"><div class="about-copy"><h2>Behind the drums</h2>
+      <p>I’ve been playing drums for 30 years, with a background spanning <strong>live performance, studio and remote recording, original music and education.</strong> My roots are in metal, rock and progressive music, with a broader vocabulary shaped by fusion, funk, pop and groove-based playing.</p>
+      <p>I’m drawn to music where the drums have a voice. <strong>Pocket, dynamics and feel come first</strong>, with odd metres, displacement, polyrhythms and more adventurous rhythmic ideas there when the music calls for them. Technique and complexity are tools; <strong>the part still has to serve the song.</strong></p>
+      <p>My work has taken me from <strong>small venues to large-scale festivals</strong>, studio and remote sessions, and collaborations on <strong>internationally recognised and award-winning original music.</strong> Whether I’m developing a part for a recording or stepping into a live set, the goal is the same: bring something musical, considered and distinctly human to the drums.</p>
+      <p>Education has also been a major part of my career. I spent <strong>almost a decade running a drum school</strong>, helping players develop their technique, vocabulary, musicianship and, ultimately, their own voice behind the kit.</p>
+      <div class="notice"><span class="notice-label">Full site coming soon</span> In the meantime, follow <a href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener">@drumswithdave</a> for performances, covers and current work.</div>
+    </div></div></section>
 
     <section class="beyond" id="beyond">
       <div class="wrap">
-
         <div class="beyond-intro">
-
           <h2>Beyond the kit</h2>
-
-          <p>
-            Drums are my main instrument, but my work extends beyond the kit.
-            I also play <strong>guitar and bass</strong>, and work in
-            <strong>production and mixing</strong> — experience that shapes the way
-            I approach arrangements, sounds and drum parts as part of the bigger picture.
-          </p>
-
+          <p>Drums are my main instrument, but my work extends beyond the kit. I also play <strong>guitar and bass</strong>, and work in <strong>production and mixing</strong> — experience that shapes the way I approach arrangements, sounds and drum parts as part of the bigger picture.</p>
         </div>
-
-
         <div class="tracks">
-
           <article class="track-card">
-
             <p class="track-label">Darkshore</p>
-
-            <h3>The Cost</h3>
-
-            <p class="track-credit">
-              Original music • Production &amp; performance
-            </p>
-
-            <iframe
-              data-testid="embed-iframe"
-              src="https://open.spotify.com/embed/track/6Z6wapfql469gsOop4C6Mf?utm_source=generator&amp;si=21ad2b9c46874d46"
-              height="152"
-              allowfullscreen=""
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              title="Darkshore — The Cost on Spotify">
-            </iframe>
-
-          </article>
-
-
-          <article class="track-card">
-
-            <p class="track-label">Darkshore</p>
-
             <h3>Hopeless</h3>
-
-            <p class="track-credit">
-              Original music • Production &amp; performance
-            </p>
-
-            <iframe
-              data-testid="embed-iframe"
-              src="https://open.spotify.com/embed/track/75ojpYwSHdwY1qvqZISJyS?utm_source=generator&amp;si=d855a5eef2df4917"
-              height="152"
-              allowfullscreen=""
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              title="Darkshore — Hopeless on Spotify">
-            </iframe>
-
+            <p class="track-credit">All instrumentation • Production &amp; mixing</p>
+            <iframe data-testid="embed-iframe" src="https://open.spotify.com/embed/track/6Z6wapfql469gsOop4C6Mf?utm_source=generator&amp;si=21ad2b9c46874d46" height="152" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Darkshore — The Cost on Spotify"></iframe>
           </article>
-
-
           <article class="track-card">
-
-            <p class="track-label">Abi Muir</p>
-
-            <h3>Stockholm</h3>
-
-            <p class="track-credit">
-              Drums • Recorded at my studio
-            </p>
-
-            <p class="track-award">
-              John Lennon Songwriting Contest — Rock category winner
-            </p>
-
-            <iframe
-              data-testid="embed-iframe"
-              src="https://open.spotify.com/embed/track/5sk5SrDmzbxtXgzDHo3o0Q?utm_source=generator&amp;si=88cd5d2998e24c58"
-              height="152"
-              allowfullscreen=""
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              title="Abi Muir — Stockholm on Spotify">
-            </iframe>
-
+            <p class="track-label">Darkshore</p>
+            <h3>The Cost</h3>
+            <p class="track-credit">All instrumentation • Production &amp; mixing</p>
+            <iframe data-testid="embed-iframe" src="https://open.spotify.com/embed/track/75ojpYwSHdwY1qvqZISJyS?utm_source=generator&amp;si=d855a5eef2df4917" height="152" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Darkshore — Hopeless on Spotify"></iframe>
           </article>
-
+          <article class="track-card">
+            <p class="track-label">Abi Muir</p>
+            <h3>Stockholm</h3>
+            <p class="track-credit">Drums • Recorded at my studio</p>
+            <p class="track-award">John Lennon Songwriting Contest — Rock category winner</p>
+            <iframe data-testid="embed-iframe" src="https://open.spotify.com/embed/track/5sk5SrDmzbxtXgzDHo3o0Q?utm_source=generator&amp;si=88cd5d2998e24c58" height="152" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Abi Muir — Stockholm on Spotify"></iframe>
+          </article>
         </div>
       </div>
     </section>
 
-
-    <section class="feature">
-      <div class="wrap">
-
-        <div class="feature-grid">
-
-          <div
-            class="feature-photo"
-            role="img"
-            aria-label="Dave D'Amore recording drums in the studio">
-          </div>
-
-          <div class="feature-copy">
-
-            <h2>Let's make something</h2>
-
-            <p>
-              Available for session recording, live work, original projects
-              and drum education.
-            </p>
-
-            <div>
-              <a
-                class="btn primary"
-                href="https://vault.davedrums.com.au/contact"
-              >
-                Get in touch
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
-
+    <section class="feature"><div class="wrap"><div class="feature-grid"><div class="feature-photo" role="img" aria-label="Dave D'Amore recording drums in the studio"></div><div class="feature-copy"><h2>Let's make something</h2><p>Available for session recording, live work, original projects and drum education.</p><div><a class="btn primary" href="https://vault.davedrums.com.au/contact">Get in touch</a></div></div></div></div></section>
   </main>
-
-
-  <footer>
-    <div class="wrap footer-inner">
-      <span>© 2026 Dave D'Amore</span>
-      <span>Melbourne, Australia</span>
-    </div>
-  </footer>
-
+  <footer><div class="wrap footer-inner"><span>© 2026 Dave D'Amore</span><span>Melbourne, Australia</span></div></footer>
 </body>
 </html>
