@@ -16,7 +16,7 @@
     .hero-content{position:relative;z-index:1;padding:92px 0;max-width:660px;color:#fff} h1,h2,.display{font-family:'Oswald',sans-serif;text-transform:uppercase;font-weight:500}
     .hero h1{font-size:clamp(3.5rem,6.5vw,5.8rem);line-height:.94;margin:0 0 18px;letter-spacing:-.02em}.hero .role{font-size:1.15rem;margin:0 0 32px;color:rgba(255,255,255,.9);font-weight:700}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
     .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:10px;border:1px solid var(--blue);font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;transition:.2s}.btn.primary{background:rgba(16,183,242,.12);color:var(--blue)}.btn.primary:hover{background:var(--blue);color:var(--navy)}.btn.ghost{color:#fff;border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.04)}.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.12)}
-    .about{padding:86px 0 96px;background:#fff}.about-grid{display:block}.about h2,.beyond h2,.playing h2{font-size:clamp(2.6rem,5vw,4.5rem);line-height:1.02;margin:0 0 28px;color:var(--navy)}.about-copy{max-width:950px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
+    .about{padding:86px 0 96px;background:#fff}.about-grid{display:block}.about h2,.beyond h2{font-size:clamp(2.6rem,5vw,4.5rem);line-height:1.02;margin:0 0 28px;color:var(--navy)}.about-copy{max-width:950px}.about p{font-size:1.08rem;color:#4b5563;margin:0 0 17px}.about strong{color:var(--navy)}
     .notice{margin-top:36px;padding-top:22px;border-top:1px solid #dfe3e8;color:#667085;font-size:.95rem}.notice-label{display:block;margin-bottom:5px;color:var(--navy);font-size:.76rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}.notice a{color:#009ee0;font-weight:900}
 
     .beyond{padding:86px 0 96px;background:#f3f5f8;border-top:1px solid #e5e7eb}
@@ -29,15 +29,6 @@
     .track-card h3{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:1.75rem;font-weight:500;line-height:1.1;color:#fff;margin:0 0 6px}
     .track-meta{min-height:58px;margin:0 0 20px}.track-credit{color:#d2d2dc;font-size:.88rem;font-weight:700;margin:0 0 4px}.track-detail{color:#8f8fa3;font-size:.82rem;line-height:1.4;margin:0}.track-detail.award{color:#bfc1cd}
     .track-card iframe{display:block;width:100%;border:0;border-radius:12px}
-
-    .playing{padding:86px 0 96px;background:#fff;border-top:1px solid #e5e7eb}
-    .playing-intro{max-width:900px;margin-bottom:38px}
-    .playing-intro p{font-size:1.08rem;color:#4b5563;margin:0}
-    .video-grid{display:grid;grid-template-columns:.72fr .72fr 1.56fr;gap:22px;align-items:start}
-    .video-card{background:var(--navy);border-radius:14px;padding:14px;box-shadow:0 12px 35px rgba(20,20,40,.12);overflow:hidden}
-    .ig-embed{width:100%;min-height:620px;border:0;border-radius:10px;background:#fff}
-    .yt-wrap{position:relative;width:100%;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#111}
-    .yt-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
     /* WATCH ME PLAY */
     .watch{padding:86px 0 96px;background:#fff}
@@ -60,8 +51,8 @@
       .hero{min-height:720px;background-position:68% center;background-size:auto 100%;background-color:var(--navy);background-repeat:no-repeat}
       .hero:before{background:linear-gradient(0deg,rgba(31,31,55,.97) 0%,rgba(31,31,55,.78) 48%,rgba(31,31,55,.2) 100%)}
       .hero-content{align-self:flex-end;padding:80px 0 58px}.hero h1{font-size:3.45rem}
-      .about,.beyond,.playing{padding:65px 0}
-      .tracks{grid-template-columns:1fr}.video-grid{grid-template-columns:1fr}.ig-embed{min-height:700px}
+      .about,.beyond,.watch{padding:65px 0}
+      .tracks{grid-template-columns:1fr}
       .track-card{padding:20px}
       .feature{padding:40px 0}.feature-grid{grid-template-columns:1fr}.feature-photo{min-height:260px}.feature-copy{padding:34px 28px 40px}
     }
@@ -107,29 +98,6 @@
       </div>
     </section>
 
-
-    <section class="playing" id="playing">
-      <div class="wrap">
-        <div class="playing-intro">
-          <h2>Watch me play</h2>
-          <p>A selection of performances, covers and clips.</p>
-        </div>
-        <div class="video-grid">
-          <article class="video-card">
-            <iframe class="ig-embed" src="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loadingembed/" title="Instagram Reel by Drums With Dave" allowfullscreen loading="lazy"></iframe>
-          </article>
-          <article class="video-card">
-            <iframe class="ig-embed" src="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loadingembed/" title="Instagram Reel by Drums With Dave" allowfullscreen loading="lazy"></iframe>
-          </article>
-          <article class="video-card">
-            <div class="yt-wrap">
-              <iframe src="https://www.youtube.com/embed/2XUMTnUKAKc" title="Dave D'Amore on YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="watch" id="watch">
       <div class="wrap">
         <div class="watch-intro">
@@ -145,15 +113,11 @@
 
         <div class="reels">
           <div class="reel-card">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14">
-              <a href="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loading" target="_blank" rel="noopener">View this Reel on Instagram</a>
-            </blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:1px;max-width:540px;min-width:326px;padding:0;width:calc(100% - 2px);"><div style="padding:16px;"><a href="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loading" style="background:#FFFFFF;line-height:0;padding:0;text-align:center;text-decoration:none;width:100%;" target="_blank"><div style="padding:19% 0;"></div><div style="color:#3897f0;font-family:Arial,sans-serif;font-size:14px;font-weight:550;line-height:18px;text-align:center;">View this post on Instagram</div><div style="padding:12.5% 0;"></div></a><p style="color:#c9c8cd;font-family:Arial,sans-serif;font-size:14px;line-height:17px;margin:8px 0 0;padding:8px 0 7px;text-align:center;"><a href="https://www.instagram.com/reel/DcPNOXoT6rb/?utm_source=ig_embed&amp;utm_campaign=loading" style="color:#c9c8cd;text-decoration:none;" target="_blank">A post shared by Dave D&#39;Amore (@drumswithdave)</a></p></div></blockquote>
           </div>
 
           <div class="reel-card">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14">
-              <a href="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loading" target="_blank" rel="noopener">View this Reel on Instagram</a>
-            </blockquote>
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:1px;max-width:540px;min-width:326px;padding:0;width:calc(100% - 2px);"><div style="padding:16px;"><a href="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loading" style="background:#FFFFFF;line-height:0;padding:0;text-align:center;text-decoration:none;width:100%;" target="_blank"><div style="padding:19% 0;"></div><div style="color:#3897f0;font-family:Arial,sans-serif;font-size:14px;font-weight:550;line-height:18px;text-align:center;">View this post on Instagram</div><div style="padding:12.5% 0;"></div></a><p style="color:#c9c8cd;font-family:Arial,sans-serif;font-size:14px;line-height:17px;margin:8px 0 0;padding:8px 0 7px;text-align:center;"><a href="https://www.instagram.com/reel/DcuD68CTRTs/?utm_source=ig_embed&amp;utm_campaign=loading" style="color:#c9c8cd;text-decoration:none;" target="_blank">A post shared by Dave D&#39;Amore (@drumswithdave)</a></p></div></blockquote>
           </div>
         </div>
       </div>
