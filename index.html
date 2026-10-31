@@ -9,25 +9,29 @@
     </title>
     <meta
       name="description"
-      content="Professional drummer Dave D’Amore. Remote acoustic drum recording, studio sessions and private drum lessons in Campbellfield, Melbourne. Around 30 years behind the kit."
+      content="Melbourne drummer Dave D’Amore offers private drum lessons in Campbellfield, session drumming and remote acoustic drum recording for artists and bands."
     />
-    <link rel="canonical" href="https://davedrums.com.au/" />
+    <link rel="canonical" href="https://www.davedrums.com.au/" />
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_AU" />
+    <meta property="og:site_name" content="Dave Drums" />
     <meta
       property="og:title"
       content="Dave D’Amore | Melbourne Drummer, Recording &amp; Drum Lessons"
     />
     <meta
       property="og:description"
-      content="Professional drummer Dave D’Amore. Remote acoustic drum recording, studio sessions and private drum lessons in Campbellfield, Melbourne. Around 30 years behind the kit."
+      content="Melbourne drummer Dave D’Amore offers private drum lessons in Campbellfield, session drumming and remote acoustic drum recording for artists and bands."
     />
-    <meta property="og:url" content="https://davedrums.com.au/" />
+    <meta property="og:url" content="https://www.davedrums.com.au/" />
     <meta
       property="og:image"
-      content="https://davedrums.com.au/img/dave-festival1-1200.webp"
+      content="https://www.davedrums.com.au/img/dave-festival1-1200.webp"
     />
+    <meta property="og:image:type" content="image/webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="854" />
     <meta
       property="og:image:alt"
       content="Dave D’Amore performing on drums at an outdoor festival"
@@ -39,11 +43,15 @@
     />
     <meta
       name="twitter:description"
-      content="Professional drummer Dave D’Amore. Remote acoustic drum recording, studio sessions and private drum lessons in Campbellfield, Melbourne. Around 30 years behind the kit."
+      content="Melbourne drummer Dave D’Amore offers private drum lessons in Campbellfield, session drumming and remote acoustic drum recording for artists and bands."
     />
     <meta
       name="twitter:image"
-      content="https://davedrums.com.au/img/dave-festival1-1200.webp"
+      content="https://www.davedrums.com.au/img/dave-festival1-1200.webp"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Dave D’Amore performing on drums at an outdoor festival"
     />
     <script type="application/ld+json">
       {
@@ -51,26 +59,76 @@
         "@graph": [
           {
             "@type": "Person",
-            "@id": "https://davedrums.com.au/#dave",
+            "@id": "https://www.davedrums.com.au/#dave",
             "name": "Dave D'Amore",
-            "url": "https://davedrums.com.au/",
+            "url": "https://www.davedrums.com.au/",
+            "image": "https://www.davedrums.com.au/img/dave-festival1-1200.webp",
+            "description": "Melbourne-based professional drummer, session musician and drum educator with around 30 years of playing experience.",
             "jobTitle": ["Drummer", "Session Musician", "Drum Educator"],
+            "homeLocation": { "@type": "Place", "name": "Melbourne, Australia" },
+            "knowsAbout": [
+              "Drumming",
+              "Drum education",
+              "Acoustic drum recording",
+              "Songwriting",
+              "Music production"
+            ],
             "sameAs": ["https://www.instagram.com/drumswithdave/"]
           },
           {
             "@type": "WebSite",
-            "@id": "https://davedrums.com.au/#website",
+            "@id": "https://www.davedrums.com.au/#website",
             "name": "Dave Drums",
-            "url": "https://davedrums.com.au/"
+            "url": "https://www.davedrums.com.au/"
           },
           {
             "@type": "WebPage",
-            "@id": "https://davedrums.com.au/#webpage",
-            "url": "https://davedrums.com.au/",
+            "@id": "https://www.davedrums.com.au/#webpage",
+            "url": "https://www.davedrums.com.au/",
             "name": "Dave D’Amore | Melbourne Drummer, Recording & Drum Lessons",
-            "description": "Professional drummer Dave D’Amore. Remote acoustic drum recording, studio sessions and private drum lessons in Campbellfield, Melbourne. Around 30 years behind the kit.",
-            "about": { "@id": "https://davedrums.com.au/#dave" },
-            "isPartOf": { "@id": "https://davedrums.com.au/#website" }
+            "description": "Melbourne drummer Dave D’Amore offers private drum lessons in Campbellfield, session drumming and remote acoustic drum recording for artists and bands.",
+            "about": { "@id": "https://www.davedrums.com.au/#dave" },
+            "mentions": [
+              { "@id": "https://www.davedrums.com.au/#drum-lessons" },
+              { "@id": "https://www.davedrums.com.au/#remote-drum-recording" },
+              { "@id": "https://www.davedrums.com.au/#session-drumming" }
+            ],
+            "isPartOf": { "@id": "https://www.davedrums.com.au/#website" }
+          },
+          {
+            "@type": "Service",
+            "@id": "https://www.davedrums.com.au/#drum-lessons",
+            "name": "Private drum lessons in Campbellfield, Melbourne",
+            "serviceType": "One-on-one drum lessons",
+            "url": "https://www.davedrums.com.au/#lessons",
+            "description": "Personalised drum lessons for students aged 10 and above, from complete beginners to experienced drummers.",
+            "provider": { "@id": "https://www.davedrums.com.au/#dave" },
+            "areaServed": [
+              { "@type": "Place", "name": "Campbellfield, Victoria, Australia" },
+              { "@type": "City", "name": "Melbourne" }
+            ]
+          },
+          {
+            "@type": "Service",
+            "@id": "https://www.davedrums.com.au/#remote-drum-recording",
+            "name": "Remote acoustic drum recording",
+            "serviceType": "Remote multitrack drum recording",
+            "url": "https://www.davedrums.com.au/#recording",
+            "description": "Professionally tracked and edited acoustic drums for artists, bands and producers, supplied as multitrack WAV files ready for mixing.",
+            "provider": { "@id": "https://www.davedrums.com.au/#dave" },
+            "availableChannel": {
+              "@type": "ServiceChannel",
+              "serviceUrl": "https://www.davedrums.com.au/#contact"
+            }
+          },
+          {
+            "@type": "Service",
+            "@id": "https://www.davedrums.com.au/#session-drumming",
+            "name": "Session drumming",
+            "serviceType": "In-studio session drumming and live performances",
+            "url": "https://www.davedrums.com.au/#recording",
+            "description": "Session drumming, drum parts and arrangement, live performances and collaborations with Melbourne-based drummer Dave D’Amore.",
+            "provider": { "@id": "https://www.davedrums.com.au/#dave" }
           }
         ]
       }
@@ -88,7 +146,7 @@
   <body id="top">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="Dave Drums home"
+      <a class="brand" href="./" aria-label="Dave Drums home"
         ><img
           src="img/dd-logo-1000px-white.png"
           width="1000"
@@ -102,7 +160,7 @@
         Menu <span aria-hidden="true">＋</span>
       </button>
       <nav id="site-navigation" aria-label="Main navigation">
-        <a href="index.html" aria-current="page">Home</a
+        <a href="./" aria-current="page">Home</a
         ><a href="#about">About</a><a href="#lessons">Lessons</a
         ><a href="#recording">Recording</a
         ><a class="nav-contact" href="#contact"
@@ -152,7 +210,7 @@
       </section>
 
       <section
-        class="about section-shell two-column"
+        class="about section-shell two-column theme-light"
         id="about"
         aria-labelledby="about-heading"
       >
@@ -211,7 +269,7 @@
       </section>
 
       <section
-        class="lessons-section section-shell"
+        class="lessons-section section-shell theme-dark"
         id="lessons"
         aria-labelledby="lessons-heading"
       >
@@ -280,7 +338,7 @@
         </div>
       </section>
       <section
-        class="recording-section section-shell"
+        class="recording-section section-shell theme-dark"
         id="recording"
         aria-labelledby="recording-heading"
       >
@@ -323,9 +381,17 @@
               <li>Drum Parts &amp; Arrangement</li>
               <li>Live Performances &amp; Collaborations</li>
             </ul>
+            <p>
+              Send a demo or backing track, tempo information and any reference
+              tracks. Remote recordings are professionally tracked and edited,
+              with multitrack WAV files ready for mixing.
+            </p>
             <a class="button" href="#contact" data-enquiry="Drum recording"
               >Discuss a recording <span aria-hidden="true">↗</span></a
             >
+            <p class="service-terms">
+              <a href="recording-terms/">Recording terms &amp; conditions</a>
+            </p>
           </div>
         </div>
         <div
@@ -429,7 +495,7 @@
       </section>
 
       <section
-        class="contact section-shell two-column"
+        class="contact section-shell two-column theme-light"
         id="contact"
         aria-labelledby="contact-heading"
       >
@@ -562,7 +628,7 @@
       </section>
     </main>
     <footer class="site-footer section-shell">
-      <a class="footer-brand" href="index.html" aria-label="Dave Drums home"
+      <a class="footer-brand" href="./" aria-label="Dave Drums home"
         ><img
           src="img/dd-logo-1000px-white.png"
           alt="Dave Drums"

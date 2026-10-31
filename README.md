@@ -1,6 +1,6 @@
 # Dave Drums
 
-A buildless static website for Dave D’Amore, hosted on GitHub Pages at https://davedrums.com.au/.
+A buildless static website for Dave D’Amore, hosted on GitHub Pages at https://www.davedrums.com.au/.
 
 ## Preview and edit
 

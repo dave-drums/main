@@ -52,7 +52,19 @@
     });
   }
 
-  // Responsive navigation.
+  // Move focus into the expanded copy when its Read more control disappears.
+  const aboutMore = document.querySelector(".about-more");
+  aboutMore?.querySelector("summary")?.addEventListener("click", (event) => {
+    if (aboutMore.open) return;
+    const expandedCopy = aboutMore.querySelector(".about-extra > p");
+    if (!expandedCopy) return;
+    event.preventDefault();
+    aboutMore.open = true;
+    expandedCopy.setAttribute("tabindex", "-1");
+    expandedCopy.focus({ preventScroll: true });
+  });
+
+  // Responsive navigation. Keep links visible on mobile until enhancement is ready.
 
   const toggle = document.querySelector(".nav-toggle");
   const navigation = document.querySelector("#site-navigation");
@@ -90,6 +102,9 @@
   window
     .matchMedia("(min-width: 801px)")
     .addEventListener("change", closeNavigation);
+  if (toggle && navigation) {
+    navigation.closest(".site-header")?.classList.add("nav-ready");
+  }
 
   // Send enquiries without leaving the page. The native action also works without JavaScript.
   const contactForm = document.querySelector("#enquiry-form");
