@@ -1,0 +1,251 @@
+/* Shared typography. Keep responsive overrides in their original cascade order. */
+:root {
+  --display: "Oswald", "Arial Narrow", Impact, sans-serif;
+  --body: "DM Sans", Arial, sans-serif;
+  --heading-scale: 1;
+}
+@media (min-width: 801px) {
+  :root {
+    --heading-scale: 0.85;
+  }
+}
+body {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
+}
+a {
+  text-decoration: none;
+}
+button {
+  font: inherit;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1;
+  text-wrap: balance;
+  text-transform: uppercase;
+}
+h2 {
+  font-size: calc(clamp(44px, 5vw, 76px) * var(--heading-scale));
+  letter-spacing: -0.02em;
+}
+h3,
+h4 {
+  font-size: calc(clamp(38px, 3.7vw, 58px) * var(--heading-scale));
+  letter-spacing: -0.015em;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.site-header nav {
+  font-size: 13px;
+}
+.site-header nav a[aria-current] {
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-color: var(--accent);
+}
+.hero .eyebrow {
+  font-size: 14px;
+}
+.hero h1 {
+  font-size: clamp(56px, 6.1vw, 92px);
+  white-space: nowrap;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.hero-role {
+  font-size: clamp(16px, 1.6vw, 22px);
+  font-weight: 500;
+}
+.hero-description {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.button,
+.text-link,
+.nav-toggle,
+.site-header nav .nav-contact {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+}
+.service-copy > p:not(.service-lead) {
+  font-size: 14px;
+}
+.service-copy > .service-lead {
+  font-size: 18px;
+  line-height: 1.6;
+}
+.service-list {
+  font-size: 13px;
+}
+.service-list li::before {
+  font-size: 16px;
+}
+.service-copy > .lesson-highlights,
+.service-copy > .service-genres {
+  text-align: center;
+}
+.lesson-highlights strong {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.stat-counter {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.visually-hidden {
+  white-space: nowrap;
+}
+.lesson-focus h3 {
+  font-family: var(--body);
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1.65;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.recording-section .service-copy > .service-genres {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.track-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.track-card h4 {
+  font-size: calc(29px * var(--heading-scale));
+  line-height: 1.15;
+}
+.track-credit {
+  font-size: 13px;
+  font-weight: 600;
+}
+.track-detail {
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 480px) {
+  .track-card h4 {
+    font-size: clamp(18px, 5.5vw, 24px);
+  }
+  .track-label {
+    font-size: 10px;
+  }
+  .track-credit {
+    font-size: 11px;
+  }
+  .track-detail {
+    font-size: 10px;
+  }
+}
+.about-copy h2 {
+  font-size: calc(clamp(42px, 4.5vw, 68px) * var(--heading-scale));
+}
+.about-copy > p:not(.eyebrow),
+.about-extra > p {
+  font-size: 14px;
+}
+.about-more summary {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.site-footer nav {
+  font-size: 12px;
+}
+.footer-copyright {
+  white-space: nowrap;
+  font-size: 12px;
+}
+.footer-links {
+  font-size: 12px;
+}
+.footer-top {
+  white-space: nowrap;
+}
+@media (max-width: 800px) {
+  .hero .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+  .hero h1 {
+    font-size: clamp(40px, 11vw, 68px);
+  }
+  .hero-role {
+    font-size: 17px;
+  }
+  .hero-description {
+    font-size: 13px;
+  }
+  .about-copy h2 {
+    font-size: 50px;
+  }
+}
+.contact-intro > p:not(.eyebrow) {
+  font-size: 14px;
+}
+.field-hint {
+  font-size: 11px;
+  font-weight: 400;
+}
+.form-field label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font: inherit;
+  font-size: 14px;
+}
+.form-note {
+  font-size: 11px;
+  line-height: 1.6;
+}
+.form-status {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.recordings h3 {
+  font-size: calc(30px * var(--heading-scale));
+}
+
+/* Terms-page typography shares the same desktop heading scale. */
+.terms-intro h1 {
+  font-size: calc(clamp(44px, 7vw, 88px) * var(--heading-scale));
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.terms-intro > p:last-child {
+  font-size: 18px;
+}
+.terms-section h2 {
+  font-size: calc(clamp(26px, 3.5vw, 38px) * var(--heading-scale));
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.terms-contact h2 {
+  font-size: calc(clamp(38px, 5vw, 58px) * var(--heading-scale));
+}

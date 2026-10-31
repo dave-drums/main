@@ -1,0 +1,54 @@
+/* Page-specific editorial layout; colours, type and components come from the site. */
+.terms-page {
+  padding-block: clamp(56px, 7vw, 110px);
+}
+.terms-content {
+  max-width: 780px;
+  margin-inline: auto;
+}
+.terms-intro {
+  padding-bottom: clamp(40px, 5vw, 64px);
+}
+.terms-intro .eyebrow {
+  color: var(--accent);
+}
+.terms-intro h1 {
+  margin-block: 22px 28px;
+}
+.terms-intro > p:last-child,
+.terms-section p,
+.terms-section li,
+.terms-contact p {
+  color: var(--muted);
+}
+.terms-section,
+.terms-contact {
+  border-top: 1px solid var(--line);
+  padding-block: clamp(30px, 4vw, 48px);
+}
+.terms-section h2 {
+  margin-bottom: 24px;
+}
+.terms-section h2 span {
+  color: var(--accent);
+}
+.terms-section p + p,
+.terms-section ul + p {
+  margin-top: 16px;
+}
+.terms-section ul {
+  padding-left: 22px;
+  margin-block: 18px;
+}
+.terms-section li + li {
+  margin-top: 12px;
+}
+.terms-section li::marker {
+  color: var(--accent);
+}
+.terms-contact {
+  padding-bottom: 0;
+}
+.terms-contact p {
+  margin-block: 24px;
+}
