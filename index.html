@@ -65,7 +65,10 @@
             "image": "https://www.davedrums.com.au/img/dave-festival1-1200.webp",
             "description": "Melbourne-based professional drummer, session musician and drum educator with around 30 years of playing experience.",
             "jobTitle": ["Drummer", "Session Musician", "Drum Educator"],
-            "homeLocation": { "@type": "Place", "name": "Melbourne, Australia" },
+            "homeLocation": {
+              "@type": "Place",
+              "name": "Melbourne, Australia"
+            },
             "knowsAbout": [
               "Drumming",
               "Drum education",
@@ -87,25 +90,43 @@
             "url": "https://www.davedrums.com.au/",
             "name": "Dave D’Amore | Melbourne Drummer, Recording & Drum Lessons",
             "description": "Melbourne drummer Dave D’Amore offers private drum lessons in Campbellfield, session drumming and remote acoustic drum recording for artists and bands.",
-            "about": { "@id": "https://www.davedrums.com.au/#dave" },
+            "about": {
+              "@id": "https://www.davedrums.com.au/#dave"
+            },
             "mentions": [
-              { "@id": "https://www.davedrums.com.au/#drum-lessons" },
-              { "@id": "https://www.davedrums.com.au/#remote-drum-recording" },
-              { "@id": "https://www.davedrums.com.au/#session-drumming" }
+              {
+                "@id": "https://www.davedrums.com.au/#drum-lessons"
+              },
+              {
+                "@id": "https://www.davedrums.com.au/#remote-drum-recording"
+              },
+              {
+                "@id": "https://www.davedrums.com.au/recording/#custom-drum-performances"
+              }
             ],
-            "isPartOf": { "@id": "https://www.davedrums.com.au/#website" }
+            "isPartOf": {
+              "@id": "https://www.davedrums.com.au/#website"
+            }
           },
           {
             "@type": "Service",
             "@id": "https://www.davedrums.com.au/#drum-lessons",
             "name": "Private drum lessons in Campbellfield, Melbourne",
             "serviceType": "One-on-one drum lessons",
-            "url": "https://www.davedrums.com.au/#lessons",
+            "url": "https://www.davedrums.com.au/lessons/",
             "description": "Personalised drum lessons for students aged 10 and above, from complete beginners to experienced drummers.",
-            "provider": { "@id": "https://www.davedrums.com.au/#dave" },
+            "provider": {
+              "@id": "https://www.davedrums.com.au/#dave"
+            },
             "areaServed": [
-              { "@type": "Place", "name": "Campbellfield, Victoria, Australia" },
-              { "@type": "City", "name": "Melbourne" }
+              {
+                "@type": "Place",
+                "name": "Campbellfield, Victoria, Australia"
+              },
+              {
+                "@type": "City",
+                "name": "Melbourne"
+              }
             ]
           },
           {
@@ -113,9 +134,11 @@
             "@id": "https://www.davedrums.com.au/#remote-drum-recording",
             "name": "Remote acoustic drum recording",
             "serviceType": "Remote multitrack drum recording",
-            "url": "https://www.davedrums.com.au/#recording",
+            "url": "https://www.davedrums.com.au/recording/",
             "description": "Professionally tracked and edited acoustic drums for artists, bands and producers, supplied as multitrack WAV files ready for mixing.",
-            "provider": { "@id": "https://www.davedrums.com.au/#dave" },
+            "provider": {
+              "@id": "https://www.davedrums.com.au/#dave"
+            },
             "availableChannel": {
               "@type": "ServiceChannel",
               "serviceUrl": "https://www.davedrums.com.au/#contact"
@@ -123,12 +146,15 @@
           },
           {
             "@type": "Service",
-            "@id": "https://www.davedrums.com.au/#session-drumming",
-            "name": "Session drumming",
-            "serviceType": "In-studio session drumming and live performances",
-            "url": "https://www.davedrums.com.au/#recording",
-            "description": "Session drumming, drum parts and arrangement, live performances and collaborations with Melbourne-based drummer Dave D’Amore.",
-            "provider": { "@id": "https://www.davedrums.com.au/#dave" }
+            "@id": "https://www.davedrums.com.au/recording/#custom-drum-performances",
+            "name": "Custom recorded drum performances",
+            "serviceType": "Custom acoustic drum parts and recording",
+            "url": "https://www.davedrums.com.au/recording/",
+            "description": "Original acoustic drum parts developed and recorded to complement compositions, arrangements and musical direction for artists, bands and producers.",
+            "provider": {
+              "@id": "https://www.davedrums.com.au/#dave"
+            },
+            "areaServed": "Worldwide"
           }
         ]
       }
@@ -137,9 +163,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap"
     />
-    <link rel="stylesheet" href="assets/typography.css" />
     <link rel="stylesheet" href="assets/styles.css" />
     <script src="assets/script.js" defer></script>
   </head>
@@ -160,9 +185,8 @@
         Menu <span aria-hidden="true">＋</span>
       </button>
       <nav id="site-navigation" aria-label="Main navigation">
-        <a href="./" aria-current="page">Home</a
-        ><a href="#about">About</a><a href="#lessons">Lessons</a
-        ><a href="#recording">Recording</a
+        <a href="./" aria-current="page">Home</a><a href="#about">About</a
+        ><a href="lessons/">Lessons</a><a href="recording/">Recording</a
         ><a class="nav-contact" href="#contact"
           >Contact <span aria-hidden="true">↗</span></a
         >
@@ -200,7 +224,7 @@
             Private lessons for your next breakthrough.
           </p>
           <div class="hero-actions">
-            <a class="button" href="#recording"
+            <a class="button button--primary" href="recording/"
               >Explore recording <span aria-hidden="true">↗</span></a
             ><a class="button" href="#lessons"
               >Explore lessons <span aria-hidden="true">↗</span></a
@@ -210,7 +234,7 @@
       </section>
 
       <section
-        class="about section-shell two-column theme-light"
+        class="about section-shell section-band two-column theme-light"
         id="about"
         aria-labelledby="about-heading"
       >
@@ -269,20 +293,21 @@
       </section>
 
       <section
-        class="lessons-section section-shell theme-dark"
+        class="lessons-section section-shell section-band theme-dark"
         id="lessons"
         aria-labelledby="lessons-heading"
       >
         <div class="service-layout two-column">
           <div class="service-copy">
-            <h2 id="lessons-heading">Drum lessons</h2>
+            <h2 id="lessons-heading">Drum Lessons</h2>
             <p class="service-lead">
-              One-on-one lessons in Campbellfield, Melbourne, for students aged
-              10 and above.
+              Campbellfield · Melbourne's Northern Suburbs
             </p>
             <p>
-              Whether you're a complete beginner or an experienced drummer,
-              lessons are tailored to your ability, musical interests and goals.
+              Personalised, one-on-one drum lessons for beginners through to
+              advanced players aged 10+. Develop your technique, timing, groove
+              and musicality with lessons tailored to your goals and musical
+              interests.
             </p>
             <p class="lesson-highlights">
               <strong>
@@ -307,22 +332,8 @@
                 >
               </strong>
             </p>
-            <ul class="service-list lesson-focus">
-              <li>
-                <h3>Technique &amp; Coordination</h3>
-              </li>
-              <li>
-                <h3>Rhythm, Timing &amp; Groove</h3>
-              </li>
-              <li>
-                <h3>Creativity &amp; Expression</h3>
-              </li>
-              <li>
-                <h3>Advanced Concepts &amp; Theory</h3>
-              </li>
-            </ul>
-            <a class="button" href="#contact" data-enquiry="Drum lessons"
-              >Enquire about lessons <span aria-hidden="true">↗</span></a
+            <a class="button button--primary" href="lessons/"
+              >Explore Drum Lessons <span aria-hidden="true">→</span></a
             >
           </div>
           <div class="service-photo lesson-photo">
@@ -338,7 +349,7 @@
         </div>
       </section>
       <section
-        class="recording-section section-shell theme-dark"
+        class="recording-section section-shell section-band theme-dark"
         id="recording"
         aria-labelledby="recording-heading"
       >
@@ -361,146 +372,27 @@
             </div>
           </div>
           <div class="service-copy">
-            <h2 id="recording-heading">Session drumming</h2>
-            <p class="service-lead">
-              Acoustic drums for artists, bands and producers. Professionally
-              recorded remotely, or performed in the studio.
-            </p>
+            <h2 id="recording-heading">Professional Drum Recording</h2>
+            <p class="service-lead">Melbourne · Remote recording worldwide</p>
             <p>
-              From developing drum parts to recording the finished performance,
-              I bring experience in songwriting, arrangement and production to
-              create drum tracks that complement your music.
+              Professional acoustic drum recording for artists, bands and
+              producers. From powerful rock grooves to intricate progressive
+              arrangements, every performance is tailored to the music.
             </p>
-            <p class="service-genres">
-              Rock · Metal · Progressive · Alternative · Pop · Indie &amp;
-              beyond
-            </p>
-            <ul class="service-list">
-              <li>Remote Multitrack Recording</li>
-              <li>In-Studio Session Drumming</li>
-              <li>Drum Parts &amp; Arrangement</li>
-              <li>Live Performances &amp; Collaborations</li>
-            </ul>
-            <p>
-              Send a demo or backing track, tempo information and any reference
-              tracks. Remote recordings are professionally tracked and edited,
-              with multitrack WAV files ready for mixing.
-            </p>
-            <a class="button" href="#contact" data-enquiry="Drum recording"
-              >Discuss a recording <span aria-hidden="true">↗</span></a
+            <a class="button button--primary" href="recording/"
+              >Explore Recording Services <span aria-hidden="true">→</span></a
             >
-            <p class="service-terms">
-              <a href="recording-terms/">Recording terms &amp; conditions</a>
-            </p>
-          </div>
-        </div>
-        <div
-          class="recordings"
-          id="work"
-          role="group"
-          aria-labelledby="work-heading"
-        >
-          <h3 id="work-heading">Selected recordings</h3>
-          <div class="tracks">
-            <article class="track-card">
-              <p class="track-label">Darkshore</p>
-              <h4>Hopeless</h4>
-              <div class="track-meta">
-                <p class="track-credit">Wrote &amp; recorded all instruments</p>
-                <p class="track-detail">Production &amp; mixing</p>
-              </div>
-              <iframe
-                src="https://open.spotify.com/embed/track/6Z6wapfql469gsOop4C6Mf?utm_source=generator"
-                width="100%"
-                height="152"
-                title="Darkshore — Hopeless on Spotify"
-                loading="lazy"
-                allow="
-                  autoplay;
-                  clipboard-write;
-                  encrypted-media;
-                  fullscreen;
-                  picture-in-picture;
-                "
-                allowfullscreen
-              ></iframe>
-            </article>
-            <article class="track-card">
-              <p class="track-label">Darkshore</p>
-              <h4>The Cost</h4>
-              <div class="track-meta">
-                <p class="track-credit">Wrote &amp; recorded all instruments</p>
-                <p class="track-detail">Production &amp; mixing</p>
-              </div>
-              <iframe
-                src="https://open.spotify.com/embed/track/75ojpYwSHdwY1qvqZISJyS?utm_source=generator"
-                width="100%"
-                height="152"
-                title="Darkshore — The Cost on Spotify"
-                loading="lazy"
-                allow="
-                  autoplay;
-                  clipboard-write;
-                  encrypted-media;
-                  fullscreen;
-                  picture-in-picture;
-                "
-                allowfullscreen
-              ></iframe>
-            </article>
-            <article class="track-card">
-              <p class="track-label">Abi Muir</p>
-              <h4>Stockholm</h4>
-              <div class="track-meta">
-                <p class="track-credit">Drums &amp; songwriting</p>
-                <p class="track-detail">
-                  John Lennon Songwriting Contest · Rock category winner
-                </p>
-              </div>
-              <iframe
-                src="https://open.spotify.com/embed/track/5sk5SrDmzbxtXgzDHo3o0Q?utm_source=generator"
-                width="100%"
-                height="152"
-                title="Abi Muir — Stockholm on Spotify"
-                loading="lazy"
-                allow="
-                  autoplay;
-                  clipboard-write;
-                  encrypted-media;
-                  fullscreen;
-                  picture-in-picture;
-                "
-                allowfullscreen
-              ></iframe>
-            </article>
-            <article class="track-card">
-              <p class="track-label">Abi Muir</p>
-              <h4>Still The Same</h4>
-              <div class="track-meta">
-                <p class="track-credit">Drums &amp; songwriting</p>
-                <p class="track-detail">Queensland Music Awards Finalist</p>
-              </div>
-              <iframe
-                src="https://open.spotify.com/embed/track/0s81MmE0zKLJhTNZXCegcY?utm_source=generator"
-                width="100%"
-                height="152"
-                title="Abi Muir — Still The Same on Spotify"
-                loading="lazy"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            </article>
           </div>
         </div>
       </section>
 
       <section
-        class="contact section-shell two-column theme-light"
+        class="contact section-shell section-band two-column theme-light"
         id="contact"
         aria-labelledby="contact-heading"
       >
         <div class="contact-intro">
-          <h2 id="contact-heading">Get in touch</h2>
+          <h2 id="contact-heading">Get in Touch</h2>
           <p>
             Ask about lessons, tell me about a recording, or get in touch about
             session work. Share a few details and I’ll get back to you.
@@ -614,7 +506,7 @@
           <p class="form-note">
             Your details will be used to respond to your enquiry.
           </p>
-          <button class="button" type="submit">
+          <button class="button button--primary" type="submit">
             Send enquiry <span aria-hidden="true">↗</span>
           </button>
           <p
@@ -639,8 +531,8 @@
       <p class="footer-copyright">© 2026 Dave D’Amore</p>
       <div class="footer-links">
         <nav aria-label="Footer navigation">
-          <a href="#about">About</a><a href="#lessons">Lessons</a
-          ><a href="#recording">Recording</a><a href="#contact">Contact</a>
+          <a href="#about">About</a><a href="lessons/">Lessons</a
+          ><a href="recording/">Recording</a><a href="#contact">Contact</a>
         </nav>
         <a class="footer-top" href="#top">Back to top ↑</a>
       </div>

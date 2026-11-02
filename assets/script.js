@@ -3,11 +3,13 @@
 
   // Count up once when the lesson highlights enter view. Keep final values as the fallback.
   const counterBanner = document.querySelector(".lesson-highlights");
-  const counterMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const motionPreference = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
   if (
     counterBanner &&
     "IntersectionObserver" in window &&
-    !counterMotion.matches
+    !motionPreference.matches
   ) {
     const counters = [...counterBanner.querySelectorAll("[data-count-to]")];
     let animationFrame = 0;
@@ -24,7 +26,7 @@
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
         observer.disconnect();
-        if (counterMotion.matches) {
+        if (motionPreference.matches) {
           finishCounters();
           return;
         }
@@ -44,12 +46,139 @@
       { threshold: 0.4 },
     );
     observer.observe(counterBanner);
-    counterMotion.addEventListener("change", () => {
-      if (counterMotion.matches) {
+    motionPreference.addEventListener("change", () => {
+      if (motionPreference.matches) {
         observer.disconnect();
         finishCounters();
       }
     });
+  }
+
+  // Reveal visual groups once; paragraphs and form fields remain immediately readable.
+  if ("IntersectionObserver" in window && "animate" in Element.prototype) {
+    const activeAnimations = new Set();
+    const easing =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--ease-out")
+        .trim() || "ease-out";
+    const delays = new WeakMap();
+    const animate = (element, keyframes, options) => {
+      const animation = element.animate(keyframes, { easing, ...options });
+      activeAnimations.add(animation);
+      const clear = () => activeAnimations.delete(animation);
+      animation.finished.then(clear, clear);
+    };
+    document
+      .querySelectorAll(".service-list, .tracks, .feature-grid, .benefit-grid")
+      .forEach((group) => {
+        [...group.children].forEach((element, index) => {
+          delays.set(element, Math.min(index, 5) * 55);
+        });
+      });
+    const reveal = (element, withMotion = true) => {
+      observer.unobserve(element);
+      element.classList.remove("is-reveal-pending");
+      element.classList.add("is-revealed");
+      if (withMotion && !motionPreference.matches) {
+        animate(
+          element,
+          [
+            { opacity: 0, transform: "translate3d(0, 16px, 0)" },
+            { opacity: 1, transform: "none" },
+          ],
+          { duration: 650, delay: delays.get(element) || 0, fill: "backwards" },
+        );
+      }
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) reveal(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" },
+    );
+    const targets = document.querySelectorAll(
+      ".about h2, .service-copy h2, .contact h2, .recordings h3, " +
+        ".about-image, .service-photo, .lesson-highlights, .service-genres, " +
+        ".service-list li, .track-card, .feature-card, [data-reveal]",
+    );
+    if (!motionPreference.matches) {
+      targets.forEach((element) => {
+        if (element.getBoundingClientRect().top < window.innerHeight) return;
+        element.classList.add("is-reveal-pending");
+        observer.observe(element);
+      });
+      document
+        .querySelectorAll(
+          ".hero .eyebrow, .hero h1, .page-hero .eyebrow, .page-hero h1",
+        )
+        .forEach((element, index) => {
+          animate(
+            element,
+            [
+              { opacity: 0.65, transform: "translate3d(0, 10px, 0)" },
+              { opacity: 1, transform: "none" },
+            ],
+            { duration: 750, delay: index * 90, fill: "backwards" },
+          );
+        });
+    }
+    document.addEventListener("focusin", (event) => {
+      const pending = event.target.closest(".is-reveal-pending");
+      if (pending) reveal(pending, false);
+    });
+    motionPreference.addEventListener("change", () => {
+      if (!motionPreference.matches) return;
+      observer.disconnect();
+      targets.forEach((element) =>
+        element.classList.remove("is-reveal-pending"),
+      );
+      activeAnimations.forEach((animation) => animation.cancel());
+      activeAnimations.clear();
+    });
+  }
+
+  // A small desktop-only image offset adds depth without scaling or changing the crop.
+  const hero = document.querySelector(".hero");
+  const parallaxViewport = window.matchMedia(
+    "(min-width: 801px) and (hover: hover) and (pointer: fine)",
+  );
+  if (hero && "IntersectionObserver" in window) {
+    let frame = 0;
+    let visible = false;
+    let heroObserver;
+    const update = () => {
+      frame = 0;
+      const bounds = hero.getBoundingClientRect();
+      const offset = Math.min(bounds.height, Math.max(0, -bounds.top)) * 0.08;
+      hero.style.setProperty("--hero-offset", `${offset.toFixed(2)}px`);
+    };
+    const requestUpdate = () => {
+      if (visible && !frame) frame = requestAnimationFrame(update);
+    };
+    const configureParallax = () => {
+      heroObserver?.disconnect();
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      cancelAnimationFrame(frame);
+      frame = 0;
+      visible = false;
+      hero.classList.remove("is-parallax-active");
+      hero.style.removeProperty("--hero-offset");
+      if (motionPreference.matches || !parallaxViewport.matches) return;
+      heroObserver = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        hero.classList.toggle("is-parallax-active", visible);
+        requestUpdate();
+      });
+      heroObserver.observe(hero);
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate, { passive: true });
+    };
+    configureParallax();
+    parallaxViewport.addEventListener("change", configureParallax);
+    motionPreference.addEventListener("change", configureParallax);
   }
 
   // Move focus into the expanded copy when its Read more control disappears.
@@ -112,6 +241,18 @@
   const sendButton = contactForm?.querySelector('button[type="submit"]');
   const sendButtonLabel = sendButton?.innerHTML;
   const enquiryType = contactForm?.querySelector("#enquiry-type");
+  // Dedicated service pages can link to the same form with a recognised enquiry type.
+  const requestedEnquiry = new URLSearchParams(window.location.search).get(
+    "enquiry",
+  );
+  if (
+    enquiryType &&
+    [...enquiryType.options].some(
+      (option) => !option.disabled && option.value === requestedEnquiry,
+    )
+  ) {
+    enquiryType.value = requestedEnquiry;
+  }
   let submitting = false;
 
   contactForm?.addEventListener("submit", async (event) => {
