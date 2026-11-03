@@ -1,65 +1,64 @@
 # Dave Drums
 
-A buildless static website for Dave D’Amore, hosted on GitHub Pages at https://www.davedrums.com.au/.
+The buildless Dave Drums website: semantic HTML, one shared stylesheet and small JavaScript enhancements. GitHub Pages serves the repository root. No framework, package installation or build step is required.
 
-## Preview and edit
+## Local preview
 
-Open index.html in a browser, or use VS Code’s Live Server extension. No framework, package installation or build command is required. Use an HTTP preview when testing Web3Forms; service restrictions can differ for file URLs.
+From this repository in PowerShell:
 
-## Structure
+```powershell
+& 'C:\Users\ddamo\AppData\Local\Programs\Python\Python311\python.exe' -m http.server 4173 --bind 127.0.0.1
+```
 
-- index.html — homepage content, navigation, contact form and SEO metadata
-- lessons/index.html — dedicated private drum lessons page for Campbellfield and Melbourne's northern suburbs
-- recording/index.html — professional acoustic drum recording benefits, process and selected work
-- assets/styles.css — the single stylesheet: tokens, typography, shared components, page layouts and responsive rules
-- assets/script.js — motion effects, lesson counters, mobile navigation and enquiry handling
-- img/ — active photographs, branding, responsive WebP images and recording artwork
-- recording/terms.html — recording terms page
-- 404.html — custom GitHub Pages error page (excluded from the sitemap)
-- CNAME — existing GitHub Pages custom domain
-- LICENSE and .gitignore — project licensing and local file exclusions
+Open **http://127.0.0.1:4173/**. Stop the server with `Ctrl+C`. Alternatively, use VS Code Live Server. Use HTTP rather than opening HTML files directly so module imports and root-relative paths behave correctly. The metronome and enquiry provider need an internet connection.
 
-Every page loads Inter for headings and DM Sans for body/UI text through Google Fonts, alongside the single `assets/styles.css` stylesheet. The recording page retains Oswald only for its existing process-step numerals. Its labelled sections cover design tokens, typography, global layout, shared components, navigation/footer, each page and responsive rules. Edit typography tokens centrally: `--h2-scale` adjusts all H2 sizes while preserving their hierarchy, and `--font-size-card-heading` controls shared card headings. H1 headings remain uppercase; section and card headings use authored Title Case. Use document-relative asset paths on ordinary pages; the 404 page needs root-relative paths.
+Preview `/lessons/`, `/recording/`, `/recording/terms.html`, `/metronome/` and `/404.html`. Python's standard server shows its own error document for missing URLs; GitHub Pages uses the repository's `404.html`. That document uses root-relative assets and navigation for missing nested URLs.
 
-## Content and behaviour
+## Source map
 
-About navigates to the homepage biography. Lessons opens `/lessons/` and Recording opens `/recording/`. The homepage service sections remain available at `#lessons` and `#recording`. Contact links to the local form at `#contact` on the homepage, lessons page and recording page; the terms page links to the homepage form. Keep index.html and the existing section IDs stable.
+| File | Purpose |
+| --- | --- |
+| `index.html` | Cinematic introduction, biography, lessons, recording and enquiry form |
+| `lessons/index.html` | Teaching approach, student levels, teacher, location, FAQs and enquiry form |
+| `recording/index.html` | Services, selected work, process, deliverables, musician, FAQs and enquiry form |
+| `recording/terms.html` | Original eight recording clauses with an on-page contents index |
+| `metronome/index.html` | Page surrounding the independently hosted metronome |
+| `404.html` | Root-relative error document |
+| `assets/styles.css` | Labelled tokens, typography, components, layouts, forms and responsive rules |
+| `assets/script.js` | Motion, counters, biography, navigation and enquiry enhancement |
+| `assets/metronome.js` | Existing remote module mount and loading/error feedback |
+| `assets/fonts/` | Self-hosted Inter and DM Sans Latin WOFF2 files and OFL licences |
+| `img/` | Authentic responsive photographs, recording artwork, logo and favicon |
+| `REDESIGN.md` | Repository audit, design decisions, validation results and trade-offs |
 
-The service pages use native details/summary FAQs and existing photography. Both service pages have their own copy of the Web3Forms contact section. Their enquiry links target the local `#contact`, with Drum lessons or Drum recording selected by default as appropriate. The shared script also supports recognised enquiry values in query strings. The homepage keeps its root canonical URL regardless of the query string.
+## Design and editing
 
-The homepage and service pages use `index.html` files; recording terms live at `/recording/terms.html`. Keep service-page links and metadata on `/lessons/` and `/recording/`. GitHub Pages handles the directory redirects from their versions without a trailing slash when the files are published; no client-side redirect is needed. `sitemap.xml` includes all four public pages, and `robots.txt` references it.
+Use the single `assets/styles.css` file. Its first section defines colours, type scales, spacing, gutters, columns, header dimensions and motion. Responsive rules live in its final section, at 600px, 900px and 1200px. Native CSS media queries cannot use custom properties as their breakpoint conditions.
 
-Recording Terms remains available at `/recording/terms.html`, but stays out of the homepage, recording page and main/footer navigation. Do not add visible links to it without an explicit request.
+Keep site-owned styling in that stylesheet; do not add inline style attributes, `<style>` blocks or extra stylesheets. Shared image layouts, service introductions and profile compositions belong in the shared-components section. Runtime animation geometry remains in JavaScript, and the separate metronome keeps its Shadow DOM styles. See `CSS-AUDIT.md` for the audit and before/after verification results.
 
-The mobile menu closes when a link is selected, the user clicks outside it, Escape is pressed, or the desktop breakpoint is crossed. The lesson statistics animate once when visible and respect reduced-motion preferences.
+Inter is used for headings and DM Sans for reading and interface text. Both are self-hosted variable fonts with `font-display: swap`; there are no external font stylesheets. Keep font licences with the files. Use dark blue interaction colours on light sections and cyan on dark sections.
 
-The homepage, lessons and recording enquiry forms use the same Web3Forms account and shared styles and script. Keep their field styles, validation and hidden settings in sync. The recording page intentionally excludes Live session work from its enquiry options; the homepage and lessons page retain it. Each page has one form. The enquiry form uses Web3Forms with native validation, a spam honeypot and inline status feedback. Failed submissions preserve entered details. Service enquiry buttons preselect the appropriate form option. Native form submission remains available without JavaScript.
+The shared type system uses fluid `--type-*` scales, weight/tracking/line-height tokens and reusable `heading-*`, `lead`, `body-copy` and `section-label` roles. H1 and homepage feature headings render uppercase; internal H2/H3 titles retain authored Title Case. Keep component font sizes tied to those tokens. See `TYPOGRAPHY.md` for the hierarchy, responsive sizing and validation results.
 
-Four recording cards show selected projects in one row on wide desktops, two columns on tablets and a swipeable horizontal gallery on phones. Each card has equal-width Spotify and YouTube listening links, with no embedded players. The gallery can also be focused and scrolled with a keyboard. Google Fonts, external listening links and Web3Forms require an internet connection.
+Homepage sections use full-bleed photography. Adjust individual `object-position` rules when changing images; do not add a global crop. Preserve dimensions, `srcset`, `sizes`, first-image priority and lazy loading. Original teaching JPEG remains available; active pages use the smaller 600/1000px WebP derivatives.
 
-The four project cards appear only on the recording page. Keep their existing artwork, titles, credits, awards and listening links intact when editing. The showcase is static HTML and remains available without JavaScript.
+The expanded biography is a labelled editorial section below the whole About split. Its primary button and one bottom collapse button expose `aria-expanded`; closing restores focus and scroll position to the primary control. Hidden or closing content is excluded from keyboard navigation. Without JavaScript, the full biography remains readable and the inactive controls stay hidden. Keep `#about`, `#full-story`, `#lessons`, `#recording`, `#contact` and dedicated service URLs stable.
 
-## Visual behaviour
+Mobile navigation uses progressive enhancement: links are visible until handlers attach. The open menu locks page scrolling, makes main/footer inert, contains keyboard focus and closes on Escape, link selection or a breakpoint change. Reduced motion disables nonessential motion and preserves final counter values. Content remains available without JavaScript.
 
-Full-width section backgrounds keep their content aligned with the shared maximum width and page gutters. Primary enquiry buttons use a restrained accent tint. Project cards retain the original credits and linked artwork, with side-by-side Spotify and YouTube listening buttons for each track.
+## Existing services and integrations
 
-Service pages share `page-hero`, `page-section`, `section-intro`, `profile-layout`, `feature-grid--equal`, feature cards and native FAQ controls, alongside the common contact form. Keep page-specific exceptions small and place all breakpoint overrides in the Responsive styles section of `assets/styles.css`.
+Three enquiry forms retain the original Web3Forms provider, public account configuration, names, hidden inputs, honeypot, optional phone field and native validation. JavaScript adds duplicate-submit prevention, a timeout, pending/success/error feedback and preservation of entered text after failure. Do not send test submissions to the real provider unless deliberately testing delivery. The recording form retains its existing omission of the Live session work option. Service pages retain their selected default enquiry type; recognised `?enquiry=` values are also supported.
 
-Intersection Observer reveals headings, photos, badges, list items and recording cards once. Paragraphs and form fields remain immediately readable. The small hero image parallax runs only on desktop devices with a fine pointer. Both effects respect reduced motion, including preference changes while the page is open; content and navigation remain available without JavaScript. Artwork hover effects also have visible keyboard focus states.
+The four recordings retain their artwork, credits, award text and Spotify/YouTube links. They use external listening links, not inline audio players. On phones the gallery can be scrolled by touch or keyboard; focusing links brings their recording into view.
 
-## Media
+The metronome is loaded from `https://dave-drums.github.io/metronome/embed/metronome.js` and mounts its own React application inside Shadow DOM. The white card, application controls and separate repository are unchanged. Do not copy its implementation here, add an iframe or override its internal styles.
 
-Responsive images use readable names such as dave-studio1-960.webp. Update both src and srcset when replacing them. Previously unused images were moved to the sibling `_unused_backup` directory outside this website root.
+Recording terms clauses are unchanged and remain available at `/recording/terms.html`. Terms links stay off the homepage, recording page and main/footer navigation.
 
-Recording artwork is the actual 300 × 300 JPEG thumbnail supplied by Spotify's oEmbed metadata for each existing track:
+## SEO and hosting
 
-- `img/darkshore-hopeless.jpg` — [Darkshore — Hopeless](https://open.spotify.com/track/6Z6wapfql469gsOop4C6Mf)
-- `img/darkshore-the-cost.jpg` — [Darkshore — The Cost](https://open.spotify.com/track/75ojpYwSHdwY1qvqZISJyS)
-- `img/abi-muir-stockholm.jpg` — [Abi Muir — Stockholm](https://open.spotify.com/track/5sk5SrDmzbxtXgzDHo3o0Q)
-- `img/abi-muir-still-the-same.jpg` — [Abi Muir — Still The Same](https://open.spotify.com/track/0s81MmE0zKLJhTNZXCegcY)
+Existing titles, descriptions, canonical URLs and structured data are preserved. The metronome now also has social-image/Twitter metadata and WebPage structured data. All five public URLs remain in `sitemap.xml`; the intentional `noindex, follow` directive is retained on the 404 only. `robots.txt`, `CNAME` and GitHub Pages configuration are unchanged.
 
-## Validation and publishing
-
-Check all five pages, including the 404 page at a nested missing URL, at desktop, tablet and mobile widths, with keyboard navigation, reduced motion and JavaScript disabled. Check the enquiry form with mocked success and failure responses before testing live delivery deliberately. No automated build or test command exists in this checkout.
-
-Publish the static root using the existing GitHub Pages setup. No deployment configuration was added, and no commit, push or deployment was performed.
+All redesign changes are local and uncommitted. No push, pull request or deployment has been performed. See `REDESIGN.md` for measured validation and remaining verification limits.

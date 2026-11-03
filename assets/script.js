@@ -139,101 +139,129 @@
     });
   }
 
-  // A small desktop-only image offset adds depth without scaling or changing the crop.
-  const hero = document.querySelector(".hero");
-  const parallaxViewport = window.matchMedia(
-    "(min-width: 801px) and (hover: hover) and (pointer: fine)",
-  );
-  if (hero && "IntersectionObserver" in window) {
-    let frame = 0;
-    let visible = false;
-    let heroObserver;
-    const update = () => {
-      frame = 0;
-      const bounds = hero.getBoundingClientRect();
-      const offset = Math.min(bounds.height, Math.max(0, -bounds.top)) * 0.08;
-      hero.style.setProperty("--hero-offset", `${offset.toFixed(2)}px`);
+  // Keep the compact sticky header in sync without running work on every scroll.
+  const header = document.querySelector(".site-header");
+  let headerFrame = 0;
+  const updateHeader = () => {
+    header?.classList.toggle("is-scrolled", window.scrollY > 40);
+    headerFrame = 0;
+  };
+  window.addEventListener("scroll", () => {
+    if (!headerFrame) headerFrame = requestAnimationFrame(updateHeader);
+  }, { passive: true });
+  updateHeader();
+
+  // The story remains readable without JavaScript; enhancement adds two toggle controls.
+  const about = document.querySelector(".about");
+  const story = document.querySelector(".about-more");
+  const storyButton = document.querySelector(".story-link");
+  if (about && story && storyButton) {
+    const storyHeading = story.querySelector(".story-heading");
+    const collapseButton = story.querySelector(".story-collapse");
+    let expanded = window.location.hash === "#full-story";
+    let storyAnimation;
+    const updateStory = () => {
+      storyButton.setAttribute("aria-expanded", String(expanded));
+      collapseButton?.setAttribute("aria-expanded", String(expanded));
+      storyButton.firstChild.textContent = expanded ? "Close my story " : "Read my story ";
     };
-    const requestUpdate = () => {
-      if (visible && !frame) frame = requestAnimationFrame(update);
+    const setStory = (opening) => {
+      const startHeight = story.hidden ? 0 : story.getBoundingClientRect().height;
+      storyAnimation?.cancel();
+      expanded = opening;
+      story.hidden = false;
+      story.inert = !opening;
+      updateStory();
+      const finish = () => {
+        story.hidden = !opening;
+        story.classList.remove("is-animating");
+        storyAnimation = null;
+        if (!opening) storyButton.scrollIntoView({ behavior: motionPreference.matches ? "instant" : "smooth", block: "center" });
+      };
+      if (motionPreference.matches || !("animate" in Element.prototype)) {
+        finish();
+        return;
+      }
+      story.classList.add("is-animating");
+      storyAnimation = story.animate([
+        { height: `${startHeight}px` },
+        { height: `${opening ? story.scrollHeight : 0}px` }
+      ], { duration: 320, easing: "cubic-bezier(.22, 1, .36, 1)" });
+      storyAnimation.finished.then(finish, () => {});
     };
-    const configureParallax = () => {
-      heroObserver?.disconnect();
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      cancelAnimationFrame(frame);
-      frame = 0;
-      visible = false;
-      hero.classList.remove("is-parallax-active");
-      hero.style.removeProperty("--hero-offset");
-      if (motionPreference.matches || !parallaxViewport.matches) return;
-      heroObserver = new IntersectionObserver(([entry]) => {
-        visible = entry.isIntersecting;
-        hero.classList.toggle("is-parallax-active", visible);
-        requestUpdate();
-      });
-      heroObserver.observe(hero);
-      window.addEventListener("scroll", requestUpdate, { passive: true });
-      window.addEventListener("resize", requestUpdate, { passive: true });
+    const closeStory = () => {
+      storyButton.focus({ preventScroll: true });
+      setStory(false);
     };
-    configureParallax();
-    parallaxViewport.addEventListener("change", configureParallax);
-    motionPreference.addEventListener("change", configureParallax);
+    storyButton.addEventListener("click", () => {
+      if (expanded) { closeStory(); return; }
+      setStory(true);
+      storyHeading?.focus({ preventScroll: true });
+      story.scrollIntoView({ behavior: motionPreference.matches ? "instant" : "smooth", block: "start" });
+    });
+    collapseButton?.addEventListener("click", closeStory);
+    window.addEventListener("hashchange", () => {
+      if (window.location.hash === "#full-story") setStory(true);
+    });
+    motionPreference.addEventListener("change", () => {
+      if (motionPreference.matches) storyAnimation?.finish();
+    });
+    story.hidden = !expanded;
+    story.inert = !expanded;
+    updateStory();
+    about.classList.add("is-enhanced");
   }
 
-  // Move focus into the expanded copy when its Read more control disappears.
-  const aboutMore = document.querySelector(".about-more");
-  aboutMore?.querySelector("summary")?.addEventListener("click", (event) => {
-    if (aboutMore.open) return;
-    const expandedCopy = aboutMore.querySelector(".about-extra > p");
-    if (!expandedCopy) return;
-    event.preventDefault();
-    aboutMore.open = true;
-    expandedCopy.setAttribute("tabindex", "-1");
-    expandedCopy.focus({ preventScroll: true });
-  });
-
-  // Responsive navigation. Keep links visible on mobile until enhancement is ready.
-
+  // Mobile navigation: scroll lock, focus containment, escape and progressive enhancement.
   const toggle = document.querySelector(".nav-toggle");
   const navigation = document.querySelector("#site-navigation");
-  function closeNavigation() {
-    toggle?.setAttribute("aria-expanded", "false");
-    navigation?.classList.remove("is-open");
-  }
-  toggle?.addEventListener("click", () => {
-    const open = toggle.getAttribute("aria-expanded") !== "true";
-    toggle.setAttribute("aria-expanded", String(open));
+  const mobileViewport = window.matchMedia("(max-width: 900px)");
+  const pageRegions = [...document.querySelectorAll("main, .site-footer")];
+  const isMenuOpen = () => toggle?.getAttribute("aria-expanded") === "true";
+  function setNavigation(open, restoreFocus = false) {
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    const symbol = toggle?.querySelector("span");
+    if (symbol) symbol.textContent = open ? "\u2212" : "\uff0b";
     navigation?.classList.toggle("is-open", open);
-  });
-  navigation
-    ?.querySelectorAll("a")
-    .forEach((link) => link.addEventListener("click", closeNavigation));
-  document.addEventListener("click", (event) => {
-    if (
-      toggle?.getAttribute("aria-expanded") === "true" &&
-      !navigation?.contains(event.target) &&
-      !toggle.contains(event.target)
-    ) {
-      closeNavigation();
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      toggle?.getAttribute("aria-expanded") === "true"
-    ) {
-      closeNavigation();
-      toggle.focus();
-    }
-  });
-  window
-    .matchMedia("(min-width: 801px)")
-    .addEventListener("change", closeNavigation);
-  if (toggle && navigation) {
-    navigation.closest(".site-header")?.classList.add("nav-ready");
+    document.body.classList.toggle("menu-open", open);
+    pageRegions.forEach((region) => { region.inert = open; });
+    if (restoreFocus) toggle?.focus();
   }
+  toggle?.addEventListener("click", () => setNavigation(!isMenuOpen()));
+  navigation?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      const focusToggle = isMenuOpen();
+      setNavigation(false, focusToggle);
+    });
+  });
+  document.addEventListener("click", (event) => {
+    if (isMenuOpen() && !header.contains(event.target)) setNavigation(false, true);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (!isMenuOpen()) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setNavigation(false, true);
+    }
+    if (event.key === "Tab") {
+      const links = [...navigation.querySelectorAll("a")];
+      const first = toggle;
+      const last = links[links.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    }
+  });
+  mobileViewport.addEventListener("change", () => {
+    const restoreFocus = mobileViewport.matches && navigation?.contains(document.activeElement);
+    setNavigation(false, restoreFocus);
+  });
+  window.addEventListener("pagehide", () => setNavigation(false));
+  window.addEventListener("pageshow", () => setNavigation(false));
+  if (toggle && navigation) header.classList.add("nav-ready");
 
   // Send enquiries without leaving the page. The native action also works without JavaScript.
   const contactForm = document.querySelector("#enquiry-form");

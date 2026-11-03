@@ -1,85 +1,151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-AU">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111315" />
-    <title>Free Online Metronome | Dave Drums</title>
-    <meta name="description" content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." />
-    <link rel="canonical" href="https://www.davedrums.com.au/metronome/" />
-    <link rel="icon" type="image/png" href="../img/favicon.png" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_AU" />
-    <meta property="og:site_name" content="Dave Drums" />
-    <meta property="og:title" content="Free Online Metronome | Dave Drums" />
-    <meta property="og:description" content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." />
-    <meta property="og:url" content="https://www.davedrums.com.au/metronome/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" />
-    <link rel="stylesheet" href="../assets/styles.css" />
-    <script src="../assets/script.js" defer></script>
-    <script type="module" src="../assets/metronome.js"></script>
-  </head>
-  <body id="top">
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="../" aria-label="Dave Drums home"
-        ><img
-          src="../img/dd-logo-1000px-white.png"
-          width="1000"
-          height="303"
-          alt="Dave Drums" /></a
-      ><button
-        class="nav-toggle"
-        aria-expanded="false"
-        aria-controls="site-navigation"
-      >
-        Menu <span aria-hidden="true">＋</span>
-      </button>
-      <nav id="site-navigation" aria-label="Main navigation">
-        <a href="../">Home</a><a href="../#about">About</a
-        ><a href="../lessons/">Lessons</a><a href="../recording/">Recording</a
-        ><a href="/metronome/" aria-current="page">Metronome</a><a class="nav-contact" href="../#contact"
-          >Contact <span aria-hidden="true">↗</span></a
-        >
-      </nav>
-    </header>
-    <main id="main" class="metronome-page section-shell">
-      <header class="metronome-intro">
-        <h1>Metronome</h1>
-        <p>A free online metronome to sharpen your timing, explore subdivisions and develop rhythmic precision.</p>
-      </header>
-      <section class="metronome-player" aria-label="Interactive metronome">
-        <p id="metronome-status" class="metronome-status" role="status" aria-live="polite"></p>
-        <div id="metronome-app" aria-busy="true"></div>
-        <div id="metronome-error" class="metronome-error" hidden>
-          <p>The metronome couldn’t load. Please check your connection and try again.</p>
-          <a class="button" href="./">Try again <span aria-hidden="true">↻</span></a>
-        </div>
-        <noscript>
-          <p class="metronome-status">Please enable JavaScript to use the metronome.</p>
-        </noscript>
-      </section>
-    </main>
-    <footer class="site-footer section-shell">
-      <a class="footer-brand" href="../" aria-label="Dave Drums home"
-        ><img
-          src="../img/dd-logo-1000px-white.png"
-          alt="Dave Drums"
-          width="1000"
-          height="303"
-          loading="lazy"
-      /></a>
-      <p class="footer-copyright">© 2026 Dave D’Amore</p>
-      <div class="footer-links">
-        <nav aria-label="Footer navigation">
-          <a href="../#about">About</a><a href="../lessons/">Lessons</a
-          ><a href="../recording/">Recording</a
-          ><a href="../#contact">Contact</a>
-        </nav>
-        <a class="footer-top" href="#top">Back to top ↑</a>
-      </div>
-    </footer>
-  </body>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta content="#101214" name="theme-color"/>
+  <title>
+   Free Online Metronome | Dave Drums
+  </title>
+  <meta content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." name="description"/>
+  <link href="https://www.davedrums.com.au/metronome/" rel="canonical"/>
+  <link href="../img/favicon.png" rel="icon" type="image/png"/>
+  <meta content="website" property="og:type"/>
+  <meta content="en_AU" property="og:locale"/>
+  <meta content="Dave Drums" property="og:site_name"/>
+  <meta content="Free Online Metronome | Dave Drums" property="og:title"/>
+  <meta content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." property="og:description"/>
+  <meta content="https://www.davedrums.com.au/metronome/" property="og:url"/>
+  <link href="../assets/styles.css" rel="stylesheet"/>
+  <script defer="" src="../assets/script.js">
+  </script>
+  <script src="../assets/metronome.js" type="module">
+  </script>
+  <link as="font" crossorigin="" href="../assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
+  <link as="font" crossorigin="" href="../assets/fonts/dm-sans-latin.woff2" rel="preload" type="font/woff2"/>
+  <meta content="https://www.davedrums.com.au/img/dave-studio1-1920.webp" property="og:image"/>
+  <meta content="Dave D’Amore behind his acoustic drum kit in the studio" property="og:image:alt"/>
+  <meta content="1920" property="og:image:width"/>
+  <meta content="933" property="og:image:height"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="Free Online Metronome | Dave Drums" name="twitter:title"/>
+  <meta content="Practise your timing with the free Dave Drums online metronome." name="twitter:description"/>
+  <meta content="https://www.davedrums.com.au/img/dave-studio1-1920.webp" name="twitter:image"/>
+  <meta content="Dave D’Amore behind his acoustic drum kit in the studio" name="twitter:image:alt"/>
+  <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"WebPage","@id":"https://www.davedrums.com.au/metronome/#webpage","url":"https://www.davedrums.com.au/metronome/","name":"Free Online Metronome | Dave Drums","isPartOf":{"@id":"https://www.davedrums.com.au/#website"}}
+  </script>
+ </head>
+ <body id="top">
+  <a class="skip-link" href="#main">
+   Skip to content
+  </a>
+  <header class="site-header">
+   <a aria-label="Dave Drums home" class="brand" href="../">
+    <img alt="Dave Drums" height="303" src="../img/dd-logo-1000px-white.png" width="1000"/>
+   </a>
+   <button aria-controls="site-navigation" aria-expanded="false" aria-label="Open navigation" class="nav-toggle" type="button">
+    Menu
+    <span aria-hidden="true">
+     ＋
+    </span>
+   </button>
+   <nav aria-label="Main navigation" id="site-navigation">
+    <a href="../">
+     Home
+    </a>
+    <a href="../#about">
+     About
+    </a>
+    <a href="../lessons/">
+     Lessons
+    </a>
+    <a href="../recording/">
+     Recording
+    </a>
+    <a aria-current="page" href="/metronome/">
+     Metronome
+    </a>
+    <a class="nav-contact" href="../#contact">
+     Contact
+     <span aria-hidden="true">
+      ↗
+     </span>
+    </a>
+   </nav>
+  </header>
+  <main class="metronome-page section-shell" id="main" tabindex="-1">
+   <header class="metronome-intro type-frame">
+    <h1>
+     METRONOME
+    </h1>
+    <p class="lead">
+     A free online metronome to sharpen your timing, explore subdivisions and develop rhythmic precision.
+    </p>
+   </header>
+   <section aria-label="Interactive metronome" class="metronome-player">
+    <h2 class="visually-hidden">
+     Interactive online metronome
+    </h2>
+    <p aria-live="polite" class="metronome-status" id="metronome-status" role="status">
+    </p>
+    <div aria-busy="true" id="metronome-app">
+    </div>
+    <div class="metronome-error" hidden="" id="metronome-error">
+     <p>
+      The metronome couldn’t load. Please check your connection and try again.
+     </p>
+     <a class="button" href="./">
+      Try again
+      <span aria-hidden="true">
+       ↻
+      </span>
+     </a>
+    </div>
+    <noscript>
+     <p class="metronome-status">
+      Please enable JavaScript to use the metronome.
+     </p>
+    </noscript>
+   </section>
+  </main>
+  <footer class="site-footer section-shell">
+   <a aria-label="Dave Drums home" class="footer-brand" href="../">
+    <img alt="Dave Drums" height="303" loading="lazy" src="../img/dd-logo-1000px-white.png" width="1000"/>
+   </a>
+   <p class="footer-location">
+    Independent musician.
+    <br/>
+    Melbourne, Australia.
+   </p>
+   <p class="footer-copyright">
+    © 2026 Dave D’Amore
+   </p>
+   <div class="footer-links">
+    <nav aria-label="Footer navigation">
+     <a href="../#about">
+      About
+     </a>
+     <a href="../lessons/">
+      Lessons
+     </a>
+     <a href="../recording/">
+      Recording
+     </a>
+     <a href="../#contact">
+      Contact
+     </a>
+     <a href="../metronome/">
+      Metronome
+     </a>
+    </nav>
+    <a class="footer-top" href="#top">
+     Back to top ↑
+    </a>
+    <a href="https://www.instagram.com/drumswithdave/" rel="noopener noreferrer" target="_blank">
+     Instagram ↗
+    </a>
+   </div>
+  </footer>
+ </body>
 </html>
