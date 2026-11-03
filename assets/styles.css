@@ -1519,6 +1519,62 @@ p {
 }
 
 /* ==========================================================================
+   10a. Metronome page
+   ========================================================================== */
+
+.metronome-page {
+  padding-block: clamp(20px, 3vw, 40px) clamp(32px, 4vw, 64px);
+}
+
+.metronome-intro {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.metronome-intro h1 {
+  margin-bottom: var(--intro-gap);
+  font-size: var(--font-size-h2);
+  font-weight: var(--heading-weight-section);
+  text-transform: none;
+}
+
+.metronome-intro p {
+  color: var(--muted);
+}
+
+.metronome-player {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+#metronome-app {
+  width: 100%;
+  min-width: 0;
+}
+
+.metronome-status,
+.metronome-error {
+  text-align: center;
+  color: var(--muted);
+}
+
+.metronome-status:not(:empty) {
+  padding-block: 24px;
+}
+
+.metronome-error {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--control-radius);
+}
+
+.metronome-error .button {
+  margin-top: 16px;
+}
+
+/* ==========================================================================
    11. Responsive styles
    ========================================================================== */
 

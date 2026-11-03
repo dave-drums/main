@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111315" />
+    <title>Free Online Metronome | Dave Drums</title>
+    <meta name="description" content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." />
+    <link rel="canonical" href="https://www.davedrums.com.au/metronome/" />
+    <link rel="icon" type="image/png" href="../img/favicon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:site_name" content="Dave Drums" />
+    <meta property="og:title" content="Free Online Metronome | Dave Drums" />
+    <meta property="og:description" content="Free online metronome for drummers and musicians. Practise your timing, tempo and rhythmic accuracy with an interactive metronome." />
+    <meta property="og:url" content="https://www.davedrums.com.au/metronome/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" />
+    <link rel="stylesheet" href="../assets/styles.css" />
+    <script src="../assets/script.js" defer></script>
+    <script type="module" src="../assets/metronome.js"></script>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="Dave Drums home"
+        ><img
+          src="../img/dd-logo-1000px-white.png"
+          width="1000"
+          height="303"
+          alt="Dave Drums" /></a
+      ><button
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="site-navigation"
+      >
+        Menu <span aria-hidden="true">＋</span>
+      </button>
+      <nav id="site-navigation" aria-label="Main navigation">
+        <a href="../">Home</a><a href="../#about">About</a
+        ><a href="../lessons/">Lessons</a><a href="../recording/">Recording</a
+        ><a href="/metronome/" aria-current="page">Metronome</a><a class="nav-contact" href="../#contact"
+          >Contact <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main id="main" class="metronome-page section-shell">
+      <header class="metronome-intro">
+        <h1>Metronome</h1>
+        <p>A free online metronome to sharpen your timing, explore subdivisions and develop rhythmic precision.</p>
+      </header>
+      <section class="metronome-player" aria-label="Interactive metronome">
+        <p id="metronome-status" class="metronome-status" role="status" aria-live="polite"></p>
+        <div id="metronome-app" aria-busy="true"></div>
+        <div id="metronome-error" class="metronome-error" hidden>
+          <p>The metronome couldn’t load. Please check your connection and try again.</p>
+          <a class="button" href="./">Try again <span aria-hidden="true">↻</span></a>
+        </div>
+        <noscript>
+          <p class="metronome-status">Please enable JavaScript to use the metronome.</p>
+        </noscript>
+      </section>
+    </main>
+    <footer class="site-footer section-shell">
+      <a class="footer-brand" href="../" aria-label="Dave Drums home"
+        ><img
+          src="../img/dd-logo-1000px-white.png"
+          alt="Dave Drums"
+          width="1000"
+          height="303"
+          loading="lazy"
+      /></a>
+      <p class="footer-copyright">© 2026 Dave D’Amore</p>
+      <div class="footer-links">
+        <nav aria-label="Footer navigation">
+          <a href="../#about">About</a><a href="../lessons/">Lessons</a
+          ><a href="../recording/">Recording</a
+          ><a href="../#contact">Contact</a>
+        </nav>
+        <a class="footer-top" href="#top">Back to top ↑</a>
+      </div>
+    </footer>
+  </body>
+</html>
