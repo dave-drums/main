@@ -212,57 +212,6 @@
     about.classList.add("is-enhanced");
   }
 
-  // Mobile navigation: scroll lock, focus containment, escape and progressive enhancement.
-  const toggle = document.querySelector(".nav-toggle");
-  const navigation = document.querySelector("#site-navigation");
-  const mobileViewport = window.matchMedia("(max-width: 900px)");
-  const pageRegions = [...document.querySelectorAll("main, .site-footer")];
-  const isMenuOpen = () => toggle?.getAttribute("aria-expanded") === "true";
-  function setNavigation(open, restoreFocus = false) {
-    toggle?.setAttribute("aria-expanded", String(open));
-    toggle?.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-    const symbol = toggle?.querySelector("span");
-    if (symbol) symbol.textContent = open ? "\u2212" : "\uff0b";
-    navigation?.classList.toggle("is-open", open);
-    document.body.classList.toggle("menu-open", open);
-    pageRegions.forEach((region) => { region.inert = open; });
-    if (restoreFocus) toggle?.focus();
-  }
-  toggle?.addEventListener("click", () => setNavigation(!isMenuOpen()));
-  navigation?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      const focusToggle = isMenuOpen();
-      setNavigation(false, focusToggle);
-    });
-  });
-  document.addEventListener("click", (event) => {
-    if (isMenuOpen() && !header.contains(event.target)) setNavigation(false, true);
-  });
-  document.addEventListener("keydown", (event) => {
-    if (!isMenuOpen()) return;
-    if (event.key === "Escape") {
-      event.preventDefault();
-      setNavigation(false, true);
-    }
-    if (event.key === "Tab") {
-      const links = [...navigation.querySelectorAll("a")];
-      const first = toggle;
-      const last = links[links.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault(); last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault(); first.focus();
-      }
-    }
-  });
-  mobileViewport.addEventListener("change", () => {
-    const restoreFocus = mobileViewport.matches && navigation?.contains(document.activeElement);
-    setNavigation(false, restoreFocus);
-  });
-  window.addEventListener("pagehide", () => setNavigation(false));
-  window.addEventListener("pageshow", () => setNavigation(false));
-  if (toggle && navigation) header.classList.add("nav-ready");
-
   // Send enquiries without leaving the page. The native action also works without JavaScript.
   const contactForm = document.querySelector("#enquiry-form");
   const formStatus = document.querySelector("#form-status");

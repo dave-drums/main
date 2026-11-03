@@ -1,0 +1,25 @@
+{
+  "direct": [
+    { "id": "home", "label": "Home", "href": "/" },
+    { "id": "about", "label": "About", "href": "/#about" },
+    { "id": "contact", "label": "Contact", "href": "/#contact" }
+  ],
+  "groups": [
+    {
+      "id": "services",
+      "label": "Services",
+      "links": [
+        { "label": "Drum Lessons", "href": "/lessons/" },
+        { "label": "Drum Recording", "href": "/recording/" }
+      ]
+    },
+    {
+      "id": "tools",
+      "label": "Tools",
+      "links": [
+        { "label": "Metronome", "href": "/metronome/" },
+        { "label": "Groove Scribe", "href": "/groove/" }
+      ]
+    }
+  ]
+}
