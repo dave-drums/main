@@ -2,7 +2,7 @@
 
 Audit date: 4 November 2026 (Australia/Sydney).
 
-All implementation is local to the main Dave Drums repository. No commit, push, deployment, external account change or modification of the separate GrooveScribe application repository was performed. Live HTTP checks describe the existing deployed site, not a deployment of these edits.
+All implementation was performed in the main Dave Drums repository. I did not run commit, push or deployment commands, change external accounts, or modify the separate GrooveScribe application repository. Repository history advanced independently during the task: commits `4874a60`, `c066042` and `30c8be5` appeared without this assistant initiating them. That history was left intact; any external push/deployment activity was not verified. Live HTTP checks describe the deployed responses at the time of checking, not an assistant-initiated deployment of these edits.
 
 ## Completed changes
 
