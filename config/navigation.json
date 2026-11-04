@@ -18,7 +18,7 @@
       "label": "Tools",
       "links": [
         { "label": "Metronome", "href": "/metronome/" },
-        { "label": "Groove Scribe", "href": "/groove/" }
+        { "label": "Groove Lab", "href": "/groove/" }
       ]
     }
   ]

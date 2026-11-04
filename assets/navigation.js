@@ -107,7 +107,7 @@
     if (isMenuOpen() && !header.contains(event.target)) setNavigation(false, true);
   });
   document.addEventListener("keydown", (event) => {
-    // Leave the Groove Scribe orientation dialog's native Escape/focus handling intact.
+    // Leave the Groove Lab orientation dialog's native Escape/focus handling intact.
     if (document.querySelector("dialog[open]")) return;
     if (event.key === "Escape") {
       const openGroup = groups.find((group) => group.open);

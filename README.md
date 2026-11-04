@@ -54,7 +54,7 @@ Navigation uses progressive enhancement: native disclosures and static links wor
 
 ## Shared navigation and footer
 
-All seven pages, including Recording Terms and 404, use `Home | About | Services | Tools | Contact`. Services contains Drum Lessons and Drum Recording; Tools contains Metronome and Groove Scribe. These group labels are disclosure controls, not landing-page links. Footers show direct links under Explore, Services and Tools. Recording Terms remains accessible at its existing URL and is not added to either navigation.
+All seven pages, including Recording Terms and 404, use `Home | About | Services | Tools | Contact`. Services contains Drum Lessons and Drum Recording; Tools contains Metronome and Groove Lab. These group labels are disclosure controls, not landing-page links. Footers show direct links under Explore, Services and Tools. Recording Terms remains accessible at its existing URL and is not added to either navigation.
 
 Edit `config/navigation.json` for link labels, destinations or group contents, then run:
 
@@ -67,7 +67,7 @@ The first command updates generated headers/footers in every local HTML page; `-
 
 Navigation and branding use root-relative links/assets so nested pages and missing nested URLs on the 404 work correctly. Exact pages receive `aria-current="page"`; Services stays marked as the current section on Recording Terms without adding a terms link. Home's About and Contact anchors update `aria-current="location"` in both the header and footer.
 
-Desktop disclosures support mouse hover/click, touch, Enter/Space, Tab, arrow keys, Home/End, Escape and outside clicks. Mobile Services/Tools act as mutually exclusive accordions. Escape closes the active group before closing the mobile menu. Focus returns to the controlling summary/button without jumping the page; short menus scroll vertically within the panel. Resize and page restoration clear stale open states. Native dialog focus/Escape handling remains available to the Groove Scribe orientation prompt.
+Desktop disclosures support mouse hover/click, touch, Enter/Space, Tab, arrow keys, Home/End, Escape and outside clicks. Mobile Services/Tools act as mutually exclusive accordions. Escape closes the active group before closing the mobile menu. Focus returns to the controlling summary/button without jumping the page; short menus scroll vertically within the panel. Resize and page restoration clear stale open states. Native dialog focus/Escape handling remains available to the Groove Lab orientation prompt.
 
 Navigation verification used installed Edge with temporary Playwright tooling: 77 page/viewport combinations across all seven pages at 320, 375, 430, 600, 768, 900, 901, 1024, 1200, 1440 and 1920px, plus 320×568 and 844×390 menu checks on every page. Tests cover pointer/touch/keyboard interactions, focus containment/recovery, active indicators, scrolling, native no-JavaScript disclosures, nested-URL 404 links and both embedded tools. Main-page content, existing head metadata, app loaders and sitemap match their pre-navigation sources. Biography, service FAQs and an intercepted enquiry submission also passed; no real enquiry was sent. `scripts/sync-navigation.py --check` and `git diff --check` passed. Reports and screenshots are in `%TEMP%\davedrums-navigation`. Other browsers and physical devices were not separately tested.
 
