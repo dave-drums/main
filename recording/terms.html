@@ -27,16 +27,68 @@
   <meta content="https://www.davedrums.com.au/img/dave-festival1-1200.webp" name="twitter:image"/>
   <meta content="Dave D’Amore performing on drums at an outdoor festival" name="twitter:image:alt"/>
   <script type="application/ld+json">
-   {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "@id": "https://www.davedrums.com.au/recording/terms.html#webpage",
-        "url": "https://www.davedrums.com.au/recording/terms.html",
-        "name": "Session Recording Terms & Conditions | Dave D'Amore",
-        "description": "Session recording terms and conditions for drum recording with Dave D'Amore, including booking, payment, deliverables and revisions.",
-        "about": { "@id": "https://www.davedrums.com.au/#dave" },
-        "isPartOf": { "@id": "https://www.davedrums.com.au/#website" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.davedrums.com.au/recording/terms.html#webpage",
+      "url": "https://www.davedrums.com.au/recording/terms.html",
+      "name": "Session Recording Terms & Conditions | Dave D'Amore",
+      "description": "Session recording terms and conditions for drum recording with Dave D'Amore, including booking, payment, deliverables and revisions.",
+      "about": {
+        "@id": "https://www.davedrums.com.au/#dave"
+      },
+      "isPartOf": {
+        "@id": "https://www.davedrums.com.au/#website"
+      },
+      "inLanguage": "en-AU",
+      "breadcrumb": {
+        "@id": "https://www.davedrums.com.au/recording/terms.html#breadcrumbs"
       }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.davedrums.com.au/recording/terms.html#breadcrumbs",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.davedrums.com.au/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Drum Recording",
+          "item": "https://www.davedrums.com.au/recording/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Recording Terms",
+          "item": "https://www.davedrums.com.au/recording/terms.html"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.davedrums.com.au/#website",
+      "name": "Dave Drums",
+      "url": "https://www.davedrums.com.au/",
+      "inLanguage": "en-AU",
+      "publisher": {
+        "@id": "https://www.davedrums.com.au/#dave"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://www.davedrums.com.au/#dave",
+      "name": "Dave D'Amore",
+      "url": "https://www.davedrums.com.au/"
+    }
+  ]
+}
   </script>
   <link href="../assets/styles.css" rel="stylesheet"/>
   <script defer="" src="../assets/script.js">

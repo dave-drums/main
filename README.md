@@ -30,6 +30,7 @@ Preview `/lessons/`, `/recording/`, `/recording/terms.html`, `/metronome/`, `/gr
 | `assets/navigation.js` | Shared desktop dropdowns, mobile accordions, focus and active-section handling |
 | `config/navigation.json` | Single source for direct links and Services/Tools groups |
 | `scripts/sync-navigation.py` | Generates consistent static headers and footers on every page |
+| `scripts/audit-seo.py` | Checks page metadata, source structure, JSON-LD relationships, local resources, anchors and sitemap consistency |
 | `assets/metronome.js` | Existing remote module mount and loading/error feedback |
 | `assets/groove.js` | Groove query links and optional full-screen controls |
 | `assets/fonts/` | Self-hosted Inter and DM Sans Latin WOFF2 files and OFL licences |
@@ -95,6 +96,17 @@ Recording terms clauses are unchanged and remain available at `/recording/terms.
 
 ## SEO and hosting
 
-Existing titles, descriptions, canonical URLs and structured data are preserved. Metronome and GrooveScribe include social-image/Twitter metadata and WebPage structured data. All six public URLs are in `sitemap.xml`; the intentional `noindex, follow` directive is retained on the 404 only. `robots.txt`, `CNAME` and GitHub Pages configuration are unchanged.
+Each indexable page has a unique title and description, aligned Open Graph/Twitter metadata, an absolute HTTPS canonical and JSON-LD. Service and tool pages include breadcrumb data; the lesson service describes the real Campbellfield teaching location and its northern Melbourne catchment. Metronome and Groove Lab include static HTML instructions below their interfaces. About and Contact remain homepage sections, not separate indexable pages.
+
+All six canonical public URLs, including the retained Recording Terms page, are in `sitemap.xml`. The 404 retains `noindex, follow` and root-relative assets. `robots.txt`, `CNAME` and GitHub Pages configuration remain unchanged. See `SEO-AUDIT.md` for the complete audit, final metadata, verification limits and recommendations for the separately hosted Groove Lab application's indexing.
+
+Run the dependency-free source checks after editing:
+
+```powershell
+& 'C:\Users\ddamo\AppData\Local\Programs\Python\Python311\python.exe' scripts/audit-seo.py
+& 'C:\Users\ddamo\AppData\Local\Programs\Python\Python311\python.exe' scripts/sync-navigation.py --check
+```
+
+Use `scripts/audit-seo.py --json` for the metadata inventory. These source checks do not replace browser interaction/layout testing, Google's Rich Results Test or Search Console URL Inspection.
 
 All redesign changes are local and uncommitted. No push, pull request or deployment has been performed. See `REDESIGN.md` for measured validation and remaining verification limits.

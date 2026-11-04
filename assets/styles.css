@@ -618,6 +618,25 @@ summary::-webkit-details-marker {
   color: var(--muted);
 }
 
+/* Visible instructions stay below each tool so its controls remain first. */
+.tool-guide {
+  max-width: var(--measure-body);
+  margin-inline: auto;
+  padding-block: var(--space-6);
+}
+
+.tool-guide > * + * {
+  margin-top: var(--space-3);
+}
+
+.tool-guide ol {
+  padding-inline-start: var(--space-3);
+}
+
+.tool-guide li + li {
+  margin-top: var(--space-2);
+}
+
 .app-workspace {
   width: 100%;
   background: var(--bg);
@@ -1254,6 +1273,10 @@ body.menu-open .site-header {
 .lesson-location p {
   color: var(--muted);
   max-width: var(--measure-body);
+}
+
+.lesson-location > p + p {
+  margin-top: var(--space-3);
 }
 
 /* ==========================================================================
