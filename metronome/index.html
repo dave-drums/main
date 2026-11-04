@@ -18,6 +18,7 @@
   <script defer="" src="../assets/script.js">
   </script>
   <script defer="" src="../assets/navigation.js"></script>
+  <script defer="" src="../assets/tools.js"></script>
   <script src="../assets/metronome.js" type="module">
   </script>
   <link as="font" crossorigin="" href="../assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
@@ -133,7 +134,7 @@
      </ul>
     </details>
     <details class="nav-group is-current">
-     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure">Tools <span aria-hidden="true" class="nav-caret">&#x25be;</span></summary>
+     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret">&#x25be;</span></summary>
      <ul class="nav-submenu" id="nav-tools">
       <li><a aria-current="page" href="/metronome/">Metronome</a></li>
       <li><a href="/groove/">Groove Lab</a></li>
@@ -142,16 +143,40 @@
     <a class="nav-contact" href="/#contact">Contact <span aria-hidden="true">&#x2197;</span></a>
    </nav>
   </header>
-  <main class="metronome-page section-shell" id="main" tabindex="-1">
-   <header class="metronome-intro type-frame">
-    <h1 class="heading-section">
-     METRONOME
-    </h1>
-    <p class="lead">
-     A free online metronome to sharpen your timing, explore subdivisions and develop rhythmic precision.
-    </p>
+  <main class="tool-page" id="main" tabindex="-1">
+   <section aria-label="Metronome workspace" class="app-workspace" id="metronome-workspace">
+   <header class="tool-intro section-shell">
+    <div class="tool-copy">
+     <h1 class="heading-section">METRONOME</h1>
+     <p class="lead">Free online metronome with adjustable tempo, subdivisions and timing controls.</p>
+    </div>
+    <div class="tool-actions">
+     <button aria-controls="metronome-guide" aria-expanded="false" class="button tool-button" data-tool-help="metronome-guide" hidden="" type="button">HOW TO USE</button>
+     <button aria-controls="metronome-workspace" aria-pressed="false" class="button tool-button" hidden="" id="metronome-fullscreen" data-tool-fullscreen="metronome-workspace" type="button">Full screen </button>
+    </div>
    </header>
-   <section aria-label="Interactive metronome" class="metronome-player">
+   <details class="tool-guide section-shell" id="metronome-guide">
+    <summary class="button tool-button" aria-controls="metronome-guide-content">HOW TO USE</summary>
+    <div class="tool-guide-content" id="metronome-guide-content">
+    <h2 id="metronome-guide-heading">How to Use the Online Metronome</h2>
+    <ol>
+     <li>Set your tempo in beats per minute (BPM), or use Tap tempo to find a pulse.</li>
+     <li>Choose Beats per Bar and a subdivision to set the pulse and hear smaller rhythmic divisions within each beat.</li>
+     <li>Click a beat circle to cycle between its accent, normal and muted states.</li>
+     <li>Press Start to practise with the click, then Stop when you finish.</li>
+    </ol>
+    <p>Use Tempo trainer to increase or decrease the BPM by a chosen amount every chosen number of bars, up to the Stop at tempo.
+     Opening the trainer stops playback; choose your settings, close it and press Start when you are ready.</p>
+    <p>Use Full screen when supported by your browser. Select Exit full screen or press Escape to return to the page.</p>
+    <p>Start at a tempo where you can play comfortably and consistently. Listen to how your notes line up with the click,
+     then increase the BPM gradually as your timing settles.</p>
+    <p>This free online BPM metronome with subdivisions works in your browser with JavaScript and an internet connection.
+     To write and hear your own drum patterns, try <a href="/groove/">Groove Lab's free drum groove maker</a>.
+     For individual guidance, explore <a href="/lessons/">private drum lessons in Campbellfield, Melbourne</a>.</p>
+    </div>
+   </details>
+    <p aria-live="polite" class="app-feedback section-shell" id="metronome-feedback" role="status"></p>
+   <section aria-label="Interactive metronome" class="metronome-player section-shell">
     <h2 class="visually-hidden">
      Interactive online metronome
     </h2>
@@ -176,18 +201,7 @@
      </p>
     </noscript>
    </section>
-   <section aria-labelledby="metronome-guide-heading" class="tool-guide">
-    <h2 id="metronome-guide-heading">How to Use the Online Metronome</h2>
-    <ol>
-     <li>Set your tempo in beats per minute (BPM), or use Tap tempo to find a pulse.</li>
-     <li>Choose a subdivision to hear the smaller rhythmic divisions within each beat.</li>
-     <li>Press Start to practise with the click, then Stop when you finish.</li>
-    </ol>
-    <p>Start at a tempo where you can play comfortably and consistently. Listen to how your notes line up with the click,
-     then increase the BPM gradually as your timing settles.</p>
-    <p>This free practice metronome works in your browser with JavaScript and an internet connection.
-     To write and hear your own drum patterns, try <a href="/groove/">Groove Lab's free drum groove maker</a>.
-     For individual guidance, explore <a href="/lessons/">private drum lessons in Campbellfield, Melbourne</a>.</p>
+
    </section>
   </main>
   <footer class="site-footer section-shell">
@@ -195,7 +209,6 @@
    <a aria-label="Dave Drums home" class="footer-brand" href="/">
     <img alt="Dave Drums" height="303" loading="lazy" src="/img/dd-logo-1000px-white.png" width="1000"/>
    </a>
-   <p class="footer-location">Independent musician.<br/>Melbourne, Australia.</p>
    <p class="footer-copyright">&#169; 2026 Dave D&#8217;Amore</p>
    <div class="footer-links">
     <nav aria-label="Footer navigation" class="footer-navigation">
@@ -215,7 +228,7 @@
       </ul>
      </div>
      <div class="footer-group">
-      <p class="footer-heading is-current" id="footer-tools">Tools</p>
+      <p class="footer-heading is-current" id="footer-tools">Free Tools</p>
       <ul aria-labelledby="footer-tools">
        <li><a aria-current="page" href="/metronome/">Metronome</a></li>
        <li><a href="/groove/">Groove Lab</a></li>

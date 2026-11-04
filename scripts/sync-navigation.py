@@ -79,7 +79,6 @@ def render_footer(config, current):
         '   <a aria-label="Dave Drums home" class="footer-brand" href="/">',
         '    <img alt="Dave Drums" height="303" loading="lazy" src="/img/dd-logo-1000px-white.png" width="1000"/>',
         '   </a>',
-        '   <p class="footer-location">Independent musician.<br/>Melbourne, Australia.</p>',
         '   <p class="footer-copyright">&#169; 2026 Dave D&#8217;Amore</p>',
         '   <div class="footer-links">',
         '    <nav aria-label="Footer navigation" class="footer-navigation">',

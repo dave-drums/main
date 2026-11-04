@@ -15,7 +15,7 @@
     },
     {
       "id": "tools",
-      "label": "Tools",
+      "label": "Free Tools",
       "links": [
         { "label": "Metronome", "href": "/metronome/" },
         { "label": "Groove Lab", "href": "/groove/" }
