@@ -29,6 +29,7 @@
   --text: var(--paper);
   --muted: #b8bbbd;
   --accent: #06b3fd;
+  --rating-gold: #f5c242;
   --muted-light: #505457;
   --line-light: #c6c5bf;
   --link-light: #00658e;
@@ -1387,6 +1388,117 @@ body.menu-open .site-header {
   margin-top: var(--space-3);
 }
 
+/* Screenshot-sourced testimonial rails following the approach and teacher. */
+.lesson-testimonials {
+  border-block: var(--rule);
+  background: var(--bg);
+}
+
+.testimonial-heading {
+  margin-bottom: var(--space-4);
+}
+
+.testimonial-carousel {
+  position: relative;
+  min-width: 0;
+  padding-inline: 56px;
+}
+
+.testimonial-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.testimonial-control {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  flex: 0 0 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--charcoal);
+  font-size: var(--type-icon-large);
+  line-height: 1;
+  pointer-events: auto;
+}
+
+.testimonial-control:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.testimonial-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--space-3)) / 3);
+  align-items: stretch;
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-1) 0 var(--space-2);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) var(--bg);
+}
+
+.testimonial-card {
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--charcoal);
+  scroll-snap-align: start;
+  overflow-wrap: anywhere;
+}
+
+.testimonial-card figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  margin: 0;
+}
+
+.testimonial-card blockquote {
+  margin: 0;
+}
+
+.testimonial-card figcaption {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: auto;
+}
+
+.testimonial-card cite {
+  font-style: normal;
+  font-weight: var(--weight-medium);
+}
+
+.testimonial-rating {
+  color: var(--rating-gold);
+  font-size: var(--type-icon-large);
+  line-height: 1.2;
+  letter-spacing: .12em;
+}
+
+.testimonial-hint {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: var(--type-caption);
+}
+
 /* ==========================================================================
    8. Recording page & selected recordings
    ========================================================================== */
@@ -1784,7 +1896,7 @@ body.menu-open .site-header {
 }
 
 /* ==========================================================================
-   11. Metronome & 404
+   11. Tool pages, notation & 404
    ========================================================================== */
 
 .metronome-player {
@@ -1814,6 +1926,30 @@ body.menu-open .site-header {
 
 .metronome-error .button {
   margin-top: var(--space-3);
+}
+
+.notation-page {
+  padding-block: var(--space-5) var(--section-space);
+}
+
+.notation-intro {
+  max-width: var(--measure-body);
+  margin-bottom: var(--space-4);
+}
+
+.notation-frame {
+  display: block;
+  width: 100%;
+  height: clamp(500px,72svh,900px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.notation-credit {
+  margin-top: var(--space-3);
+  color: var(--muted);
+  font-size: var(--type-caption);
 }
 
 .error-main {
@@ -1916,6 +2052,10 @@ body.menu-open .site-header {
 }
 
 @media (max-width: 900px) {
+  .testimonial-list {
+    grid-auto-columns: calc((100% - var(--space-3)) / 2);
+  }
+
   .tool-intro {
     grid-template-columns: minmax(0,1fr);
     gap: var(--space-2);
@@ -2160,6 +2300,22 @@ body.menu-open .site-header {
 }
 
 @media (max-width: 600px) {
+  .testimonial-carousel {
+    padding-inline: var(--space-3);
+  }
+
+  .testimonial-list {
+    grid-auto-columns: 100%;
+  }
+
+  .testimonial-card {
+    padding: var(--space-3);
+  }
+
+  .notation-frame {
+    height: max(28rem,70svh);
+  }
+
   :root {
     --header-height: 72px;
     --header-compact: 68px;

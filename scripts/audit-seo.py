@@ -16,6 +16,7 @@ from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://www.davedrums.com.au"
+CANONICAL_PATHS = {"notation/karnivool-drone.html": "/notation/karnivool-drone"}
 VOID = set("area base br col embed hr img input link meta param source track wbr".split())
 
 
@@ -24,7 +25,7 @@ class Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.path = path
         relative = path.relative_to(ROOT).as_posix()
-        self.url = ORIGIN + "/" + relative.removesuffix("index.html")
+        self.url = ORIGIN + CANONICAL_PATHS.get(relative, "/" + relative.removesuffix("index.html"))
         self.source = path.read_text(encoding="utf-8")
         self.tags = []
         self.ids = []
@@ -114,6 +115,9 @@ def audit():
         target = ROOT / unquote(resolved.path).lstrip("/")
         if resolved.path.endswith("/"):
             target /= "index.html"
+        elif not target.exists() and not target.suffix and target.with_suffix(".html").is_file():
+            # GitHub Pages serves existing .html documents at extensionless URLs.
+            target = target.with_suffix(".html")
         if not target.is_file():
             page.errors.append(f"Missing {label}: {value}")
         elif fragment and resolved.fragment and target.resolve() in by_path:

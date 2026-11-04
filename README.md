@@ -7,12 +7,12 @@ The buildless Dave Drums website: semantic HTML, one shared stylesheet and small
 From this repository in PowerShell:
 
 ```powershell
-& 'C:\Users\ddamo\AppData\Local\Programs\Python\Python311\python.exe' -m http.server 4173 --bind 127.0.0.1
+& 'C:\Users\ddamo\AppData\Local\Programs\Python\Python311\python.exe' scripts/serve.py 4173
 ```
 
-Open **http://127.0.0.1:4173/**. Stop the server with `Ctrl+C`. Alternatively, use VS Code Live Server. Use HTTP rather than opening HTML files directly so module imports and root-relative paths behave correctly. The metronome, GrooveScribe and enquiry provider need an internet connection.
+Open **http://127.0.0.1:4173/**. Stop the server with `Ctrl+C`. Alternatively, use VS Code Live Server for ordinary file paths; use the supplied server when checking extensionless URLs. Use HTTP rather than opening HTML files directly so module imports and root-relative paths behave correctly. The metronome, GrooveScribe and enquiry provider need an internet connection.
 
-Preview `/lessons/`, `/recording/`, `/recording/terms.html`, `/metronome/`, `/groove/` and `/404.html`. Python's standard server shows its own error document for missing URLs; GitHub Pages uses the repository's `404.html`. That document uses root-relative assets and navigation for missing nested URLs.
+Preview `/lessons/`, `/recording/`, `/recording/terms.html`, `/metronome/`, `/groove/`, `/notation/karnivool-drone` and `/404.html`. The local preview supports extensionless HTML aliases, matching the public host. The preview server shows its own error document for missing URLs; GitHub Pages uses the repository's `404.html`. That document uses root-relative assets and navigation for missing nested URLs.
 
 ## Source map
 
@@ -24,14 +24,17 @@ Preview `/lessons/`, `/recording/`, `/recording/terms.html`, `/metronome/`, `/gr
 | `recording/terms.html` | Original eight recording clauses with an on-page contents index |
 | `metronome/index.html` | Page surrounding the independently hosted metronome |
 | `groove/index.html` | Full-width frame for the independently hosted GrooveScribe editor |
+| `notation/karnivool-drone.html` | Soundslice transcription page, canonical URL `/notation/karnivool-drone` |
 | `404.html` | Root-relative error document |
 | `assets/styles.css` | Labelled tokens, typography, components, layouts, forms and responsive rules |
 | `assets/script.js` | Motion, counters, biography and enquiry enhancement |
 | `assets/navigation.js` | Shared desktop dropdowns, mobile accordions, focus and active-section handling |
 | `assets/tools.js` | Shared HOW TO USE dialogs and container fullscreen for the Metronome |
+| `assets/testimonials.js` | Lesson-review carousel with manual controls and reduced-motion support |
 | `config/navigation.json` | Single source for direct links and Services/Tools groups |
 | `scripts/sync-navigation.py` | Generates consistent static headers and footers on every page |
 | `scripts/audit-seo.py` | Checks page metadata, source structure, JSON-LD relationships, local resources, anchors and sitemap consistency |
+| `scripts/serve.py` | Local HTTP preview with extensionless `.html` routes matching the public host |
 | `assets/metronome.js` | Existing remote module mount and loading/error feedback |
 | `assets/groove.js` | Groove query links and optional full-screen controls |
 | `assets/fonts/` | Self-hosted Inter and DM Sans Latin WOFF2 files and OFL licences |
@@ -56,7 +59,7 @@ Navigation uses progressive enhancement: native disclosures and static links wor
 
 ## Shared navigation and footer
 
-All seven pages, including Recording Terms and 404, use `Home | About | Services | Free Tools | Contact`. Services contains Drum Lessons and Drum Recording; Free Tools contains Metronome and Groove Lab. These group labels are disclosure controls, not landing-page links. Footers show direct links under Explore, Services and Free Tools. Recording Terms remains accessible at its existing URL and is not added to either navigation.
+All eight pages, including Recording Terms, the Karnivool notation page and 404, use `Home | About | Services | Free Tools | Contact`. Services contains Drum Lessons and Drum Recording; Free Tools contains Metronome and Groove Lab. These group labels are disclosure controls, not landing-page links. Footers show direct links under Explore, Services and Free Tools. Recording Terms remains accessible at its existing URL and is not added to either navigation.
 
 Edit `config/navigation.json` for link labels, destinations or group contents, then run:
 
@@ -74,6 +77,10 @@ Desktop disclosures support mouse hover/click, touch, Enter/Space, Tab, arrow ke
 Navigation verification used installed Edge with temporary Playwright tooling: 77 page/viewport combinations across all seven pages at 320, 375, 430, 600, 768, 900, 901, 1024, 1200, 1440 and 1920px, plus 320×568 and 844×390 menu checks on every page. Tests cover pointer/touch/keyboard interactions, focus containment/recovery, active indicators, scrolling, native no-JavaScript disclosures, nested-URL 404 links and both embedded tools. Main-page content, existing head metadata, app loaders and sitemap match their pre-navigation sources. Biography, service FAQs and an intercepted enquiry submission also passed; no real enquiry was sent. `scripts/sync-navigation.py --check` and `git diff --check` passed. Reports and screenshots are in `%TEMP%\davedrums-navigation`. Other browsers and physical devices were not separately tested.
 
 ## Existing services and integrations
+
+The Drum Lessons page includes two independently controlled groups of five screenshot-sourced testimonials: after The Approach and after Learn with a Working Drummer. Each review has five enlarged gold stars. Each native scroll rail shows three cards on desktop, two on tablet and one on mobile. Each visible rail advances one card every ten seconds and reverses at the ends. Hover, keyboard focus, touch interaction, background tabs and offscreen sections pause automatic movement; reduced-motion preferences disable it. Side arrows, keyboard controls and native touch scrolling remain available, with a fresh ten-second delay after browsing. No pause/resume button is displayed. Distinct dark background bands and borders separate the reviews from adjacent sections. Holly Daisy appears in the second group at the user's request. See `TESTIMONIALS-NOTATION.md` for the quotes, selection notes and verification limits.
+
+There is no notation index or listing link. The supplied preview server returns the shared 404 page with HTTP 404 for `/notation` and `/notation/`. VS Code Live Server may still generate a directory listing for this physical folder; use `scripts/serve.py` to preview the intended response. The transcription page preserves `/notation/karnivool-drone` as its canonical extensionless URL, using `notation/karnivool-drone.html` as the static source. The existing public GitHub Pages host serves `.html` aliases this way; `scripts/serve.py` mirrors that behaviour locally. Its Soundslice URL is exactly `https://www.soundslice.com/slices/jXQqc/embed/`. The production-origin HTTP check returns player HTML, while localhost currently fails Soundslice's embed allowlist; add the preview hostname in Soundslice if local playback is needed. No Soundslice settings or accounts were changed.
 
 Three enquiry forms retain the original Web3Forms provider, public account configuration, names, hidden inputs, honeypot, optional phone field and native validation. JavaScript adds duplicate-submit prevention, a timeout, pending/success/error feedback and preservation of entered text after failure. Do not send test submissions to the real provider unless deliberately testing delivery. The recording form retains its existing omission of the Live session work option. Service pages retain their selected default enquiry type; recognised `?enquiry=` values are also supported.
 
@@ -101,7 +108,7 @@ Recording terms clauses are unchanged and remain available at `/recording/terms.
 
 Each indexable page has a unique title and description, aligned Open Graph/Twitter metadata, an absolute HTTPS canonical and JSON-LD. Service and tool pages include breadcrumb data; the lesson service describes the real Campbellfield teaching location and its northern Melbourne catchment. Metronome and Groove Lab retain static HTML instructions enhanced into HOW TO USE dialogs. About and Contact remain homepage sections, not separate indexable pages.
 
-All six canonical public URLs, including the retained Recording Terms page, are in `sitemap.xml`. The 404 retains `noindex, follow` and root-relative assets. `robots.txt`, `CNAME` and GitHub Pages configuration remain unchanged. See `SEO-AUDIT.md` for the complete audit, final metadata, verification limits and recommendations for the separately hosted Groove Lab application's indexing.
+All seven canonical public URLs, including Recording Terms and the Karnivool notation page, are in `sitemap.xml`. The 404 retains `noindex, follow` and root-relative assets. `robots.txt`, `CNAME` and GitHub Pages configuration remain unchanged. See `SEO-AUDIT.md` for the complete audit, final metadata, verification limits and recommendations for the separately hosted Groove Lab application's indexing.
 
 Run the dependency-free source checks after editing:
 
