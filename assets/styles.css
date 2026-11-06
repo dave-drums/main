@@ -27,6 +27,8 @@
   --surface-blue: #19272f;
   --paper: #eeece6;
   --white: #fff;
+  --surface-light: #f6f8fa;
+  --surface-blue-light: #e1f5fc;
   --text: var(--paper);
   --muted: #b8bbbd;
   --accent: #39b8e5;
@@ -2993,12 +2995,16 @@ body.menu-open .site-header {
 }
 
 .rud-panel {
+  --field-bg: var(--surface-light);
+  --field-scheme: light;
+  --surface-blue: var(--surface-blue-light);
+  --rule: 1px solid var(--line);
   min-width: 0;
   margin: 0;
   padding: clamp(16px,3vw,32px);
   border: var(--rule);
   border-radius: 16px;
-  background: var(--charcoal);
+  background: var(--white);
 }
 
 .rud-selection {
@@ -3028,12 +3034,14 @@ body.menu-open .site-header {
   border: 1px solid var(--field-border);
   border-radius: 8px;
   padding: 8px 12px;
-  background: var(--bg);
+  background: var(--field-bg);
   color: var(--text);
   font: inherit;
-  color-scheme: dark;
+  color-scheme: var(--field-scheme);
 }
 
+.rud-panel .tool-button { background: var(--field-bg); border-color: var(--line); color: var(--text); }
+.rud-panel .tool-button:is(:hover,[aria-pressed="true"]) { background: var(--surface-blue); border-color: var(--link-color); color: var(--link-color); }
 .rud-panel select { text-overflow: ellipsis; }
 .rud-panel :disabled { opacity: .5; cursor: not-allowed; }
 .rud-panel input[type="range"] { width: 100%; min-width: 0; min-height: 44px; accent-color: var(--accent); cursor: pointer; }
@@ -3043,7 +3051,7 @@ body.menu-open .site-header {
 .rud-score-heading { padding-top: var(--space-3); }
 .rud-score-heading h2 { font-size: var(--type-h4); margin: 0; }
 .rud-notation { min-width: 0; margin-block: var(--space-1); }
-.rud-score { display: block; width: 100%; max-height: 220px; color: var(--paper); fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
+.rud-score { display: block; width: 100%; max-height: 220px; color: var(--text); fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
 .rud-staff { stroke: var(--field-border); stroke-width: 1; }
 .rud-clef { stroke-width: 3; }
 .rud-meter { font: bold 21px Georgia,serif; stroke: none; text-anchor: middle; }
@@ -3057,11 +3065,11 @@ body.menu-open .site-header {
 .rud-tuplet-bracket { fill: none; stroke-width: 1; }
 .rud-tuplet { font: italic 15px var(--body); stroke: none; text-anchor: middle; }
 .rud-buzz-mark { fill: none; stroke-width: 2; }
-.rud-open-head { fill: var(--charcoal); stroke: currentColor; stroke-width: 1.5; }
+.rud-open-head { fill: var(--white); stroke: currentColor; stroke-width: 1.5; }
 .rud-grace .rud-sticking { font-size: 12px; }
 .rud-cursor { fill: transparent; stroke: none; }
-.rud-current { color: var(--accent); }
-.rud-current .rud-cursor { fill: var(--surface-blue); stroke: var(--accent); stroke-width: 1; }
+.rud-current { color: var(--link-color); }
+.rud-current .rud-cursor { fill: var(--surface-blue); stroke: var(--link-color); stroke-width: 1; }
 .rud-rhythm-note { max-width: var(--measure-body); margin: var(--space-1) auto 0; color: var(--muted); font-size: var(--type-ui); line-height: var(--leading-ui); text-align: center; }
 
 .rud-practice { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--space-5); padding-block: var(--space-3); margin-top: var(--space-3); border-block: var(--rule); }
@@ -3076,7 +3084,7 @@ body.menu-open .site-header {
 .rud-playback { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .rud-transport-row { display: flex; gap: var(--space-2); }
 .rud-play { flex: 1; min-height: 52px; justify-content: center; border-radius: 8px; font-size: var(--type-body); }
-.rud-transport { margin-top: var(--space-1); color: var(--accent); font-size: var(--type-ui); }
+.rud-transport { margin-top: var(--space-1); color: var(--link-color); font-size: var(--type-ui); }
 .rud-count { color: var(--muted); font-size: var(--type-caption); font-variant-numeric: tabular-nums; }
 .rud-audio-options { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
 .rud-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--type-ui); cursor: pointer; }
@@ -3084,7 +3092,7 @@ body.menu-open .site-header {
 .rud-volume input { flex: 1; }
 .rud-ramp-section { padding-top: var(--space-2); }
 .rud-ramp-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-#rud-ramp-status { color: var(--accent); font-size: var(--type-caption); }
+#rud-ramp-status { color: var(--link-color); font-size: var(--type-caption); }
 .rud-ramp-fields { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-2); margin-top: var(--space-1); }
 .rud-ramp-hint { margin-top: var(--space-1); font-size: var(--type-caption); color: var(--muted); }
 
