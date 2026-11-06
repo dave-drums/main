@@ -98,7 +98,7 @@ def render(config):
  <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Drums <span class="heading-accent">in motion</span></h2><p class="lead">{home_caption}</p></div>
  <div>{player(featured, "home-performance", external_link=False)}</div>
 </section>'''
-        notation = f'''<section class="notation-performance" aria-labelledby="notation-performance-heading"><h2 id="notation-performance-heading">Watch the cover</h2>{player(featured, "notation-performance")}<a class="text-link" href="/watch/">More performances {icon("arrow-up-right")}</a></section>'''
+        notation = f'''<section class="notation-performance" aria-labelledby="notation-performance-heading"><h2 id="notation-performance-heading">Watch the cover</h2>{player(featured, "notation-performance", external_link=False)}<a class="text-link" href="/watch/">More performances {icon("arrow-up-right")}</a></section>'''
     if reels:
         cards = []
         for index, item in enumerate(reels, 1):
