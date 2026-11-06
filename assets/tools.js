@@ -3,7 +3,7 @@
 
   // Keep the instructions in HTML, with native details as the no-JS fallback.
   // Modern browsers open the same content in a modal inside its workspace,
-  // so help is also available while either tool is fullscreen.
+  // so help is also available while any tool is fullscreen.
   document.querySelectorAll("[data-tool-help]").forEach((button) => {
     const guide = document.getElementById(button.dataset.toolHelp);
     const content = guide?.querySelector(".tool-guide-content");
@@ -56,7 +56,7 @@
   // Groove Lab retains its existing handler in groove.js.
   document.querySelectorAll("[data-tool-fullscreen]").forEach((button) => {
     const workspace = document.getElementById(button.dataset.toolFullscreen);
-    const feedback = document.getElementById("metronome-feedback");
+    const feedback = workspace?.querySelector("[data-tool-feedback]") || document.getElementById("metronome-feedback");
     if (!workspace || !document.fullscreenEnabled || !workspace.requestFullscreen) return;
     const sync = () => {
       const expanded = document.fullscreenElement === workspace;
@@ -72,7 +72,7 @@
           await workspace.requestFullscreen();
         }
       } catch {
-        if (feedback) feedback.textContent = "Full screen isn’t available here. You can continue using the metronome on this page.";
+        if (feedback) feedback.textContent = `Full screen isn’t available here. You can continue using the ${button.dataset.toolName || "metronome"} on this page.`;
       }
     });
     document.addEventListener("fullscreenchange", sync);

@@ -1,2 +1,14 @@
 ﻿.DS_Store
 Thumbs.db
+
+# Local-only documentation and development sources
+*.md
+/scripts/
+/config/
+
+# Generated Python caches
+__pycache__/
+*.py[cod]
+
+# Unused original logo artwork (keep locally)
+/img/dd-logo-1000px-white.png
