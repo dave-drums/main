@@ -1591,7 +1591,7 @@ body.menu-open .site-header {
 
 .performance-hero .hero-actions {
   display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
+  grid-template-columns: repeat(5,minmax(0,1fr));
   gap: var(--space-3);
 }
 
@@ -3161,6 +3161,10 @@ body.menu-open .site-header {
   .performance-hero .service-path:nth-child(odd) {
     padding-left: 0;
     border-left: 0;
+  }
+
+  .performance-hero .service-path:last-child {
+    grid-column: 1 / -1;
   }
 
 }
