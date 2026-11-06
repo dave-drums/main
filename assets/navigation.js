@@ -76,10 +76,8 @@
         openedByHover = false;
       }
     });
-    group.addEventListener("focusout", () => {
-      queueMicrotask(() => {
-        if (!mobileViewport.matches && !group.contains(document.activeElement)) setGroup(group, false);
-      });
+    group.addEventListener("focusout", (event) => {
+      if (!mobileViewport.matches && !group.contains(event.relatedTarget)) setGroup(group, false);
     });
     group.addEventListener("keydown", (event) => {
       const index = links.indexOf(document.activeElement);

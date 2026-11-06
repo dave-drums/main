@@ -18,6 +18,8 @@ FOOTER = re.compile(r'<footer\b[^>]*class="site-footer section-shell"[^>]*>.*?</
 
 def current_page(path):
     relative = path.relative_to(ROOT).as_posix()
+    if relative.startswith("notation/") and relative.endswith(".html"):
+        return "/" + relative.removesuffix(".html")
     return "/" + relative.removesuffix("index.html")
 
 
@@ -29,7 +31,7 @@ def link(item, current, contact=False):
     active = ' aria-current="page"' if item["href"] == current else ""
     css = ' class="nav-contact"' if contact else ""
     arrow = " " + icon("arrow-up-right") if contact else ""
-    service_icons = {"/lessons/": "drum", "/recording/": "waveform", "/metronome/": "metronome", "/groove/": "grid"}
+    service_icons = {"/lessons/": "drum", "/recording/": "waveform", "/metronome/": "metronome", "/groove/": "grid", "/notation/karnivool-drone": "book"}
     prefix = icon(service_icons[item["href"]]) + " " if item["href"] in service_icons else ""
     return f'<a{active}{css} href="{escape(item["href"], quote=True)}">{prefix}{escape(item["label"])}{arrow}</a>'
 
@@ -58,6 +60,8 @@ def render_header(config, current):
         '    ' + link(direct["home"], current),
         '    ' + link(direct["about"], current),
     ]
+    parts.extend('    ' + link(item, current) for key, item in direct.items()
+                 if key not in ("home", "about", "contact"))
     for group in config["groups"]:
         key = group["id"]
         active = group_active(group, current)
