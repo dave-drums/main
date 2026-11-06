@@ -38,7 +38,6 @@
   function setNavigation(open, restoreFocus = false) {
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-    toggle.querySelector("span").textContent = open ? "\u2212" : "\uff0b";
     navigation.classList.toggle("is-open", open);
     document.body.classList.toggle("menu-open", open);
     pageRegions.forEach((region) => { region.inert = open; });

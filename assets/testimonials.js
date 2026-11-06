@@ -78,6 +78,8 @@
     window.addEventListener("pointercancel", endInteraction);
     rail.addEventListener("wheel", schedule, { passive: true });
     rail.addEventListener("keydown", (event) => {
+      // Focused review text keeps its native vertical-scroll keyboard controls.
+      if (event.target !== rail) return;
       if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
         advance(event.key === "ArrowLeft" ? -1 : 1);
@@ -87,6 +89,9 @@
       }
     });
     rail.addEventListener("scroll", () => { updateControls(); schedule(); }, { passive: true });
+    cards.forEach((card) => {
+      card.querySelector("blockquote")?.addEventListener("scroll", schedule, { passive: true });
+    });
     window.addEventListener("resize", () => { updateControls(); schedule(); });
     document.addEventListener("visibilitychange", schedule);
     motion.addEventListener("change", schedule);

@@ -15,7 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class PreviewHandler(SimpleHTTPRequestHandler):
     def send_head(self):
-        if urlsplit(self.path).path in ("/notation", "/notation/"):
+        requested = urlsplit(self.path).path
+        target = Path(self.translate_path(self.path))
+        if requested in ("/notation", "/notation/") or not target.exists():
             error_page = ROOT / "404.html"
             self.send_response(404)
             self.send_header("Content-Type", "text/html; charset=utf-8")

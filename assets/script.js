@@ -1,56 +1,56 @@
 (() => {
   "use strict";
 
-  // Count up once when the lesson highlights enter view. Keep final values as the fallback.
-  const counterBanner = document.querySelector(".lesson-highlights");
-  const motionPreference = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  );
-  if (
-    counterBanner &&
-    "IntersectionObserver" in window &&
-    !motionPreference.matches
-  ) {
-    const counters = [...counterBanner.querySelectorAll("[data-count-to]")];
-    let animationFrame = 0;
-    const finishCounters = () => {
-      cancelAnimationFrame(animationFrame);
-      counters.forEach((counter) => {
-        counter.textContent = counter.dataset.countTo;
-      });
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Count experience figures once on arrival, keeping their final values accessible.
+  const counters = [...document.querySelectorAll(".stat-counter[data-count-to]")];
+  if (counters.length && "IntersectionObserver" in window) {
+    const states = counters.map((element) => ({
+      element,
+      target: Number(element.dataset.countTo),
+      frame: 0,
+    })).filter((state) => Number.isFinite(state.target) && state.target >= 0);
+    const finish = (state) => {
+      cancelAnimationFrame(state.frame);
+      state.frame = 0;
+      state.element.textContent = String(state.target);
     };
-    counters.forEach((counter) => {
-      counter.textContent = "0";
-    });
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        observer.disconnect();
-        if (motionPreference.matches) {
-          finishCounters();
-          return;
-        }
-        const start = performance.now();
-        const tick = (now) => {
-          const progress = Math.min((now - start) / 1200, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          counters.forEach((counter) => {
-            counter.textContent = String(
-              Math.floor(Number(counter.dataset.countTo) * eased),
-            );
-          });
-          if (progress < 1) animationFrame = requestAnimationFrame(tick);
-        };
-        animationFrame = requestAnimationFrame(tick);
-      },
-      { threshold: 0.4 },
-    );
-    observer.observe(counterBanner);
+    const count = (state) => {
+      if (motionPreference.matches) return;
+      // Screen readers retain the actual figure throughout the visual count.
+      const accessibleValue = document.createElement("span");
+      accessibleValue.className = "visually-hidden";
+      accessibleValue.textContent = String(state.target);
+      state.element.before(accessibleValue);
+      state.element.setAttribute("aria-hidden", "true");
+      state.element.textContent = "0";
+      let start;
+      const tick = (time) => {
+        start ??= time;
+        const progress = Math.min((time - start) / 4200, 1);
+        const eased = 1 - (1 - progress) ** 2;
+        state.element.textContent = String(Math.floor(state.target * eased));
+        if (progress < 1) state.frame = requestAnimationFrame(tick);
+        else finish(state);
+      };
+      state.frame = requestAnimationFrame(tick);
+    };
+    const statesByElement = new Map(states.map((state) => [state.element, state]));
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || entry.intersectionRatio < .5) return;
+        counterObserver.unobserve(entry.target);
+        count(statesByElement.get(entry.target));
+      });
+    }, { threshold: .5, rootMargin: "0px 0px -32px 0px" });
+    if (!motionPreference.matches) {
+      states.forEach((state) => counterObserver.observe(state.element));
+    }
     motionPreference.addEventListener("change", () => {
-      if (motionPreference.matches) {
-        observer.disconnect();
-        finishCounters();
-      }
+      if (!motionPreference.matches) return;
+      counterObserver.disconnect();
+      states.forEach(finish);
     });
   }
 
@@ -109,20 +109,6 @@
         element.classList.add("is-reveal-pending");
         observer.observe(element);
       });
-      document
-        .querySelectorAll(
-          ".hero .eyebrow, .hero h1, .page-hero .eyebrow, .page-hero h1",
-        )
-        .forEach((element, index) => {
-          animate(
-            element,
-            [
-              { opacity: 0.65, transform: "translate3d(0, 10px, 0)" },
-              { opacity: 1, transform: "none" },
-            ],
-            { duration: 750, delay: index * 90, fill: "backwards" },
-          );
-        });
     }
     document.addEventListener("focusin", (event) => {
       const pending = event.target.closest(".is-reveal-pending");
@@ -235,6 +221,7 @@
   contactForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (submitting || !contactForm.reportValidity()) return;
+    const submittedEnquiry = enquiryType?.value;
     submitting = true;
     sendButton.disabled = true;
     sendButton.textContent = "Sending…";
@@ -261,6 +248,7 @@
         "Thanks — your enquiry has been sent. I’ll be in touch.";
       formStatus.dataset.state = "success";
       contactForm.reset();
+      if (enquiryType) enquiryType.value = submittedEnquiry;
     } catch {
       formStatus.textContent =
         "I couldn’t confirm your enquiry was sent. Your message is still here — please try again, or get in touch on Instagram.";
