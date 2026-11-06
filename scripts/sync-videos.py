@@ -89,13 +89,14 @@ def render(config):
         title = escape(featured["title"])
         description = escape(featured.get("description", ""))
         heading = (escape(featured["artist"]) + "<br/>&quot;" + escape(featured["song"]) + "&quot;") if featured.get("artist") and featured.get("song") else title
+        home_caption = (escape(featured["artist"]) + ' &quot;' + escape(featured["song"]) + '&quot; – Drum Cover') if featured.get("artist") and featured.get("song") else title + " – Drum Cover"
         sections.append(f'''<section class="watch-feature section-shell page-section" aria-labelledby="featured-heading">
  <div>{player(featured, "watch-featured", external_link=False)}</div>
  <div class="watch-feature-copy"><p class="eyebrow section-label">Featured performance</p><h2 id="featured-heading">{heading}</h2><p>{description}</p><a class="text-link" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a></div>
 </section>''')
         home = f'''<section class="home-watch section-shell section-band page-section theme-light" aria-labelledby="home-watch-heading">
- <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Watch<br/><span class="heading-accent">me play.</span></h2><p>{title} — a full drum performance.</p><a class="text-link" href="/watch/">Visit Watch {icon("arrow-up-right")}</a></div>
- <div>{player(featured, "home-performance")}</div>
+ <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Drums <span class="heading-accent">in motion</span></h2><p class="lead">{home_caption}</p></div>
+ <div>{player(featured, "home-performance", external_link=False)}</div>
 </section>'''
         notation = f'''<section class="notation-performance" aria-labelledby="notation-performance-heading"><h2 id="notation-performance-heading">Watch the cover</h2>{player(featured, "notation-performance")}<a class="text-link" href="/watch/">More performances {icon("arrow-up-right")}</a></section>'''
     if reels:
@@ -106,7 +107,7 @@ def render(config):
             title = escape(item["title"])
             description = escape(item.get("description", ""))
             cards.append(f'<article class="watch-reel" aria-labelledby="reel-heading-{index}">{player(item, "watch-reel-" + str(index), external_link=False)}<h3 id="reel-heading-{index}">{title}</h3><p>{description}</p></article>')
-        sections.append('<section class="watch-clips section-shell section-band theme-light page-section" aria-labelledby="clips-heading"><div class="watch-clips-intro"><p class="eyebrow section-label">Selected moments</p><h2 id="clips-heading">Short performances</h2></div><div class="watch-reels">' + "\n".join(cards) + '</div></section>')
+        sections.append('<section class="watch-clips section-shell section-band theme-light page-section" aria-labelledby="clips-heading"><div class="watch-clips-intro"><p class="eyebrow section-label">Selected moments</p><h2 id="clips-heading">Short <span class="heading-accent">performances</span></h2></div><div class="watch-reels">' + "\n".join(cards) + '</div></section>')
     return {"WATCH VIDEOS": "\n".join(sections), "HOME VIDEO": home, "NOTATION VIDEO": notation}
 
 
