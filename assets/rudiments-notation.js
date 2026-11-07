@@ -17,8 +17,11 @@ const head = (x, y, small = false, open = false) => svg('ellipse', {
 });
 
 export function layoutNotation(rudiment, containerWidth) {
-  const width = Math.max(280, Math.min(1060, containerWidth || 800));
-  const left = 68, available = width - left - 22;
+  // Short figures remain one system on phones as well as desktop. Only dense,
+  // long figures wrap; their break is based on the whole phrase, not a greedy
+  // viewport cutoff that leaves a nearly empty final line.
+  const singleLineBudget = Math.max(640, Math.min(1060, containerWidth || 800));
+  const left = 68;
   const groups = [];
   let tick = 0;
   let group;
@@ -42,31 +45,35 @@ export function layoutNotation(rudiment, containerWidth) {
     // Quarter notes, rests and longer values never join an adjacent beam.
     if (note.value <= 4 || !note.hand) group = null;
   });
-  const packed = [];
-  for (const source of groups) {
-    // Dense straight 32nds can be beamed in smaller groups on narrow screens.
-    // Never split a tuplet bracket or a grace-note cluster across systems.
-    let part = { ...source, items: [], width: 0 };
-    for (const item of source.items) {
-      if (!source.tuplet && source.width > available && part.items.length && item.tick % (QUARTER / 2) === 0) {
-        packed.push(part);
-        part = { ...source, items: [], width: 0 };
+  const rowWidth = items => items.reduce((sum,g) => sum + g.width + 12,0);
+  const fullWidth = rowWidth(groups);
+  let rows = [{ groups, width: fullWidth }];
+  if (left + fullWidth + 16 > singleLineBudget && groups.length > 1) {
+    let split = 1, prefix = 0, bestWidth = Infinity, bestTime = Infinity;
+    for (let i = 1; i < groups.length; i++) {
+      prefix += groups[i-1].width + 12;
+      const widthDifference = Math.abs(fullWidth - 2 * prefix);
+      const timeDifference = Math.abs(tick - 2 * groups[i].items[0].tick);
+      if (widthDifference < bestWidth - 0.001
+          || Math.abs(widthDifference - bestWidth) < 0.001 && timeDifference < bestTime) {
+        split = i; bestWidth = widthDifference; bestTime = timeDifference;
       }
-      part.items.push(item); part.width += item.space;
     }
-    if (part.items.length) packed.push(part);
-  }
-  const rows = [];
-  let row = { groups: [], width: 0 };
-  for (const item of packed) {
-    if (row.groups.length && row.width + item.width + 12 > available) {
-      rows.push(row); row = { groups: [], width: 0 };
+    rows = [groups.slice(0,split),groups.slice(split)].map(items => ({groups:items,width:rowWidth(items)}));
+    // Give both systems the same right edge without scaling noteheads or grace
+    // clusters. Only the horizontal space between strokes is expanded.
+    const targetWidth = Math.max(...rows.map(row => row.width));
+    for (const row of rows) {
+      const count = row.groups.reduce((sum,g) => sum + g.items.length,0);
+      const extra = (targetWidth - row.width) / count;
+      for (const g of row.groups) {
+        for (const item of g.items) item.space += extra;
+        g.width += extra * g.items.length;
+      }
+      row.width = targetWidth;
     }
-    row.groups.push(item); row.width += item.width + 12;
   }
-  if (row.groups.length) rows.push(row);
-  // Keep the same logical staff width across rows, without magnifying short
-  // figures to giant notes or shrinking dense figures into unreadable text.
+  // Keep a common engraving width across systems; the SVG fits the host width.
   rows.forEach((system) => {
     let x = left;
     system.groups.forEach((g) => {
@@ -76,7 +83,7 @@ export function layoutNotation(rudiment, containerWidth) {
     system.end = x - 4;
   });
   const usedWidth = Math.max(280, ...rows.map((system) => system.end + 20));
-  return { width: Math.min(width, usedWidth), rows, barTicks, totalTicks: tick };
+  return { width: usedWidth, rows, barTicks, totalTicks: tick };
 }
 
 function graceNotes(score, item, y) {
@@ -133,7 +140,7 @@ function beams(score, group, y) {
 export function renderNotation(container, rudiment) {
   const layout = layoutNotation(rudiment, container.clientWidth);
   const score = svg('svg', { viewBox: `0 0 ${layout.width} ${layout.rows.length * 150 + 8}`,
-    role: 'img', 'aria-labelledby': 'rud-score-title rud-score-description', class: 'rud-score' });
+    role: 'img', 'aria-labelledby': 'rud-score-title rud-score-description', 'data-rows': layout.rows.length, class: 'rud-score' });
   score.append(svg('title', { id: 'rud-score-title' }, `${rudiment.name} — ${rudiment.meter.join('/')} percussion notation`),
     svg('desc', { id: 'rud-score-description' },
       `Quarter-note pulse. ${rudiment.rhythm || ''}. R means right hand; L means left hand. Small notes lead into main strokes. Numbers mark tuplets; Z marks uncounted buzz rebounds. Repeat the complete pattern.`));
@@ -155,6 +162,9 @@ export function renderNotation(container, rudiment) {
           if (note.buzz) stroke.append(svg('path', { d: `M ${x - 1} ${y - 25} h 12 l -12 12 h 12`, class: 'rud-buzz-mark' }));
           if (note.accent) stroke.append(svg('path', { d: `M ${x - 6} ${y - 55} l 13 5 l -13 5`, class: 'rud-accent' }));
           stroke.append(svg('text', { x, y: y + 41, class: 'rud-sticking' }, note.hand));
+        } else if (note.value === 8) {
+          stroke.append(svg('circle', { cx: x - 3, cy: y - 9, r: 3, class: 'rud-rest' }),
+            svg('path', { d: `M ${x - 3} ${y - 7} Q ${x + 4} ${y - 4} ${x + 7} ${y - 12} L ${x} ${y + 14}`, class: 'rud-rest-flag' }));
         } else {
           stroke.append(svg('path', { d: `M ${x - 3} ${y - 18} l 8 9 l -7 8 l 6 10 l -8 -4 l 4 -7 l -7 -8 Z`, class: 'rud-rest' }));
         }
@@ -167,8 +177,7 @@ export function renderNotation(container, rudiment) {
     });
     if (rowIndex === layout.rows.length - 1) {
       const end = Math.min(layout.width - 17, row.end);
-      score.append(line(end, y - 16, end, y + 16), line(end + 6, y - 16, end + 6, y + 16, { class: 'rud-repeat-bar' }),
-        svg('circle', { cx: end - 7, cy: y - 5, r: 2 }), svg('circle', { cx: end - 7, cy: y + 5, r: 2 }));
+      score.append(line(end, y - 16, end, y + 16), line(end + 6, y - 16, end + 6, y + 16, { class: 'rud-end-bar' }));
     }
   });
   container.replaceChildren(score);

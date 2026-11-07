@@ -183,15 +183,29 @@ export class RudimentEngine {
     this.track(source, [filter, gain, pan], time + length);
   }
 
+  async prepareClick() {
+    // The same samples and relative levels used by the Dave Drums metronome.
+    // Source: https://github.com/dave-drums/metronome (MIT).
+    if (!this.clickReady) {
+      this.clickReady = Promise.all(['normal', 'high'].map(async (name) => {
+        const response = await fetch(new URL(`metronome-${name}.mp3`, import.meta.url));
+        if (!response.ok) throw new Error(`Metronome sample unavailable: ${response.status}`);
+        return this.context.decodeAudioData(await response.arrayBuffer());
+      })).then(([normal, high]) => { this.clickSamples = { normal, high }; });
+    }
+    try { await this.clickReady; }
+    catch (error) { this.clickReady = null; throw error; }
+  }
+
   click(time, downbeat) {
-    const source = this.context.createOscillator();
+    if (!this.clickSamples) return;
+    const source = this.context.createBufferSource();
     const gain = this.context.createGain();
-    source.frequency.value = downbeat ? 1400 : 1000;
-    gain.gain.setValueAtTime(0.12, time);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.025);
+    source.buffer = downbeat ? this.clickSamples.high : this.clickSamples.normal;
+    gain.gain.value = downbeat ? 0.4 : 0.25;
     source.connect(gain).connect(this.master);
     source.start(time);
-    this.track(source, [gain], time + 0.03);
+    this.track(source, [gain], time + source.buffer.duration);
   }
 
   draw() {

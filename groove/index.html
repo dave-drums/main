@@ -153,26 +153,23 @@
      <h1 class="heading-section">Groove Lab</h1>
      <p class="lead">Free online drum groove maker and notation editor. Create, play and share your own drum patterns.</p>
     </div>
-    <div class="tool-actions">
-     <button aria-controls="groove-guide" aria-expanded="false" class="button tool-button" data-tool-help="groove-guide" hidden="" type="button">HOW TO USE</button>
-     <button aria-controls="groove-workspace" aria-pressed="false" class="button tool-button" hidden="" id="groove-fullscreen" type="button">Full screen </button>
+    <div class="tool-actions tool-ui">
+     <button aria-controls="groove-guide" aria-expanded="false" class="button tool-button" data-tool-help="groove-guide" hidden="" type="button">How to use</button>
+     <button aria-controls="groove-workspace" aria-pressed="false" class="button tool-button" hidden="" id="groove-fullscreen" data-tool-fullscreen="groove-workspace" data-tool-name="Groove Lab" type="button">Full screen</button>
      <a aria-label="Buy Me A Coffee on Ko-fi (opens in a new tab)" class="button tool-button tool-support" href="https://ko-fi.com/Y1M22A40HE" rel="noopener noreferrer" target="_blank">Buy Me A Coffee</a>
     </div>
    </header>
    <details class="tool-guide section-shell" id="groove-guide">
     <summary class="button tool-button" aria-controls="groove-guide-content">HOW TO USE</summary>
     <div class="tool-guide-content" id="groove-guide-content">
-    <h2 id="groove-guide-heading">Create a Drum Groove with Groove Lab</h2>
-    <p>Write drum notation online and hear how your pattern sounds. This drum beat creator helps you try out ideas for your practice.</p>
+    <h2 id="groove-guide-heading">How to use Groove Lab</h2>
     <ol>
-     <li>Choose a time signature and subdivision, then select notes in the drum grid to build your beat.</li>
-     <li>Adjust the tempo and press Play to listen while following the notation.</li>
-     <li>Use Share to copy a link to your groove. Print the notation or download your work using the editor's controls.</li>
+     <li>Each row is a drum or cymbal. Tap the grid where you want it to sound.</li>
+     <li>Press Play to hear your beat. Adjust Tempo to make it slower or faster.</li>
+     <li>Try 1/8 NOTES for a simple grid, or 1/16 NOTES for more places to add notes.</li>
+     <li>Use Share to copy a link to your beat, Print for sheet music or Download to save your work.</li>
     </ol>
-    <p>On a phone, rotate to landscape for more editing space or pan within the editor. Use Full screen when available.
-     The editor needs JavaScript and an internet connection. If it does not appear, <a href="https://groove.davedrums.com.au/">open the Groove Lab editor directly</a>.</p>
-    <p>For focused timing practice, try the <a href="/metronome/">free online metronome with subdivisions</a>.
-     For help developing your grooves, explore <a href="/lessons/">private drum lessons in Campbellfield, Melbourne</a>.</p>
+    <p>On a phone, turn sideways or use Full screen for more space.</p>
     </div>
    </details>
     <dialog aria-labelledby="groove-orientation-title" class="orientation-prompt" id="groove-orientation">
@@ -187,7 +184,7 @@
       <button class="text-link" type="button">Or tap to continue</button>
      </div>
     </dialog>
-    <p aria-live="polite" class="app-feedback section-shell" id="groove-feedback" role="status"></p>
+    <p aria-live="polite" class="app-feedback section-shell" id="groove-feedback" data-tool-feedback="" role="status"></p>
     <iframe allow="autoplay; clipboard-write; fullscreen; web-share" allowfullscreen="" class="app-frame" id="groove-frame" src="https://groove.davedrums.com.au/" title="Groove Lab: interactive drum groove editor"></iframe>
    </section>
 

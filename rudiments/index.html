@@ -127,8 +127,8 @@
       <h1 class="heading-section">Rudiment Trainer</h1>
       <p class="lead">Practice essential drum rudiments with interactive notation, adjustable tempo and guided playback.</p>
      </div>
-     <div class="tool-actions">
-      <button class="button tool-button" type="button" data-tool-help="rudiments-guide" aria-controls="rudiments-guide" aria-expanded="false" hidden="">HOW TO USE</button>
+     <div class="tool-actions tool-ui">
+      <button class="button tool-button" type="button" data-tool-help="rudiments-guide" aria-controls="rudiments-guide" aria-expanded="false" hidden="">How to use</button>
       <button class="button tool-button" type="button" data-tool-fullscreen="rudiments-workspace" data-tool-name="rudiment trainer" aria-controls="rudiments-workspace" aria-pressed="false" hidden="">Full screen</button>
       <a aria-label="Buy Me A Coffee on Ko-fi (opens in a new tab)" class="button tool-button tool-support" href="https://ko-fi.com/Y1M22A40HE" rel="noopener noreferrer" target="_blank">Buy Me A Coffee</a>
      </div>
@@ -138,51 +138,56 @@
      <div class="tool-guide-content" id="rudiments-guide-content">
       <h2 id="rudiments-guide-heading">How to use the Rudiment Trainer</h2>
       <ol>
-       <li>Choose one of the 40 rudiments and a lead hand. R/L beneath the notes shows which hand plays each stroke.</li>
-       <li>Set 40–240 BPM with the slider, number field or +/− buttons. Use Tap tempo to find a pulse.</li>
-       <li>Press Start to loop the pattern and follow the highlighted stroke. Stop ends playback. Space also starts or stops when focus is outside a control.</li>
-       <li>The metronome clicks quarter notes. For Speed trainer, stop playback, enable it and set the starting/target BPM, increase and repetitions. One repetition is the complete pattern; playback builds to the target and holds there.</li>
-       <li>Use Full screen where supported; Escape exits. Leaving the tab pauses playback. Press Start when you return.</li>
+       <li>Choose a pattern. Single Stroke Roll is a good place to start.</li>
+       <li>Choose which hand starts. Under the notes, R means right hand and L means left hand.</li>
+       <li>Set a comfortable speed. BPM means beats per minute: a lower number is slower.</li>
+       <li>Press Start and play along with the highlighted notes. Use Metronome to turn the steady click on or off.</li>
       </ol>
-      <p><strong>Reading notation:</strong> &gt; marks an accent; small notes are quieter grace strokes before the main stroke. A dot adds half a note’s value. 3 and 6 mark tuplets. Z means uncounted buzz rebounds; its eighth notes guide hand changes. Open rolls show individual strokes.</p>
-      <p>Start comfortably, balance both hands and increase speed only when the pattern stays relaxed and even. Patterns follow the <a href="https://pas.org/rudiments/">PAS rudiments</a> and <a href="https://ae.vicfirth.com/education/40-essential-rudiments/">Vic Firth reference figures</a>.</p>
+      <p><strong>Reading the notes:</strong> &gt; means play louder. Small notes are light taps just before the main note.</p>
+      <p><strong>Ready to build speed?</strong> Stop playback and turn on Speed trainer. Set your starting and target speeds, how much to increase and how many times to repeat each pattern before speeding up.</p>
      </div>
     </details>
     <p class="app-feedback section-shell" id="rud-feedback" data-tool-feedback="" role="status" aria-live="polite"></p>
     <section class="rud-shell section-shell" aria-label="Interactive drum rudiment practice">
      <noscript><p>Please enable JavaScript to use the interactive notation and audio controls.</p></noscript>
-     <fieldset class="rud-panel theme-light" id="rud-controls" disabled="">
+     <fieldset class="rud-panel tool-ui" id="rud-controls" disabled="">
       <legend class="visually-hidden">Rudiment practice controls</legend>
       <div class="rud-selection">
-       <div class="rud-field rud-choice"><label for="rud-select">Choose your rudiment</label><select id="rud-select"></select></div>
-       <div class="rud-field"><label for="rud-lead">Lead hand</label><select id="rud-lead"><option value="R">Right hand</option><option value="L">Left hand</option></select></div>
-       <p class="rud-library-note">All 40 PAS rudiments<br/> 4 rudiment families</p>
+       <div class="rud-field rud-choice">
+        <label for="rud-select">Choose your rudiment</label>
+        <div class="rud-selector">
+         <button class="button tool-button rud-nav" id="rud-previous" type="button" aria-label="Previous rudiment" title="Previous rudiment"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#arrow-left"></use></svg></button>
+         <select id="rud-select"></select>
+         <button class="button tool-button rud-nav" id="rud-next" type="button" aria-label="Next rudiment" title="Next rudiment"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#arrow-right"></use></svg></button>
+        </div>
+       </div>
+       <div class="rud-selection-actions">
+        <div class="rud-field rud-lead-field"><span class="rud-label" id="rud-lead-label">Lead hand</span><div class="rud-hand-buttons" role="group" aria-labelledby="rud-lead-label"><button class="tool-control" id="rud-left" type="button" aria-pressed="false">Left hand</button><button class="tool-control" id="rud-right" type="button" aria-pressed="true">Right hand</button></div></div>
+        <button class="button tool-button" id="rud-random" type="button" aria-label="Choose a random rudiment">🎲 Random</button>
+       </div>
       </div>
       <div class="rud-score-heading"><h2 id="rud-name">Single Stroke Roll</h2></div>
       <div id="rud-notation" class="rud-notation"></div>
-      <p class="rud-rhythm-note" id="rud-rhythm-note">Sixteenth notes · four strokes per click</p>
+      <p class="rud-rhythm-note" id="rud-rhythm-note">Thirty-second notes · eight strokes per click</p>
       <div class="rud-practice">
-       <div class="rud-tempo">
-        <div class="rud-bpm-row"><button class="button tool-button rud-step" id="rud-minus" type="button" aria-label="Decrease tempo by 1 BPM">−</button><input id="rud-bpm" type="number" min="40" max="240" step="1" value="80" inputmode="numeric"/><button class="button tool-button rud-step" id="rud-plus" type="button" aria-label="Increase tempo by 1 BPM">+</button></div>
+       <div class="rud-tempo tool-tempo-display">
+        <div class="rud-bpm-row"><button class="tool-control tool-tempo-step rud-step" id="rud-minus" type="button" aria-label="Decrease tempo by 5 BPM">−</button><input id="rud-bpm" type="number" min="40" max="240" step="1" value="80" inputmode="numeric"/><button class="tool-control tool-tempo-step rud-step" id="rud-plus" type="button" aria-label="Increase tempo by 5 BPM">+</button></div>
         <label class="visually-hidden" for="rud-slider">Tempo slider in BPM</label><input id="rud-slider" type="range" min="40" max="240" step="1" value="80"/>
         <div class="rud-tempo-scale"><span>40</span><label class="rud-label" for="rud-bpm">Tempo · BPM</label><span>240</span></div>
        </div>
        <div class="rud-playback">
-        <div class="rud-transport-row"><button class="button button--primary rud-play" id="rud-play" type="button" aria-pressed="false">Start</button><button class="button tool-button" id="rud-tap" type="button">Tap tempo</button></div>
-        <p class="rud-transport" id="rud-transport" role="status">Ready to practise</p>
-        <p class="rud-count" id="rud-count">One pattern = one repetition</p>
-        <div class="rud-audio-options"><label class="rud-toggle"><input id="rud-click" type="checkbox" checked=""/> Metronome click</label><label class="rud-volume" for="rud-volume">Volume <input id="rud-volume" type="range" min="0" max="100" step="1" value="70"/></label></div>
+        <div class="rud-transport-row"><button class="button tool-control button--primary rud-play" id="rud-play" type="button" aria-pressed="false">Start</button><button class="tool-control" id="rud-click" type="button" aria-label="Metronome click" aria-pressed="true">Metronome <span class="rud-click-state" id="rud-click-state">On</span></button><button class="button tool-button" id="rud-tap" type="button">Tap tempo</button></div>
        </div>
       </div>
-      <div class="rud-ramp-section">
-       <div class="rud-ramp-heading"><label class="rud-toggle" for="rud-ramp"><input id="rud-ramp" type="checkbox"/> Speed trainer</label><p id="rud-ramp-status" role="status">Steady tempo</p></div>
-       <div class="rud-ramp-fields">
+      <div class="rud-ramp-section tool-trainer">
+       <div class="rud-ramp-heading tool-trainer-heading"><label class="rud-toggle tool-trainer-toggle" for="rud-ramp"><input id="rud-ramp" type="checkbox"/> <span>Speed trainer</span></label><output class="tool-trainer-cycle" id="rud-cycle" aria-label="Repetition in current cycle" aria-live="off" hidden="">Repetition 0 of 4</output><p class="tool-trainer-status" id="rud-ramp-status" role="status">Steady tempo</p></div>
+       <div class="rud-ramp-fields tool-trainer-fields">
         <div class="rud-field"><label for="rud-start">Starting BPM</label><input id="rud-start" data-ramp-field="" type="number" min="40" max="240" step="1" value="80" required="" inputmode="numeric" disabled=""/></div>
         <div class="rud-field"><label for="rud-target">Target BPM</label><input id="rud-target" data-ramp-field="" type="number" min="40" max="240" step="1" value="120" required="" inputmode="numeric" disabled=""/></div>
         <div class="rud-field"><label for="rud-increase">Increase by</label><input id="rud-increase" data-ramp-field="" type="number" min="1" max="200" step="1" value="5" required="" inputmode="numeric" disabled=""/></div>
         <div class="rud-field"><label for="rud-every">Every … repetitions</label><input id="rud-every" data-ramp-field="" type="number" min="1" max="100" step="1" value="4" required="" inputmode="numeric" disabled=""/></div>
        </div>
-       <p class="rud-ramp-hint">One repetition is the complete pattern above. Stop playback to edit speed trainer settings.</p>
+       <p class="rud-ramp-hint tool-trainer-hint">Stop playback to edit speed trainer settings.</p>
       </div>
      </fieldset>
     </section>

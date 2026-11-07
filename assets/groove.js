@@ -38,26 +38,5 @@
     updateOrientationPrompt();
   }
 
-  // Full screen preserves the running editor, including unsaved changes.
-  if (!document.fullscreenEnabled || !workspace.requestFullscreen) return;
-  fullscreenButton.hidden = false;
-
-  document.addEventListener("fullscreenchange", () => {
-    const expanded = document.fullscreenElement === workspace;
-    fullscreenButton.setAttribute("aria-pressed", String(expanded));
-    fullscreenButton.firstChild.textContent = expanded ? "Exit full screen " : "Full screen ";
-    feedback.textContent = "";
-  });
-
-  fullscreenButton.addEventListener("click", async () => {
-    try {
-      if (document.fullscreenElement === workspace) {
-        await document.exitFullscreen();
-      } else {
-        await workspace.requestFullscreen();
-      }
-    } catch {
-      feedback.textContent = "Full screen isn’t available here. You can continue using the editor on this page.";
-    }
-  });
+  // Shared fullscreen controls in tools.js preserve the mounted editor.
 })();

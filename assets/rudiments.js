@@ -1,10 +1,13 @@
 import { RUDIMENTS, withLead } from './rudiments-data.js';
 import { RudimentEngine } from './rudiments-engine.js';
 import { renderNotation } from './rudiments-notation.js';
+import { bindTempoStepper, TEMPO_STEP } from './tempo-stepper.js';
 
 const $ = (id) => document.getElementById(id);
 const select = $('rud-select');
-const lead = $('rud-lead');
+let lead = 'R';
+let clickEnabled = true;
+let repetition = 0;
 const play = $('rud-play');
 const bpmInput = $('rud-bpm');
 const slider = $('rud-slider');
@@ -54,7 +57,10 @@ function visual(event) {
   clearHighlight();
   active = event;
   score.querySelector(`[data-stroke="${event.key}"]`)?.classList.add('rud-current');
-  $('rud-count').textContent = `Repetition ${event.completed + 1}`;
+  if (rampToggle.checked) {
+    repetition = event.completed % Number($('rud-every').value) + 1;
+    updateCycle();
+  }
   if (displayedBpm !== event.bpm) {
     displayedBpm = event.bpm;
     // In steady mode keep the user's requested tempo visible, even while the
@@ -66,11 +72,18 @@ function visual(event) {
   }
 }
 
+function updateCycle() {
+  const cycle = $('rud-cycle');
+  cycle.hidden = !rampToggle.checked;
+  const text = `Repetition ${repetition} of ${Math.max(1, Number($('rud-every').value) || 1)}`;
+  if (cycle.textContent !== text) cycle.textContent = text;
+}
+
 function updateRampStatus() {
   const target = Number($('rud-target').value);
   $('rud-ramp-status').textContent = rampToggle.checked
-    ? engine?.running ? bpm >= target ? 'Target reached · holding tempo' : `Speed trainer active · building to ${target} BPM`
-      : 'Speed trainer ready · starts at your starting BPM'
+    ? engine?.running ? bpm >= target ? 'Target reached · holding tempo' : 'Speed trainer active'
+      : 'Speed trainer ready'
     : 'Steady tempo';
 }
 
@@ -78,7 +91,7 @@ function controls() {
   const running = starting || engine?.running;
   play.textContent = running ? 'Stop' : 'Start';
   play.setAttribute('aria-pressed', String(Boolean(running)));
-  $('rud-transport').textContent = running ? starting ? 'Preparing audio…' : 'Playing · loops continuously' : 'Ready to practise';
+  play.setAttribute('aria-busy', String(starting));
   rampToggle.disabled = Boolean(running);
   rampFields.forEach((field) => { field.disabled = Boolean(running) || !rampToggle.checked; });
   // During a ramp the transport owns tempo. Stop to edit its settings.
@@ -86,6 +99,7 @@ function controls() {
     field.disabled = Boolean(running) && rampToggle.checked;
   });
   updateRampStatus();
+  updateCycle();
 }
 
 function stop(message = '') {
@@ -93,14 +107,14 @@ function stop(message = '') {
   starting = false;
   engine?.stop();
   clearHighlight();
-  $('rud-count').textContent = 'One pattern = one repetition';
+  repetition = 0;
   feedback.textContent = message;
   controls();
 }
 
 function choose() {
   stop();
-  rudiment = withLead(RUDIMENTS.find((item) => item.id === select.value), lead.value);
+  rudiment = withLead(RUDIMENTS.find((item) => item.id === select.value), lead);
   $('rud-name').textContent = rudiment.name;
   $('rud-rhythm-note').textContent = rudiment.rhythm;
   renderNotation(score, rudiment);
@@ -132,8 +146,10 @@ async function start() {
     }
     await engine.context.resume();
     if (token !== generation) return;
+    await engine.prepareClick();
+    if (token !== generation) return;
     if (document.hidden) { stop('Press Start when this page is visible to begin playback.'); return; }
-    engine.start(rudiment, bpm, { ramp, click: () => $('rud-click').checked, volume: Number($('rud-volume').value) / 100 });
+    engine.start(rudiment, bpm, { ramp, click: () => clickEnabled, volume: 1 });
     if (ramp) setBpm(ramp.start, true);
     starting = false;
     displayedBpm = undefined;
@@ -145,15 +161,36 @@ async function start() {
 }
 
 select.addEventListener('change', choose);
-lead.addEventListener('change', choose);
+function chooseLead(hand) {
+  if (lead === hand) return;
+  lead = hand;
+  $('rud-left').setAttribute('aria-pressed', String(hand === 'L'));
+  $('rud-right').setAttribute('aria-pressed', String(hand === 'R'));
+  choose();
+}
+$('rud-left').addEventListener('click', () => chooseLead('L'));
+$('rud-right').addEventListener('click', () => chooseLead('R'));
+$('rud-click').addEventListener('click', () => {
+  clickEnabled = !clickEnabled;
+  $('rud-click').setAttribute('aria-pressed', String(clickEnabled));
+  $('rud-click-state').textContent = clickEnabled ? 'On' : 'Off';
+});
+function stepRudiment(direction) {
+  const index = RUDIMENTS.findIndex((item) => item.id === select.value);
+  select.value = RUDIMENTS[(index + direction + RUDIMENTS.length) % RUDIMENTS.length].id;
+  choose();
+}
+$('rud-previous').addEventListener('click', () => stepRudiment(-1));
+$('rud-next').addEventListener('click', () => stepRudiment(1));
+$('rud-random').addEventListener('click', () => {
+  select.value = RUDIMENTS[Math.floor(Math.random() * RUDIMENTS.length)].id;
+  choose();
+});
 play.addEventListener('click', start);
 slider.addEventListener('input', () => setBpm(slider.value));
 bpmInput.addEventListener('change', () => setBpm(bpmInput.value || bpm));
-$('rud-minus').addEventListener('click', () => setBpm(bpm - 1));
-$('rud-plus').addEventListener('click', () => setBpm(bpm + 1));
-$('rud-volume').addEventListener('input', () => {
-  if (engine?.running) engine.master.gain.setTargetAtTime(Number($('rud-volume').value) / 100, engine.context.currentTime, 0.015);
-});
+bindTempoStepper($('rud-minus'), () => setBpm(bpm - TEMPO_STEP));
+bindTempoStepper($('rud-plus'), () => setBpm(bpm + TEMPO_STEP));
 $('rud-tap').addEventListener('click', () => {
   const now = performance.now();
   if (taps.length && now - taps[taps.length - 1] > 2200) taps = [];
@@ -163,6 +200,7 @@ $('rud-tap').addEventListener('click', () => {
   feedback.textContent = taps.length > 1 ? `Tap tempo set to ${bpm} BPM.` : 'Keep tapping to set the tempo.';
 });
 rampToggle.addEventListener('change', controls);
+rampFields.forEach((field) => field.addEventListener('input', controls));
 document.addEventListener('keydown', (event) => {
   if (event.code !== 'Space' || event.repeat || event.altKey || event.ctrlKey || event.metaKey
     || document.querySelector('dialog[open]')

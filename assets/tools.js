@@ -13,7 +13,7 @@
     if (typeof dialog.showModal !== "function") return;
 
     dialog.id = guide.id;
-    dialog.className = "tool-guide-dialog";
+    dialog.className = "tool-guide-dialog tool-ui";
     dialog.setAttribute("aria-labelledby", heading.id);
     const header = document.createElement("div");
     header.className = "tool-guide-dialog-header";
@@ -52,19 +52,29 @@
     button.hidden = false;
   });
 
-  // The metronome stays mounted: fullscreen changes only its containing page.
-  // Groove Lab retains its existing handler in groove.js.
+  // Each application stays mounted, preserving playback and unsaved grooves.
   document.querySelectorAll("[data-tool-fullscreen]").forEach((button) => {
     const workspace = document.getElementById(button.dataset.toolFullscreen);
     const feedback = workspace?.querySelector("[data-tool-feedback]") || document.getElementById("metronome-feedback");
     if (!workspace || !document.fullscreenEnabled || !workspace.requestFullscreen) return;
+    const toolbar = document.createElement("div");
+    toolbar.className = "tool-fullscreen-toolbar section-shell tool-ui";
+    const exit = document.createElement("button");
+    exit.type = "button";
+    exit.className = "button tool-button";
+    exit.textContent = "Exit Full Screen";
+    toolbar.append(exit);
+    workspace.prepend(toolbar);
+    let wasExpanded = false;
     const sync = () => {
       const expanded = document.fullscreenElement === workspace;
       button.setAttribute("aria-pressed", String(expanded));
-      button.textContent = expanded ? "Exit full screen" : "Full screen";
       if (feedback) feedback.textContent = "";
+      if (expanded && !wasExpanded) exit.focus({ preventScroll: true });
+      if (!expanded && wasExpanded) button.focus({ preventScroll: true });
+      wasExpanded = expanded;
     };
-    button.addEventListener("click", async () => {
+    const toggle = async () => {
       try {
         if (document.fullscreenElement === workspace) {
           await document.exitFullscreen();
@@ -74,7 +84,9 @@
       } catch {
         if (feedback) feedback.textContent = `Full screen isn’t available here. You can continue using the ${button.dataset.toolName || "metronome"} on this page.`;
       }
-    });
+    };
+    button.addEventListener("click", toggle);
+    exit.addEventListener("click", toggle);
     document.addEventListener("fullscreenchange", sync);
     button.hidden = false;
     sync();
