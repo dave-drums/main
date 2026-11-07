@@ -3079,6 +3079,9 @@ body.menu-open .site-header {
 }
 .tool-ui :is(.tool-control,.tool-button,.metronomeButton,.rightButtons,.pageBottomButton):disabled { opacity: .5; cursor: not-allowed; }
 .tool-ui .tool-tempo-step { width: 44px; min-width: 44px; padding: 0; font-size: var(--type-icon); touch-action: manipulation; user-select: none; }
+.tool-ui .tool-playback { font-variant-numeric: tabular-nums; }
+.tool-ui .tool-tap { gap: 6px; }
+.tool-tap-icon { display: block; flex: 0 0 auto; width: 20px; height: 20px; fill: currentColor; stroke: none; }
 .tool-ui :is(button,input,select,textarea,a,[tabindex]):focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
 .tool-ui input[type="range"] { accent-color: var(--accent); cursor: pointer; }
 .tool-ui .tool-number { font-weight: var(--weight-display); font-variant-numeric: tabular-nums; letter-spacing: var(--tracking-heading); }
@@ -3128,6 +3131,8 @@ body.menu-open .site-header {
 
 .rud-panel {
   --rule: 1px solid var(--line);
+  --rud-right-color: #9ecbe7;
+  --rud-left-color: #e7c29b;
   min-width: 0;
   margin: 0;
   padding: clamp(16px,3vw,32px);
@@ -3190,15 +3195,17 @@ body.menu-open .site-header {
 .rud-nav .icon { stroke-width: 2; }
 .rud-nav:hover > .icon { transform: none; }
 
-.rud-score-heading { padding-top: var(--space-3); }
-.rud-score-heading h2 { font-size: var(--type-h4); margin: 0; }
+.rud-score-caption { display: flex; justify-content: center; align-items: baseline; gap: var(--space-3); text-align: center; }
+.rud-score-caption h2 { font-size: var(--type-h4); margin: 0; }
 .rud-notation { min-width: 0; margin-block: var(--space-2); padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--tool-well,transparent); box-shadow: inset 0 2px 8px rgb(0 0 0 / .12); }
 .rud-score { display: block; width: 100%; max-height: 220px; color: var(--text); fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
 .rud-score[data-rows="2"] { max-height: 440px; }
 .rud-staff { stroke: var(--field-border); stroke-width: 1; }
 .rud-clef { stroke-width: 3; }
 .rud-meter { font: bold 21px Georgia,serif; stroke: none; text-anchor: middle; }
-.rud-sticking { font: 600 15px var(--body); stroke: none; text-anchor: middle; }
+.rud-sticking { font: 600 15px var(--body); fill: currentColor; stroke: none; text-anchor: middle; }
+.rud-panel #rud-right,.rud-sticking[data-hand="R"] { color: var(--rud-right-color); }
+.rud-panel #rud-left,.rud-sticking[data-hand="L"] { color: var(--rud-left-color); }
 .rud-notehead { stroke: none; }
 .rud-accent { fill: none; stroke-width: 2; stroke-linejoin: round; }
 .rud-beam { stroke-width: 4; }
@@ -3214,9 +3221,9 @@ body.menu-open .site-header {
 .rud-cursor { fill: transparent; stroke: none; }
 .rud-current { color: var(--link-color); }
 .rud-current .rud-cursor { fill: var(--surface-blue); stroke: var(--link-color); stroke-width: 1; }
-.rud-rhythm-note { max-width: var(--measure-body); margin: var(--space-1) auto 0; color: var(--muted); font-size: var(--type-ui); line-height: var(--leading-ui); text-align: center; }
+.rud-rhythm-note { max-width: var(--measure-body); margin: 0; color: var(--muted); font-size: var(--type-ui); line-height: var(--leading-ui); text-align: center; }
 
-.rud-practice { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--space-5); padding-block: var(--space-3); margin-top: var(--space-3); border-block: var(--rule); }
+.rud-practice { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: var(--space-5); padding-block: var(--space-3); margin-top: var(--space-3); border-block: var(--rule); }
 .rud-tempo { text-align: center; }
 .rud-bpm-row { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 8px; max-width: 340px; margin-inline: auto; }
 .rud-bpm-row #rud-bpm { width: 100%; max-width: 3.25ch; justify-self: center; box-sizing: border-box; min-height: 0; padding: 0; border: 0; border-radius: 4px; background: transparent; box-shadow: none; font: var(--weight-medium) clamp(3.125rem,6vw,5rem)/1.2 var(--display); letter-spacing: var(--tracking-heading); text-align: center; appearance: textfield; }
@@ -3225,8 +3232,11 @@ body.menu-open .site-header {
 .rud-tempo-scale > :first-child { text-align: left; }
 .rud-tempo-scale > :last-child { text-align: right; }
 .rud-playback { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.rud-transport-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.25fr) minmax(0,1.15fr); gap: 8px; }
+.rud-transport-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.rud-transport-row > .rud-play { grid-column: 1 / -1; }
 .rud-panel .rud-transport-row > button { min-inline-size: 0; padding-inline: 8px; white-space: nowrap; font-size: var(--type-ui); }
+.rud-panel .rud-transport-row > .rud-drums { min-inline-size: 44px; }
+.rud-sound-toggle .icon { width: 20px; height: 20px; flex-shrink: 0; }
 .rud-play { flex: 1; min-height: 52px; justify-content: center; font-size: var(--type-body); }
 .rud-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--type-ui); cursor: pointer; }
 .rud-ramp-section { padding-top: var(--space-2); }
@@ -3360,9 +3370,9 @@ body.menu-open .site-header {
 
 @media (max-width: 900px) {
   .rud-selection { grid-template-columns: minmax(0,1fr); gap: var(--space-2); }
-  .rud-click-state { display: none; }
+  .rud-score-caption { flex-direction: column; align-items: center; gap: var(--space-1); }
   .rud-score { max-height: none; }
-  .rud-practice { gap: var(--space-3); }
+  .rud-practice { grid-template-columns: minmax(0,1fr); gap: var(--space-3); }
   .rr-settings,.rr-option-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .rr-main-controls { grid-template-columns: minmax(0,1fr); gap: var(--space-3); }
 }
@@ -3375,6 +3385,8 @@ body.menu-open .site-header {
   .rud-selection-actions :is(.tool-control,.tool-button) { padding-inline: 4px; font-size: var(--type-caption); }
   .rud-selection-actions #rud-random { padding-inline: 4px; font-size: var(--type-caption); }
   .rud-panel .rud-transport-row > button { padding-inline: 4px; font-size: var(--type-caption); }
+  .rud-panel .rud-transport-row > :not(.rud-play) { min-height: 64px; }
+  .rud-panel .rud-transport-row > :is(.rud-sound-toggle,.tool-tap) { flex-direction: column; gap: 4px; }
   .rud-score { max-height: none; }
   .rud-practice { gap: var(--space-3); }
   .rud-ramp-fields { grid-template-columns: repeat(2,minmax(0,1fr)); }

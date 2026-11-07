@@ -2,11 +2,13 @@ import { RUDIMENTS, withLead } from './rudiments-data.js';
 import { RudimentEngine } from './rudiments-engine.js';
 import { renderNotation } from './rudiments-notation.js';
 import { bindTempoStepper, TEMPO_STEP } from './tempo-stepper.js';
+import { startPlaybackTimer } from './playback-timer.js';
 
 const $ = (id) => document.getElementById(id);
 const select = $('rud-select');
 let lead = 'R';
 let clickEnabled = true;
+let drumsEnabled = true;
 let repetition = 0;
 const play = $('rud-play');
 const bpmInput = $('rud-bpm');
@@ -23,6 +25,8 @@ let generation = 0;
 let taps = [];
 let active;
 let displayedBpm;
+let elapsedTime = '0:00';
+let stopPlaybackTimer;
 
 const categories = new Map();
 for (const rud of RUDIMENTS) {
@@ -87,9 +91,15 @@ function updateRampStatus() {
     : 'Steady tempo';
 }
 
+function updatePlayButton() {
+  const running = starting || engine?.running;
+  play.textContent = running ? `⏹ ${elapsedTime}` : 'Start';
+  play.setAttribute('aria-label', running ? 'Stop playback' : 'Start playback');
+}
+
 function controls() {
   const running = starting || engine?.running;
-  play.textContent = running ? 'Stop' : 'Start';
+  updatePlayButton();
   play.setAttribute('aria-pressed', String(Boolean(running)));
   play.setAttribute('aria-busy', String(starting));
   rampToggle.disabled = Boolean(running);
@@ -105,6 +115,9 @@ function controls() {
 function stop(message = '') {
   generation++;
   starting = false;
+  stopPlaybackTimer?.();
+  stopPlaybackTimer = undefined;
+  elapsedTime = '0:00';
   engine?.stop();
   clearHighlight();
   repetition = 0;
@@ -149,10 +162,14 @@ async function start() {
     await engine.prepareClick();
     if (token !== generation) return;
     if (document.hidden) { stop('Press Start when this page is visible to begin playback.'); return; }
-    engine.start(rudiment, bpm, { ramp, click: () => clickEnabled, volume: 1 });
+    engine.start(rudiment, bpm, { ramp, click: () => clickEnabled, drums: drumsEnabled, volume: 1 });
     if (ramp) setBpm(ramp.start, true);
     starting = false;
     displayedBpm = undefined;
+    stopPlaybackTimer = startPlaybackTimer((time) => {
+      elapsedTime = time;
+      updatePlayButton();
+    });
     controls();
   } catch (error) {
     if (token === generation) stop('Audio could not start. Try Start again in a browser that supports Web Audio.');
@@ -173,7 +190,15 @@ $('rud-right').addEventListener('click', () => chooseLead('R'));
 $('rud-click').addEventListener('click', () => {
   clickEnabled = !clickEnabled;
   $('rud-click').setAttribute('aria-pressed', String(clickEnabled));
-  $('rud-click-state').textContent = clickEnabled ? 'On' : 'Off';
+  $('rud-click').setAttribute('title', clickEnabled ? 'Mute metronome' : 'Unmute metronome');
+  $('rud-click-icon').setAttribute('href', `../assets/icons.svg#${clickEnabled ? 'speaker' : 'speaker-off'}`);
+});
+$('rud-drums').addEventListener('click', () => {
+  drumsEnabled = !drumsEnabled;
+  $('rud-drums').setAttribute('aria-pressed', String(drumsEnabled));
+  $('rud-drums').setAttribute('title', drumsEnabled ? 'Mute drum sound' : 'Unmute drum sound');
+  $('rud-drums-icon').setAttribute('href', `../assets/icons.svg#${drumsEnabled ? 'speaker' : 'speaker-off'}`);
+  engine?.setDrumsEnabled(drumsEnabled);
 });
 function stepRudiment(direction) {
   const index = RUDIMENTS.findIndex((item) => item.id === select.value);

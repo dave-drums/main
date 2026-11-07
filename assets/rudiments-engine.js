@@ -2,6 +2,7 @@
 export const LOOKAHEAD = 0.12;
 export const SCHEDULER_MS = 25;
 export const TICKS_PER_BEAT = 96;
+const DRUM_LEVEL = 0.8;
 
 // Rational musical positions avoid float comparisons for tuplets. Click points
 // exist independently of note onsets, including across rests and sustained notes.
@@ -53,6 +54,9 @@ export class RudimentEngine {
     this.master = context.createGain();
     this.master.gain.value = 0.7;
     this.master.connect(context.destination);
+    this.drums = context.createGain();
+    this.drums.gain.value = DRUM_LEVEL;
+    this.drums.connect(this.master);
     this.noise = context.createBuffer(1, Math.ceil(context.sampleRate * 0.14), context.sampleRate);
     const data = this.noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
@@ -76,6 +80,7 @@ export class RudimentEngine {
     this.nextTime = this.context.currentTime + 0.16;
     this.running = true;
     this.master.gain.setValueAtTime(options.volume, this.context.currentTime);
+    this.setDrumsEnabled(options.drums !== false);
     this.tick();
     this.timer = setInterval(() => this.tick(), SCHEDULER_MS);
     this.frame = requestAnimationFrame(() => this.draw());
@@ -130,7 +135,7 @@ export class RudimentEngine {
     const c = this.context;
     const pan = c.createStereoPanner();
     pan.pan.value = hand === 'R' ? 0.12 : -0.12;
-    pan.connect(this.master);
+    pan.connect(this.drums);
     const noise = c.createBufferSource();
     noise.buffer = this.noise;
     const filter = c.createBiquadFilter();
@@ -178,9 +183,13 @@ export class RudimentEngine {
     gain.gain.value = velocity * 0.48;
     const pan = c.createStereoPanner();
     pan.pan.value = hand === 'R' ? 0.12 : -0.12;
-    source.connect(filter).connect(gain).connect(pan).connect(this.master);
+    source.connect(filter).connect(gain).connect(pan).connect(this.drums);
     source.start(time);
     this.track(source, [filter, gain, pan], time + length);
+  }
+
+  setDrumsEnabled(enabled) {
+    this.drums.gain.setValueAtTime(enabled ? DRUM_LEVEL : 0, this.context.currentTime);
   }
 
   async prepareClick() {
@@ -202,7 +211,7 @@ export class RudimentEngine {
     const source = this.context.createBufferSource();
     const gain = this.context.createGain();
     source.buffer = downbeat ? this.clickSamples.high : this.clickSamples.normal;
-    gain.gain.value = downbeat ? 0.4 : 0.25;
+    gain.gain.value = downbeat ? 0.48 : 0.3;
     source.connect(gain).connect(this.master);
     source.start(time);
     this.track(source, [gain], time + source.buffer.duration);
@@ -235,6 +244,7 @@ export class RudimentEngine {
   dispose() {
     this.stop();
     this.context.onstatechange = null;
+    this.drums.disconnect();
     this.master.disconnect();
     return this.context.close();
   }

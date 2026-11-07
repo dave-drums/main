@@ -95,7 +95,7 @@ function graceNotes(score, item, y) {
     const stroke = svg('g', { class: 'rud-stroke rud-grace', 'data-stroke': `${index}:g${g}` });
     stroke.append(svg('rect', { x: gx - 6, y: y - 32, width: 13, height: 79, rx: 3, class: 'rud-cursor' }),
       head(gx, y + 2, true), line(gx + 3, y + 2, gx + 3, y - 23),
-      svg('text', { x: gx, y: y + 41, class: 'rud-sticking' }, hand.toLowerCase()));
+      svg('text', { x: gx, y: y + 41, class: 'rud-sticking', 'data-hand': hand }, hand.toLowerCase()));
     if (note.grace.length === 1) stroke.append(svg('path', {
       d: `M ${gx + 3} ${y - 23} q 13 6 4 15 M ${gx - 2} ${y - 9} l 13 -10`, class: 'rud-grace-flag',
     }));
@@ -161,7 +161,7 @@ export function renderNotation(container, rudiment) {
           if (note.value > 1) stroke.append(line(x + 5, y, x + 5, y - 36));
           if (note.buzz) stroke.append(svg('path', { d: `M ${x - 1} ${y - 25} h 12 l -12 12 h 12`, class: 'rud-buzz-mark' }));
           if (note.accent) stroke.append(svg('path', { d: `M ${x - 6} ${y - 55} l 13 5 l -13 5`, class: 'rud-accent' }));
-          stroke.append(svg('text', { x, y: y + 41, class: 'rud-sticking' }, note.hand));
+          stroke.append(svg('text', { x, y: y + 41, class: 'rud-sticking', 'data-hand': note.hand }, note.hand));
         } else if (note.value === 8) {
           stroke.append(svg('circle', { cx: x - 3, cy: y - 9, r: 3, class: 'rud-rest' }),
             svg('path', { d: `M ${x - 3} ${y - 7} Q ${x + 4} ${y - 4} ${x + 7} ${y - 12} L ${x} ${y + 14}`, class: 'rud-rest-flag' }));

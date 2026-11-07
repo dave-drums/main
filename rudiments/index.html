@@ -139,9 +139,9 @@
       <h2 id="rudiments-guide-heading">How to use the Rudiment Trainer</h2>
       <ol>
        <li>Choose a pattern. Single Stroke Roll is a good place to start.</li>
-       <li>Choose which hand starts. Under the notes, R means right hand and L means left hand.</li>
+       <li>Choose which hand starts. Under the notes, blue R means right hand and amber L means left hand.</li>
        <li>Set a comfortable speed. BPM means beats per minute: a lower number is slower.</li>
-       <li>Press Start and play along with the highlighted notes. Use Metronome to turn the steady click on or off.</li>
+       <li>Press Start and play along with the highlighted notes. Use Metronome and Drums to switch each sound on or off.</li>
       </ol>
       <p><strong>Reading the notes:</strong> &gt; means play louder. Small notes are light taps just before the main note.</p>
       <p><strong>Ready to build speed?</strong> Stop playback and turn on Speed trainer. Set your starting and target speeds, how much to increase and how many times to repeat each pattern before speeding up.</p>
@@ -166,9 +166,8 @@
         <button class="button tool-button" id="rud-random" type="button" aria-label="Choose a random rudiment">🎲 Random</button>
        </div>
       </div>
-      <div class="rud-score-heading"><h2 id="rud-name">Single Stroke Roll</h2></div>
       <div id="rud-notation" class="rud-notation"></div>
-      <p class="rud-rhythm-note" id="rud-rhythm-note">Thirty-second notes · eight strokes per click</p>
+      <div class="rud-score-caption"><h2 id="rud-name">Single Stroke Roll</h2><p class="rud-rhythm-note" id="rud-rhythm-note">Thirty-second notes · eight strokes per click</p></div>
       <div class="rud-practice">
        <div class="rud-tempo tool-tempo-display">
         <div class="rud-bpm-row"><button class="tool-control tool-tempo-step rud-step" id="rud-minus" type="button" aria-label="Decrease tempo by 5 BPM">−</button><input id="rud-bpm" type="number" min="40" max="240" step="1" value="80" inputmode="numeric"/><button class="tool-control tool-tempo-step rud-step" id="rud-plus" type="button" aria-label="Increase tempo by 5 BPM">+</button></div>
@@ -176,7 +175,12 @@
         <div class="rud-tempo-scale"><span>40</span><label class="rud-label" for="rud-bpm">Tempo · BPM</label><span>240</span></div>
        </div>
        <div class="rud-playback">
-        <div class="rud-transport-row"><button class="button tool-control button--primary rud-play" id="rud-play" type="button" aria-pressed="false">Start</button><button class="tool-control" id="rud-click" type="button" aria-label="Metronome click" aria-pressed="true">Metronome <span class="rud-click-state" id="rud-click-state">On</span></button><button class="button tool-button" id="rud-tap" type="button">Tap tempo</button></div>
+        <div class="rud-transport-row">
+         <button class="button tool-control button--primary rud-play tool-playback" id="rud-play" type="button" aria-label="Start playback" aria-pressed="false">Start</button>
+         <button class="tool-control rud-sound-toggle" id="rud-click" type="button" aria-label="Metronome click" aria-pressed="true" title="Mute metronome"><svg class="icon" aria-hidden="true" focusable="false"><use id="rud-click-icon" href="../assets/icons.svg#speaker"></use></svg><span>Metronome</span></button>
+         <button class="tool-control rud-sound-toggle rud-drums" id="rud-drums" type="button" aria-label="Drum sound" aria-pressed="true" title="Mute drum sound"><svg class="icon" aria-hidden="true" focusable="false"><use id="rud-drums-icon" href="../assets/icons.svg#speaker"></use></svg><span>Drums</span></button>
+         <button class="tool-control tool-tap" id="rud-tap" type="button"><svg class="tool-tap-icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#tap"></use></svg><span>Tap tempo</span></button>
+        </div>
        </div>
       </div>
       <div class="rud-ramp-section tool-trainer">
