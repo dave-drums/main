@@ -48,7 +48,7 @@ main[inert]{visibility:hidden}
 
 .entry-warning{background:#070403}
 .entry-logo{display:block;width:100px;height:auto;margin:0 0 22px}
-.live-signal{display:block;width:100%;height:30px;filter:drop-shadow(0 0 3px #ec612750)}
+.live-signal{display:block;width:100%;height:44px;filter:drop-shadow(0 0 5px #ec612770)}
 .screen{transition:clip-path 7s cubic-bezier(.22,.75,.24,1);clip-path:inset(0)}
 .backdrop{transition:opacity 7s ease}
 main.opening .screen{clip-path:inset(0 49.7%)}

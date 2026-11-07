@@ -65,15 +65,18 @@ function drawSignal() {
   const isLive = analyser && !audio.paused && !reducedMotion.matches;
   signalContext.clearRect(0, 0, width, height);
   signalContext.beginPath();
-  signalContext.lineWidth = isLive ? 3 : 2;
-  signalContext.strokeStyle = isLive ? '#ff854d' : '#a66149';
+  signalContext.lineWidth = isLive ? 4 : 2;
+  signalContext.strokeStyle = isLive ? '#ff9b5e' : '#a66149';
+  signalContext.shadowColor = '#ff541ccc';
+  signalContext.shadowBlur = isLive ? 10 : 0;
   signalContext.moveTo(0, height / 2);
   if (isLive) {
     analyser.getByteTimeDomainData(samples);
-    for (let index = 0; index < samples.length; index += 4) {
-      const x = width * index / (samples.length - 4);
+    for (let index = 0; index < samples.length; index += 2) {
+      const x = width * index / (samples.length - 2);
       const amplitude = (samples[index] - 128) / 128;
-      const y = height / 2 + Math.tanh(amplitude * 3.2) * (height / 2 - 2);
+      // Drive the visual peaks harder while keeping them inside the canvas.
+      const y = height / 2 + Math.tanh(amplitude * 5.2) * (height / 2 - 4);
       signalContext.lineTo(x, y);
     }
   } else {
