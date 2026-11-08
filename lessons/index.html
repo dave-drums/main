@@ -193,6 +193,7 @@
   <script defer="" src="../assets/script.js">
   </script>
   <script defer="" src="../assets/navigation.js"></script>
+  <script defer="" src="../assets/experience.js"></script>
   <script defer="" src="../assets/testimonials.js"></script>
   <link as="font" crossorigin="" href="../assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
   <link as="font" crossorigin="" href="../assets/fonts/dm-sans-latin.woff2" rel="preload" type="font/woff2"/>
@@ -493,11 +494,19 @@
     </div>
    </section>
    <section aria-labelledby="teacher-heading" class="page-section lesson-teacher profile-layout section-band two-column theme-medium surface-panel">
-    <div class="service-copy">
+    <header class="teacher-intro">
      <p class="eyebrow section-label">
       03 / YOUR TEACHER
      </p>
      <h2 data-reveal="" id="teacher-heading">Learn with a <span class="heading-accent">working</span> drummer</h2>
+    </header>
+    <div class="about-image" data-reveal="">
+     <img class="festival-photo" alt="Dave D’Amore playing drums on stage at an outdoor festival" decoding="async" height="854" loading="lazy" sizes="(max-width: 800px) 100vw, 40vw" src="../img/dave-festival1-1200.webp" srcset="
+              ../img/dave-festival1-800.webp   800w,
+              ../img/dave-festival1-1200.webp 1200w
+            " width="1200"/>
+    </div>
+    <div class="service-copy">
      <p>
       I'm Dave D'Amore, a professional drummer with 30 years of
             playing experience across live performance, recording and session
@@ -532,7 +541,7 @@
         </span>
        </strong>
        <span>
-        Years running my drum school
+        Years running a drum school
        </span>
       </p>
       <p>
@@ -547,12 +556,6 @@
        </span>
       </p>
      </div>
-    </div>
-    <div class="about-image" data-reveal="">
-     <img alt="Dave D’Amore playing drums on stage at an outdoor festival" decoding="async" height="854" loading="lazy" sizes="(max-width: 800px) 100vw, 40vw" src="../img/dave-festival1-1200.webp" srcset="
-              ../img/dave-festival1-800.webp   800w,
-              ../img/dave-festival1-1200.webp 1200w
-            " width="1200"/>
     </div>
     <div aria-label="More student reviews" class="lesson-testimonials" id="testimonials-teacher" data-testimonials="">
     <div class="testimonial-carousel">
@@ -807,7 +810,7 @@
      <input aria-hidden="true" autocomplete="off" class="form-honeypot" hidden="" name="botcheck" tabindex="-1" type="checkbox"/>
      <div class="form-row">
       <div class="form-field">
-       <label for="enquiry-name">
+       <label for="enquiry-name"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#person"></use></svg>
         Name
         <span aria-hidden="true" class="required-mark">
          *
@@ -836,7 +839,7 @@
        <input autocomplete="tel" id="enquiry-phone" maxlength="40" name="Phone" type="tel"/>
       </div>
       <div class="form-field">
-       <label for="enquiry-type">
+       <label for="enquiry-type"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#layers"></use></svg>
         Enquiry type
         <span aria-hidden="true" class="required-mark">
          *
@@ -865,7 +868,7 @@
       </div>
      </div>
      <div class="form-field">
-      <label for="enquiry-message">
+      <label for="enquiry-message"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#message"></use></svg>
        Message
        <span aria-hidden="true" class="required-mark">
         *

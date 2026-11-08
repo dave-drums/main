@@ -210,14 +210,20 @@
       element.classList.remove("is-reveal-pending");
       element.classList.add("is-revealed");
       if (withMotion && !motionPreference.matches) {
-        animate(element, [{
+        const isPhoto = element.matches(".about-image,.lesson-home-photo,.recording-preview,.video-player");
+        const frames = [{
           opacity: 0,
           transform: "translate3d(0, 16px, 0)"
         }, {
           opacity: 1,
           transform: "none"
-        }], {
-          duration: 420,
+        }];
+        if (isPhoto) {
+          frames[0].clipPath = "inset(10% 0 0 0 round 20px)";
+          frames[1].clipPath = "inset(0 round 20px)";
+        }
+        animate(element, frames, {
+          duration: isPhoto ? 680 : 460,
           delay: delays.get(element) || 0,
           fill: "backwards"
         });
@@ -231,7 +237,7 @@
       threshold: 0.08,
       rootMargin: "0px 0px -20px 0px"
     });
-    const targets = document.querySelectorAll(".about h2, .service-copy h2, .contact h2, " + ".about-image, .lesson-highlights, .track-card, .feature-card, [data-reveal]");
+    const targets = document.querySelectorAll(".about h2, .service-copy h2, .contact h2, " + ".about-image, .lesson-home-photo, .recording-preview, .video-player, .lesson-highlights, .track-card, .feature-card, [data-reveal]");
     if (!motionPreference.matches) {
       targets.forEach(element => {
         if (element.getBoundingClientRect().top < window.innerHeight) return;
