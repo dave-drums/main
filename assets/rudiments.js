@@ -93,7 +93,8 @@ function updateRampStatus() {
 
 function updatePlayButton() {
   const running = starting || engine?.running;
-  play.textContent = running ? `⏹ ${elapsedTime}` : 'Start';
+  $('rud-play-label').textContent = running ? elapsedTime : 'Start';
+  $('rud-play-icon').setAttribute('href', `../assets/icons.svg#${running ? 'stop' : 'play'}`);
   play.setAttribute('aria-label', running ? 'Stop playback' : 'Start playback');
 }
 

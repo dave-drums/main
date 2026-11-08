@@ -3,20 +3,150 @@
 
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  // Native details stay usable without JavaScript; animation only enhances their presentation.
+  const disclosureStates = new WeakMap();
+  const movingDisclosures = new Set();
+  const disclosureEasing = "cubic-bezier(.22, 1, .36, 1)";
+  const prepareDisclosure = details => {
+    if (disclosureStates.has(details)) return disclosureStates.get(details);
+    const summary = [...details.children].find(child => child.tagName === "SUMMARY");
+    if (!summary) return null;
+    const content = [...details.children].filter(child => child !== summary);
+    const region = details.querySelector(":scope > .nav-submenu") || details;
+    const state = {
+      details,
+      summary,
+      content,
+      region,
+      expanded: details.open,
+      animation: null
+    };
+    disclosureStates.set(details, state);
+    details.dataset.disclosureReady = "";
+    summary.setAttribute("aria-expanded", String(state.expanded));
+    content.forEach(child => {
+      child.inert = false;
+    });
+    details.addEventListener("toggle", () => {
+      if (state.animation || details.open === state.expanded) return;
+      state.expanded = details.open;
+      summary.setAttribute("aria-expanded", String(state.expanded));
+      content.forEach(child => {
+        child.inert = false;
+      });
+    });
+    return state;
+  };
+  const setDisclosure = (details, expanded, {
+    immediate = false
+  } = {}) => {
+    const state = prepareDisclosure(details);
+    if (!state) return;
+    expanded = Boolean(expanded);
+    if (!immediate && state.expanded === expanded && (state.animation || details.open === expanded)) return;
+    const wasVisible = details.open;
+    const startHeight = state.region.getBoundingClientRect().height;
+    // A submenu's padding/borders must reach zero with its height to avoid a final snap.
+    const spacing = ["paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth"];
+    const startingStyle = state.region !== details ? getComputedStyle(state.region) : null;
+    const fromSpacing = startingStyle ? Object.fromEntries(spacing.map(key => [key, wasVisible ? startingStyle[key] || "0px" : "0px"])) : {};
+    const fromOpacity = startingStyle ? wasVisible ? startingStyle.opacity || "1" : "0" : null;
+    state.animation?.cancel();
+    state.animation = null;
+    movingDisclosures.delete(state);
+    state.expanded = expanded;
+    state.summary.setAttribute("aria-expanded", String(expanded));
+    state.content.forEach(child => {
+      child.inert = !expanded;
+    });
+    const finish = () => {
+      details.open = state.expanded;
+      // Native closed details hide their content without excluding it from find-in-page.
+      state.content.forEach(child => {
+        child.inert = false;
+      });
+      state.region.classList.remove("is-disclosure-animating");
+      state.animation = null;
+      movingDisclosures.delete(state);
+    };
+    if (immediate || motionPreference.matches || !("animate" in Element.prototype)) {
+      finish();
+      return;
+    }
+    let closedHeight = 0;
+    if (state.region === details) {
+      details.open = false;
+      closedHeight = details.getBoundingClientRect().height;
+    }
+    details.open = true;
+    const endHeight = expanded ? state.region.getBoundingClientRect().height : closedHeight;
+    const fromHeight = wasVisible ? startHeight : closedHeight;
+    if (Math.abs(fromHeight - endHeight) < 1) {
+      finish();
+      return;
+    }
+    state.region.classList.add("is-disclosure-animating");
+    const naturalStyle = startingStyle ? getComputedStyle(state.region) : null;
+    const toSpacing = naturalStyle ? Object.fromEntries(spacing.map(key => [key, expanded ? naturalStyle[key] || "0px" : "0px"])) : {};
+    const frames = [{
+      height: `${fromHeight}px`,
+      ...fromSpacing
+    }, {
+      height: `${endHeight}px`,
+      ...toSpacing
+    }];
+    if (startingStyle) {
+      frames[0].opacity = fromOpacity;
+      frames[1].opacity = expanded ? "1" : "0";
+    }
+    const animation = state.region.animate(frames, {
+      duration: 280,
+      easing: disclosureEasing
+    });
+    state.animation = animation;
+    movingDisclosures.add(state);
+    animation.finished.then(() => {
+      if (state.animation === animation) finish();
+    }, () => {});
+  };
+  const disclosureIsOpen = details => disclosureStates.get(details)?.expanded ?? details.open;
+  window.DaveDrumsDisclosures = {
+    setOpen: setDisclosure,
+    isOpen: disclosureIsOpen
+  };
+  document.querySelectorAll("details:not(.nav-group):not(.tool-guide)").forEach(details => {
+    const state = prepareDisclosure(details);
+    if (!state) return;
+    state.summary.addEventListener("click", event => {
+      if (event.target.closest("a,button,input,select,textarea,label")) return;
+      event.preventDefault();
+      setDisclosure(details, !disclosureIsOpen(details));
+    });
+  });
+  const settleDisclosures = () => [...movingDisclosures].forEach(state => {
+    setDisclosure(state.details, state.expanded, {
+      immediate: true
+    });
+  });
+  motionPreference.addEventListener("change", () => {
+    if (motionPreference.matches) settleDisclosures();
+  });
+  window.addEventListener("resize", settleDisclosures);
+
   // Count experience figures once on arrival, keeping their final values accessible.
   const counters = [...document.querySelectorAll(".stat-counter[data-count-to]")];
   if (counters.length && "IntersectionObserver" in window) {
-    const states = counters.map((element) => ({
+    const states = counters.map(element => ({
       element,
       target: Number(element.dataset.countTo),
-      frame: 0,
-    })).filter((state) => Number.isFinite(state.target) && state.target >= 0);
-    const finish = (state) => {
+      frame: 0
+    })).filter(state => Number.isFinite(state.target) && state.target >= 0);
+    const finish = state => {
       cancelAnimationFrame(state.frame);
       state.frame = 0;
       state.element.textContent = String(state.target);
     };
-    const count = (state) => {
+    const count = state => {
       if (motionPreference.matches) return;
       // Screen readers retain the actual figure throughout the visual count.
       const accessibleValue = document.createElement("span");
@@ -26,26 +156,28 @@
       state.element.setAttribute("aria-hidden", "true");
       state.element.textContent = "0";
       let start;
-      const tick = (time) => {
+      const tick = time => {
         start ??= time;
-        const progress = Math.min((time - start) / 4200, 1);
+        const progress = Math.min((time - start) / 900, 1);
         const eased = 1 - (1 - progress) ** 2;
         state.element.textContent = String(Math.floor(state.target * eased));
-        if (progress < 1) state.frame = requestAnimationFrame(tick);
-        else finish(state);
+        if (progress < 1) state.frame = requestAnimationFrame(tick);else finish(state);
       };
       state.frame = requestAnimationFrame(tick);
     };
-    const statesByElement = new Map(states.map((state) => [state.element, state]));
-    const counterObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const statesByElement = new Map(states.map(state => [state.element, state]));
+    const counterObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
         if (!entry.isIntersecting || entry.intersectionRatio < .5) return;
         counterObserver.unobserve(entry.target);
         count(statesByElement.get(entry.target));
       });
-    }, { threshold: .5, rootMargin: "0px 0px -32px 0px" });
+    }, {
+      threshold: .5,
+      rootMargin: "0px 0px -32px 0px"
+    });
     if (!motionPreference.matches) {
-      states.forEach((state) => counterObserver.observe(state.element));
+      states.forEach(state => counterObserver.observe(state.element));
     }
     motionPreference.addEventListener("change", () => {
       if (!motionPreference.matches) return;
@@ -57,70 +189,65 @@
   // Reveal visual groups once; paragraphs and form fields remain immediately readable.
   if ("IntersectionObserver" in window && "animate" in Element.prototype) {
     const activeAnimations = new Set();
-    const easing =
-      getComputedStyle(document.documentElement)
-        .getPropertyValue("--ease-out")
-        .trim() || "ease-out";
+    const easing = getComputedStyle(document.documentElement).getPropertyValue("--ease-out").trim() || "ease-out";
     const delays = new WeakMap();
     const animate = (element, keyframes, options) => {
-      const animation = element.animate(keyframes, { easing, ...options });
+      const animation = element.animate(keyframes, {
+        easing,
+        ...options
+      });
       activeAnimations.add(animation);
       const clear = () => activeAnimations.delete(animation);
       animation.finished.then(clear, clear);
     };
-    document
-      .querySelectorAll(".service-list, .tracks, .feature-grid, .benefit-grid")
-      .forEach((group) => {
-        [...group.children].forEach((element, index) => {
-          delays.set(element, Math.min(index, 5) * 55);
-        });
+    document.querySelectorAll(".tracks, .feature-grid, .benefit-grid").forEach(group => {
+      [...group.children].forEach((element, index) => {
+        delays.set(element, Math.min(index, 5) * 55);
       });
+    });
     const reveal = (element, withMotion = true) => {
       observer.unobserve(element);
       element.classList.remove("is-reveal-pending");
       element.classList.add("is-revealed");
       if (withMotion && !motionPreference.matches) {
-        animate(
-          element,
-          [
-            { opacity: 0, transform: "translate3d(0, 16px, 0)" },
-            { opacity: 1, transform: "none" },
-          ],
-          { duration: 650, delay: delays.get(element) || 0, fill: "backwards" },
-        );
+        animate(element, [{
+          opacity: 0,
+          transform: "translate3d(0, 16px, 0)"
+        }, {
+          opacity: 1,
+          transform: "none"
+        }], {
+          duration: 420,
+          delay: delays.get(element) || 0,
+          fill: "backwards"
+        });
       }
     };
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) reveal(entry.target);
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" },
-    );
-    const targets = document.querySelectorAll(
-      ".about h2, .service-copy h2, .contact h2, .recordings h3, " +
-        ".about-image, .service-photo, .lesson-highlights, .service-genres, " +
-        ".service-list li, .track-card, .feature-card, [data-reveal]",
-    );
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) reveal(entry.target);
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: "0px 0px -20px 0px"
+    });
+    const targets = document.querySelectorAll(".about h2, .service-copy h2, .contact h2, " + ".about-image, .lesson-highlights, .track-card, .feature-card, [data-reveal]");
     if (!motionPreference.matches) {
-      targets.forEach((element) => {
+      targets.forEach(element => {
         if (element.getBoundingClientRect().top < window.innerHeight) return;
         element.classList.add("is-reveal-pending");
         observer.observe(element);
       });
     }
-    document.addEventListener("focusin", (event) => {
+    document.addEventListener("focusin", event => {
       const pending = event.target.closest(".is-reveal-pending");
       if (pending) reveal(pending, false);
     });
     motionPreference.addEventListener("change", () => {
       if (!motionPreference.matches) return;
       observer.disconnect();
-      targets.forEach((element) =>
-        element.classList.remove("is-reveal-pending"),
-      );
-      activeAnimations.forEach((animation) => animation.cancel());
+      targets.forEach(element => element.classList.remove("is-reveal-pending"));
+      activeAnimations.forEach(animation => animation.cancel());
       activeAnimations.clear();
     });
   }
@@ -134,7 +261,9 @@
   };
   window.addEventListener("scroll", () => {
     if (!headerFrame) headerFrame = requestAnimationFrame(updateHeader);
-  }, { passive: true });
+  }, {
+    passive: true
+  });
   updateHeader();
 
   // The story remains readable without JavaScript; enhancement adds two toggle controls.
@@ -151,7 +280,7 @@
       collapseButton?.setAttribute("aria-expanded", String(expanded));
       storyButton.firstChild.textContent = expanded ? "Close my story " : "Read my story ";
     };
-    const setStory = (opening) => {
+    const setStory = opening => {
       const startHeight = story.hidden ? 0 : story.getBoundingClientRect().height;
       storyAnimation?.cancel();
       expanded = opening;
@@ -162,28 +291,49 @@
         story.hidden = !opening;
         story.classList.remove("is-animating");
         storyAnimation = null;
-        if (!opening) storyButton.scrollIntoView({ behavior: motionPreference.matches ? "instant" : "smooth", block: "center" });
+        if (!opening) storyButton.scrollIntoView({
+          behavior: motionPreference.matches ? "instant" : "smooth",
+          block: "center"
+        });
       };
       if (motionPreference.matches || !("animate" in Element.prototype)) {
         finish();
         return;
       }
       story.classList.add("is-animating");
-      storyAnimation = story.animate([
-        { height: `${startHeight}px` },
-        { height: `${opening ? story.scrollHeight : 0}px` }
-      ], { duration: 320, easing: "cubic-bezier(.22, 1, .36, 1)" });
-      storyAnimation.finished.then(finish, () => {});
+      const endHeight = opening ? story.getBoundingClientRect().height : 0;
+      const animation = story.animate([{
+        height: `${startHeight}px`
+      }, {
+        height: `${endHeight}px`
+      }], {
+        duration: 280,
+        easing: disclosureEasing
+      });
+      storyAnimation = animation;
+      animation.finished.then(() => {
+        if (storyAnimation === animation) finish();
+      }, () => {});
     };
     const closeStory = () => {
-      storyButton.focus({ preventScroll: true });
+      storyButton.focus({
+        preventScroll: true
+      });
       setStory(false);
     };
     storyButton.addEventListener("click", () => {
-      if (expanded) { closeStory(); return; }
+      if (expanded) {
+        closeStory();
+        return;
+      }
       setStory(true);
-      storyHeading?.focus({ preventScroll: true });
-      story.scrollIntoView({ behavior: motionPreference.matches ? "instant" : "smooth", block: "start" });
+      storyHeading?.focus({
+        preventScroll: true
+      });
+      story.scrollIntoView({
+        behavior: motionPreference.matches ? "instant" : "smooth",
+        block: "start"
+      });
     });
     collapseButton?.addEventListener("click", closeStory);
     window.addEventListener("hashchange", () => {
@@ -192,6 +342,7 @@
     motionPreference.addEventListener("change", () => {
       if (motionPreference.matches) storyAnimation?.finish();
     });
+    window.addEventListener("resize", () => storyAnimation?.finish());
     story.hidden = !expanded;
     story.inert = !expanded;
     updateStory();
@@ -205,20 +356,12 @@
   const sendButtonLabel = sendButton?.innerHTML;
   const enquiryType = contactForm?.querySelector("#enquiry-type");
   // Dedicated service pages can link to the same form with a recognised enquiry type.
-  const requestedEnquiry = new URLSearchParams(window.location.search).get(
-    "enquiry",
-  );
-  if (
-    enquiryType &&
-    [...enquiryType.options].some(
-      (option) => !option.disabled && option.value === requestedEnquiry,
-    )
-  ) {
+  const requestedEnquiry = new URLSearchParams(window.location.search).get("enquiry");
+  if (enquiryType && [...enquiryType.options].some(option => !option.disabled && option.value === requestedEnquiry)) {
     enquiryType.value = requestedEnquiry;
   }
   let submitting = false;
-
-  contactForm?.addEventListener("submit", async (event) => {
+  contactForm?.addEventListener("submit", async event => {
     event.preventDefault();
     if (submitting || !contactForm.reportValidity()) return;
     const submittedEnquiry = enquiryType?.value;
@@ -228,7 +371,6 @@
     contactForm.setAttribute("aria-busy", "true");
     formStatus.textContent = "Sending your enquiry…";
     formStatus.dataset.state = "pending";
-
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
     try {
@@ -236,22 +378,19 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          Accept: "application/json"
         },
         body: JSON.stringify(Object.fromEntries(new FormData(contactForm))),
-        signal: controller.signal,
+        signal: controller.signal
       });
       const result = await response.json();
-      if (!response.ok || result.success !== true)
-        throw new Error("Submission failed");
-      formStatus.textContent =
-        "Thanks — your enquiry has been sent. I’ll be in touch.";
+      if (!response.ok || result.success !== true) throw new Error("Submission failed");
+      formStatus.textContent = "Thanks — your enquiry has been sent. I’ll be in touch.";
       formStatus.dataset.state = "success";
       contactForm.reset();
       if (enquiryType) enquiryType.value = submittedEnquiry;
     } catch {
-      formStatus.textContent =
-        "I couldn’t confirm your enquiry was sent. Your message is still here — please try again, or get in touch on Instagram.";
+      formStatus.textContent = "I couldn’t confirm your enquiry was sent. Your message is still here — please try again, or get in touch on Instagram.";
       formStatus.dataset.state = "error";
     } finally {
       clearTimeout(timeout);
@@ -263,7 +402,7 @@
   });
 
   // Carry the chosen service into the enquiry form without changing keyboard focus.
-  document.querySelectorAll("[data-enquiry]").forEach((link) => {
+  document.querySelectorAll("[data-enquiry]").forEach(link => {
     link.addEventListener("click", () => {
       if (enquiryType) enquiryType.value = link.dataset.enquiry;
     });

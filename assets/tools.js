@@ -20,7 +20,8 @@
     const close = document.createElement("button");
     close.type = "button";
     close.className = "button tool-button tool-guide-close";
-    close.textContent = "Close";
+    close.setAttribute("aria-label", "Close");
+    close.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#close"></use></svg>';
     heading.tabIndex = -1;
     header.append(heading, close);
     dialog.append(header, content);
