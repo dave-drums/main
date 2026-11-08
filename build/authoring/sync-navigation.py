@@ -29,12 +29,14 @@ def icon(name, css=""):
     return f'<svg aria-hidden="true" class="{classes}" focusable="false"><use href="/assets/icons.svg#{name}"></use></svg>'
 
 
-def link(item, current, contact=False):
+def link(item, current, contact=False, show_icon=True):
     active = ' aria-current="page"' if item["href"] == current else ""
+    if not active and item["href"] != "/" and item["href"].endswith("/") and current.startswith(item["href"]):
+        active = ' aria-current="location"'
     css = ' class="nav-contact"' if contact else ""
     arrow = " " + icon("arrow-up-right") if contact else ""
     service_icons = {"/lessons/": "drum", "/recording/": "waveform", "/metronome/": "metronome", "/groove/": "grid", "/rudiments/": "sticks", "/rhythm/": "rhythm", "/notation/karnivool-drone": "book"}
-    prefix = icon(service_icons[item["href"]]) + " " if item["href"] in service_icons else ""
+    prefix = icon(service_icons[item["href"]]) + " " if show_icon and item["href"] in service_icons else ""
     return f'<a{active}{css} href="{escape(item["href"], quote=True)}">{prefix}{escape(item["label"])}{arrow}</a>'
 
 
@@ -59,10 +61,10 @@ def render_header(config, current):
         '   </button>',
         '   <span hidden="" id="nav-current-section">Current section</span>',
         '   <nav aria-label="Main navigation" id="site-navigation">',
-        '    ' + link(direct["home"], current),
-        '    ' + link(direct["about"], current),
+        '    ' + link(direct["home"], current, show_icon=False),
+        '    ' + link(direct["about"], current, show_icon=False),
     ]
-    parts.extend('    ' + link(item, current) for key, item in direct.items()
+    parts.extend('    ' + link(item, current, show_icon=False) for key, item in direct.items()
                  if key not in ("home", "about", "contact"))
     for group in config["groups"]:
         key = group["id"]
@@ -85,10 +87,9 @@ def render_header(config, current):
 
 
 def render_footer(config, current):
-    services = next(group for group in config["groups"] if group["id"] == "services")
     tools = next(group for group in config["groups"] if group["id"] == "tools")
     rows = [
-        ("Explore", [*config["direct"], *services["links"]]),
+        ("Explore", config["direct"]),
         ("Free tools", [item for item in tools["links"] if item["href"] != "/notation/karnivool-drone"]),
     ]
     parts = [
@@ -98,7 +99,7 @@ def render_footer(config, current):
         '    <a aria-label="Dave Drums home" class="footer-brand" href="/">',
         '     <img alt="Dave Drums" height="97" loading="lazy" src="/img/dd-logo-320.webp" width="320"/>',
         '    </a>',
-        '    <p class="footer-signature">A life driven by <em class="editorial-word">rhythm.</em></p>',
+        '    <p class="footer-signature">A life in <em class="editorial-word">rhythm.</em></p>',
         '    <p class="footer-location">' + icon("pin") + ' Melbourne, Australia</p>',
         '   </div>',
         '   <div class="footer-links">',
@@ -108,11 +109,11 @@ def render_footer(config, current):
         parts.append(f'     <ul class="footer-menu" aria-label="{escape(label)}">')
         for index, item in enumerate(items):
             separator = '<span class="footer-separator" aria-hidden="true">&#8226;</span>' if index else ''
-            parts.append('      <li>' + separator + link(item, current) + '</li>')
+            parts.append('      <li>' + separator + link(item, current, show_icon=False) + '</li>')
         parts.append('     </ul>')
     parts.extend([
         '    </nav>',
-        '    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit">Website by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>',
+        '    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit"><span aria-hidden="true">&#8226;</span> Built by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>',
         '   </div>',
         '   <div class="footer-actions">',
         '    <a class="footer-top" href="#top">Back to top ' + icon("arrow-up") + '</a>',

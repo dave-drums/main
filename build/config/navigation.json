@@ -11,6 +11,16 @@
       "href": "/#about"
     },
     {
+      "id": "lessons",
+      "label": "Lessons",
+      "href": "/lessons/"
+    },
+    {
+      "id": "recording",
+      "label": "Recording",
+      "href": "/recording/"
+    },
+    {
       "id": "watch",
       "label": "Watch",
       "href": "/watch/"
@@ -22,20 +32,6 @@
     }
   ],
   "groups": [
-    {
-      "id": "services",
-      "label": "Services",
-      "links": [
-        {
-          "label": "Drum Lessons",
-          "href": "/lessons/"
-        },
-        {
-          "label": "Drum Recording",
-          "href": "/recording/"
-        }
-      ]
-    },
     {
       "id": "tools",
       "label": "Free Tools",

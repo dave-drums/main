@@ -26,7 +26,8 @@ export async function syncToolTheme({ check = false } = {}) {
     files.set(resolve(target, css), `/* Generated from assets/styles.css by build/sync-tool-theme.mjs. */\n${faces}\n${tokens}\n\n${shared}\n`);
     for (const font of fonts) files.set(resolve(target, fontFolder, font), await readFile(resolve(ROOT, 'assets/fonts', font)));
   }
-  for (const file of ['tempo-stepper.js', 'playback-timer.js']) files.set(resolve(METRONOME, 'src', file), await readFile(resolve(ROOT, 'assets', file)));
+  for (const file of ['tempo-stepper.js', 'playback-timer.js', 'context-help.js']) files.set(resolve(METRONOME, 'src', file), await readFile(resolve(ROOT, 'assets', file)));
+  files.set(resolve(GROOVE, 'js/context-help.js'), await readFile(resolve(ROOT, 'assets/context-help.js')));
   files.set(resolve(METRONOME, 'src/tool-icons.json'), JSON.stringify(Object.fromEntries(
     ['close', 'minus', 'plus', 'speaker-off', 'chevron-up', 'stop', 'play', 'tap'].map(name => [name, data(name)])
   ), null, 2) + '\n');

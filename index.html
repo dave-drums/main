@@ -113,7 +113,7 @@
       "name": "Private drum lessons in Campbellfield, Melbourne",
       "serviceType": "One-on-one drum lessons",
       "url": "https://www.davedrums.com.au/lessons/",
-      "description": "Personalised drum lessons for students aged 10 and above, from complete beginners to experienced drummers.",
+      "description": "Personalised drum lessons for all experience levels, from complete beginners to experienced drummers.",
       "provider": {
         "@id": "https://www.davedrums.com.au/#dave"
       },
@@ -179,6 +179,7 @@
   <script defer="" src="assets/navigation.js"></script>
   <script defer="" src="assets/video.js"></script>
   <script defer="" src="assets/experience.js"></script>
+  <script type="module" src="assets/context-help.js"></script>
   <link as="font" crossorigin="" href="assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
   <link as="font" crossorigin="" href="assets/fonts/dm-sans-latin.woff2" rel="preload" type="font/woff2"/>
  </head>
@@ -198,14 +199,9 @@
    <nav aria-label="Main navigation" id="site-navigation">
     <a aria-current="page" href="/">Home</a>
     <a href="/#about">About</a>
+    <a href="/lessons/">Lessons</a>
+    <a href="/recording/">Recording</a>
     <a href="/watch/">Watch</a>
-    <details class="nav-group">
-     <summary aria-controls="nav-services" class="nav-disclosure">Services <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
-     <ul class="nav-submenu" id="nav-services">
-      <li><a href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
-     </ul>
-    </details>
     <details class="nav-group">
      <summary aria-controls="nav-tools" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
      <ul class="nav-submenu" id="nav-tools">
@@ -227,7 +223,7 @@
       </figure>
       <div class="hero-copy">
        <h1 id="hero-heading" class="heading-name">Dave D&#8217;Amore</h1>
-       <p class="hero-role">A life driven by <em class="editorial-word">rhythm.</em></p>
+       <p class="hero-role">A life in <em class="editorial-word">rhythm.</em></p>
       </div>
      </div>
      <div class="performance-aside">
@@ -239,7 +235,7 @@
 </a>
 <a class="service-path" href="lessons/">
 <svg aria-hidden="true" class="icon pathway-icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg>
-<span class="service-path-copy"><span class="eyebrow">For your playing</span><strong>Drum Lessons</strong><span class="service-path-detail">One-on-one in Campbellfield. Ages 10+.</span></span>
+<span class="service-path-copy"><span class="eyebrow">For your playing</span><strong>Drum Lessons</strong><span class="service-path-detail">One-on-one lessons in Campbellfield.</span></span>
 <svg aria-hidden="true" class="icon service-path-arrow" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg>
 </a>
 </nav>
@@ -251,10 +247,10 @@
      </div>
     </div>
    </section>
-   <section aria-labelledby="about-heading" class="about theme-light surface-panel" id="about">
+   <section aria-labelledby="about-heading" class="about theme-dark" id="about">
     <div class="about-composition section-shell page-section">
      <div class="about-title">
-      <p class="eyebrow section-label">01 / About</p>
+      <p class="eyebrow section-label">About</p>
       <h2 id="about-heading" class="heading-feature">Behind <span class="heading-accent">the kit</span></h2>
      </div>
      <figure class="about-image editorial-photo">
@@ -314,6 +310,48 @@
      </div>
     </section>
    </section>
+
+   <section aria-labelledby="lessons-heading" class="lessons-section section-shell section-band page-section theme-light surface-panel" id="lessons">
+    <div class="lesson-home-title">
+     <p class="eyebrow section-label">Education</p>
+     <h2 id="lessons-heading" class="heading-feature">Find your <span class="heading-accent">rhythm</span></h2>
+    </div>
+    <figure class="lesson-home-photo">
+     <img alt="Students practising on electronic drum kits in the teaching studio" decoding="async" height="574" loading="lazy" sizes="(max-width: 900px) 90vw, 55vw" src="img/drum-lessons-1000.webp" srcset="img/drum-lessons-600.webp 600w, img/drum-lessons-1000.webp 1000w" width="1000"/>
+    </figure>
+    <div class="lesson-home-copy service-copy">
+     <p class="service-lead">One-on-one drum lessons. Campbellfield, Melbourne.</p>
+     <p>For all experience levels, from complete beginners to advanced drummers. Develop your technique, timing, groove and musicality through progressive lessons tailored to you.</p>
+     <figure class="lesson-home-review">
+      <blockquote><p>&ldquo;He takes the time to break things down in a way that makes sense for you, adapting his approach so everything feels achievable and enjoyable.&rdquo;</p></blockquote>
+      <figcaption>
+       <span class="lesson-home-reviewer"><span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="" class="testimonial-google-logo" height="16" loading="lazy" src="img/google-g.png" width="16"/></a></span><span><cite>KZ S</cite> &middot; Google review</span></span>
+       <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      </figcaption>
+     </figure>
+     <div aria-label="Experience" class="lesson-highlights" role="group">
+      <p><strong><span class="stat-counter" data-count-to="30">30</span></strong><span>Years playing</span></p>
+      <p><strong><span class="stat-counter" data-count-to="7">7</span></strong><span>Years running a drum school</span></p>
+      <p><strong><span class="stat-counter" data-count-to="50">50</span>+</strong><span>Students</span></p>
+     </div>
+     <a class="button button--primary" href="lessons/">Explore drum lessons <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
+    </div>
+   </section>
+   <section aria-labelledby="recording-heading" class="recording-section section-shell section-band page-section theme-medium surface-panel" id="recording">
+    <div class="recording-copy">
+     <p class="eyebrow section-label">Recording</p>
+     <h2 id="recording-heading" class="heading-feature">Your music<br/><span class="heading-accent">My drums</span></h2>
+     <p class="service-lead">Melbourne studio. Worldwide reach.</p>
+     <p>Professional acoustic drum recording and session drumming from Melbourne for artists, bands and producers across Australia and worldwide. Every performance is shaped around the song, with a focus on feel, dynamics and musicality.</p>
+    </div>
+    <div class="recording-preview" aria-label="Selected recordings">
+     <a class="recording-preview-item" href="recording/#work"><img alt="Darkshore - Hopeless single artwork" decoding="async" height="640" loading="lazy" sizes="(max-width: 600px) 40vw, 268px" src="img/darkshore-hopeless-640.webp" srcset="img/darkshore-hopeless.jpg 300w, img/darkshore-hopeless-640.webp 640w" width="640"/><span class="recording-preview-copy"><span class="recording-preview-artist">Darkshore</span><strong>Hopeless</strong><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></span></a>
+     <a class="recording-preview-item" href="recording/#work"><img alt="Abi Muir - Stockholm single artwork" decoding="async" height="640" loading="lazy" sizes="(max-width: 600px) 40vw, 268px" src="img/abi-muir-stockholm-640.webp" srcset="img/abi-muir-stockholm.jpg 300w, img/abi-muir-stockholm-640.webp 640w" width="640"/><span class="recording-preview-copy"><span class="recording-preview-artist">Abi Muir</span><strong>Stockholm</strong><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></span></a>
+    </div>
+    <div class="recording-action">
+     <a class="button button--primary" href="recording/">Explore recording <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
+    </div>
+   </section>
    <!-- BEGIN HOME VIDEO -->
 <section class="home-watch section-shell section-band page-section theme-dark" aria-labelledby="home-watch-heading">
  <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Drums <span class="heading-accent">in motion</span></h2><p class="lead">Karnivool &quot;Drone&quot; – Drum Cover</p></div>
@@ -328,45 +366,10 @@
  <div class="home-watch-action"><a class="button button--primary" href="/watch/">More performances <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a></div>
 </section>
 <!-- END HOME VIDEO -->
-   <section aria-labelledby="lessons-heading" class="lessons-section section-shell section-band page-section theme-medium surface-panel" id="lessons">
-    <div class="lesson-home-title">
-     <p class="eyebrow section-label">02 / Education</p>
-     <h2 id="lessons-heading" class="heading-feature">Find your <span class="heading-accent">rhythm</span></h2>
-    </div>
-    <figure class="lesson-home-photo">
-     <img alt="Students practising on electronic drum kits in the teaching studio" decoding="async" height="574" loading="lazy" sizes="(max-width: 900px) 90vw, 55vw" src="img/drum-lessons-1000.webp" srcset="img/drum-lessons-600.webp 600w, img/drum-lessons-1000.webp 1000w" width="1000"/>
-    </figure>
-    <div class="lesson-home-copy service-copy">
-     <p class="service-lead">One-on-one drum lessons. Campbellfield, Melbourne.</p>
-     <p>Open to ages 10+ and all experience levels, from complete beginners to advanced drummers.</p>
-     <p>Develop your technique, timing, groove and musicality through progressive lessons tailored to you.</p>
-     <div aria-label="Experience" class="lesson-highlights" role="group">
-      <p><strong><span class="stat-counter" data-count-to="30">30</span></strong><span>Years playing</span></p>
-      <p><strong><span class="stat-counter" data-count-to="7">7</span></strong><span>Years running a drum school</span></p>
-      <p><strong><span class="stat-counter" data-count-to="50">50</span>+</strong><span>Students</span></p>
-     </div>
-     <a class="button button--primary" href="lessons/">Explore drum lessons <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
-    </div>
-   </section>
-   <section aria-labelledby="recording-heading" class="recording-section section-shell section-band page-section theme-dark" id="recording">
-    <div class="recording-copy">
-     <p class="eyebrow section-label">03 / Recording</p>
-     <h2 id="recording-heading" class="heading-feature">Your music<br/><span class="heading-accent">My drums</span></h2>
-     <p class="service-lead">Melbourne studio. Worldwide reach.</p>
-     <p>Professional acoustic drum recording and session drumming from Melbourne for artists, bands and producers across Australia and worldwide. Every performance is shaped around the song, with a focus on feel, dynamics and musicality.</p>
-    </div>
-    <div class="recording-preview" aria-label="Selected recordings">
-     <a class="recording-preview-item" href="recording/#work"><img alt="Darkshore - Hopeless single artwork" decoding="async" height="640" loading="lazy" sizes="(max-width: 600px) 40vw, 268px" src="img/darkshore-hopeless-640.webp" srcset="img/darkshore-hopeless.jpg 300w, img/darkshore-hopeless-640.webp 640w" width="640"/><span class="recording-preview-copy"><span class="recording-preview-artist">Darkshore</span><strong>Hopeless</strong><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></span></a>
-     <a class="recording-preview-item" href="recording/#work"><img alt="Abi Muir - Stockholm single artwork" decoding="async" height="640" loading="lazy" sizes="(max-width: 600px) 40vw, 268px" src="img/abi-muir-stockholm-640.webp" srcset="img/abi-muir-stockholm.jpg 300w, img/abi-muir-stockholm-640.webp 640w" width="640"/><span class="recording-preview-copy"><span class="recording-preview-artist">Abi Muir</span><strong>Stockholm</strong><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></span></a>
-    </div>
-    <div class="recording-action">
-     <a class="button button--primary" href="recording/">Explore recording <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
-    </div>
-   </section>
    <section aria-labelledby="contact-heading" class="contact section-shell section-band two-column theme-medium surface-panel" id="contact">
     <header class="contact-heading">
      <p class="eyebrow section-label"><span class="contact-mark" aria-hidden="true"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#message"></use></svg></span>
-      04 / GET IN TOUCH
+      GET IN TOUCH
      </p>
      <h2 id="contact-heading" class="heading-feature">
       Let&#8217;s make  <span class="heading-accent">some noise</span>
@@ -473,7 +476,7 @@
     <a aria-label="Dave Drums home" class="footer-brand" href="/">
      <img alt="Dave Drums" height="97" loading="lazy" src="/img/dd-logo-320.webp" width="320"/>
     </a>
-    <p class="footer-signature">A life driven by <em class="editorial-word">rhythm.</em></p>
+    <p class="footer-signature">A life in <em class="editorial-word">rhythm.</em></p>
     <p class="footer-location"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#pin"></use></svg> Melbourne, Australia</p>
    </div>
    <div class="footer-links">
@@ -481,18 +484,18 @@
      <ul class="footer-menu" aria-label="Explore">
       <li><a aria-current="page" href="/">Home</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#about">About</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/lessons/">Lessons</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/">Recording</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/watch/">Watch</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#contact">Contact</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
      </ul>
      <ul class="footer-menu" aria-label="Free tools">
-      <li><a href="/metronome/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#metronome"></use></svg> Metronome</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg> Groove Lab</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/rudiments/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#sticks"></use></svg> Rudiment Trainer</a></li>
+      <li><a href="/metronome/">Metronome</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/">Groove Lab</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/rudiments/">Rudiment Trainer</a></li>
      </ul>
     </nav>
-    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit">Website by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
+    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit"><span aria-hidden="true">&#8226;</span> Built by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
    </div>
    <div class="footer-actions">
     <a class="footer-top" href="#top">Back to top <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up"></use></svg></a>

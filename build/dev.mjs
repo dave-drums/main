@@ -22,9 +22,9 @@ const rebuild = async () => {
     if (queued) { queued = false; rebuild(); }
   }
 };
-const generated = /(?:^|\/)(?:dave-drums-theme\.css|tempo-stepper\.js|playback-timer\.js|tool-icons\.json)$|^(?:fonts\/|images\/(?:icons\/|tool-icons\.svg|icons-LICENSE\.txt))$/;
+const generated = /(?:^|\/)(?:dave-drums-theme\.css|tempo-stepper\.js|playback-timer\.js|context-help\.js|tool-icons\.json)$|^(?:fonts\/|images\/(?:icons\/|tool-icons\.svg|icons-LICENSE\.txt))$/;
 const watchers = [
-  [resolve(ROOT, 'assets'), name => /^(?:styles\.css|icons\.svg|icons-LICENSE\.txt|tempo-stepper\.js|playback-timer\.js|metronome-(?:normal|high)\.mp3|fonts\/)/.test(name)],
+  [resolve(ROOT, 'assets'), name => /^(?:styles\.css|icons\.svg|icons-LICENSE\.txt|tempo-stepper\.js|playback-timer\.js|context-help\.js|metronome-(?:normal|high)\.mp3|fonts\/)/.test(name)],
   [resolve(METRONOME, 'src'), name => !generated.test(name)],
   [resolve(METRONOME, 'public'), name => !name.startsWith('fonts/') && !['assets/icons-LICENSE.txt', 'assets/metronome.svg', 'assets/metronome-normal.mp3', 'assets/metronome-high.mp3'].includes(name)],
   [GROOVE, name => !generated.test(name) && !name.startsWith('fonts/') && !name.startsWith('images/icons/')],

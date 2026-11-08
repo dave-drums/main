@@ -30,6 +30,7 @@
   <script defer="" src="../assets/navigation.js"></script>
   <script defer="" src="../assets/tools.js"></script>
   <script type="module" src="../assets/rudiments.js"></script>
+  <script type="module" src="../assets/context-help.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -99,14 +100,9 @@
    <nav aria-label="Main navigation" id="site-navigation">
     <a href="/">Home</a>
     <a href="/#about">About</a>
+    <a href="/lessons/">Lessons</a>
+    <a href="/recording/">Recording</a>
     <a href="/watch/">Watch</a>
-    <details class="nav-group">
-     <summary aria-controls="nav-services" class="nav-disclosure">Services <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
-     <ul class="nav-submenu" id="nav-services">
-      <li><a href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
-     </ul>
-    </details>
     <details class="nav-group is-current">
      <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
      <ul class="nav-submenu" id="nav-tools">
@@ -162,7 +158,7 @@
         </div>
        </div>
        <div class="rud-selection-actions">
-        <div class="rud-field rud-lead-field"><span class="rud-label" id="rud-lead-label">Lead hand</span><div class="rud-hand-buttons" role="group" aria-labelledby="rud-lead-label"><button class="tool-control" id="rud-left" type="button" aria-pressed="false">Left hand</button><button class="tool-control" id="rud-right" type="button" aria-pressed="true">Right hand</button></div></div>
+        <div class="rud-field rud-lead-field"><span class="help-label"><span class="rud-label" id="rud-lead-label">Lead hand</span><span data-help-label="About lead hand" data-context-help="The lead hand starts the pattern. Right hand starts with R; Left hand swaps every R and L so you can practice both ways."></span></span><div class="rud-hand-buttons" role="group" aria-labelledby="rud-lead-label"><button class="tool-control" id="rud-left" type="button" aria-pressed="false">Left hand</button><button class="tool-control" id="rud-right" type="button" aria-pressed="true">Right hand</button></div></div>
         <button class="button tool-button" id="rud-random" type="button" aria-label="Choose a random rudiment"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#shuffle"></use></svg><span>Random</span></button>
        </div>
       </div>
@@ -172,7 +168,7 @@
        <div class="rud-tempo tool-tempo-display">
         <div class="rud-bpm-row"><button class="tool-control tool-tempo-step rud-step" id="rud-minus" type="button" aria-label="Decrease tempo by 5 BPM"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#minus"></use></svg></button><input id="rud-bpm" type="number" min="40" max="240" step="1" value="80" inputmode="numeric"/><button class="tool-control tool-tempo-step rud-step" id="rud-plus" type="button" aria-label="Increase tempo by 5 BPM"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#plus"></use></svg></button></div>
         <label class="visually-hidden" for="rud-slider">Tempo slider in BPM</label><input id="rud-slider" type="range" min="40" max="240" step="1" value="80"/>
-        <div class="rud-tempo-scale"><span>40</span><label class="rud-label" for="rud-bpm">Tempo · BPM</label><span>240</span></div>
+        <div class="rud-tempo-scale"><span>40</span><span class="help-label"><label class="rud-label" for="rud-bpm">Tempo · BPM</label><span data-help-label="About tempo" data-context-help="BPM means beats per minute. A higher number makes the pattern faster. Start slowly enough to play each stroke evenly."></span></span><span>240</span></div>
        </div>
        <div class="rud-playback">
         <div class="rud-transport-row">
@@ -191,7 +187,7 @@
         <div class="rud-field"><label for="rud-increase">Increase by</label><input id="rud-increase" data-ramp-field="" type="number" min="1" max="200" step="1" value="5" required="" inputmode="numeric" disabled=""/></div>
         <div class="rud-field"><label for="rud-every">Every … repetitions</label><input id="rud-every" data-ramp-field="" type="number" min="1" max="100" step="1" value="4" required="" inputmode="numeric" disabled=""/></div>
        </div>
-       <p class="rud-ramp-hint tool-trainer-hint">Stop playback to edit speed trainer settings.</p>
+       <p class="rud-ramp-hint tool-trainer-hint">Stop playback to edit speed trainer settings. <span data-help-label="About speed trainer" data-context-help="Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is the complete pattern shown above."></span></p>
       </div>
      </fieldset>
     </section>
@@ -203,7 +199,7 @@
     <a aria-label="Dave Drums home" class="footer-brand" href="/">
      <img alt="Dave Drums" height="97" loading="lazy" src="/img/dd-logo-320.webp" width="320"/>
     </a>
-    <p class="footer-signature">A life driven by <em class="editorial-word">rhythm.</em></p>
+    <p class="footer-signature">A life in <em class="editorial-word">rhythm.</em></p>
     <p class="footer-location"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#pin"></use></svg> Melbourne, Australia</p>
    </div>
    <div class="footer-links">
@@ -211,18 +207,18 @@
      <ul class="footer-menu" aria-label="Explore">
       <li><a href="/">Home</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#about">About</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/lessons/">Lessons</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/">Recording</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/watch/">Watch</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#contact">Contact</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
      </ul>
      <ul class="footer-menu" aria-label="Free tools">
-      <li><a href="/metronome/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#metronome"></use></svg> Metronome</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg> Groove Lab</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a aria-current="page" href="/rudiments/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#sticks"></use></svg> Rudiment Trainer</a></li>
+      <li><a href="/metronome/">Metronome</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/">Groove Lab</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a aria-current="page" href="/rudiments/">Rudiment Trainer</a></li>
      </ul>
     </nav>
-    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit">Website by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
+    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit"><span aria-hidden="true">&#8226;</span> Built by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
    </div>
    <div class="footer-actions">
     <a class="footer-top" href="#top">Back to top <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up"></use></svg></a>

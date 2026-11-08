@@ -195,6 +195,8 @@
   <script defer="" src="../assets/navigation.js"></script>
   <script defer="" src="../assets/experience.js"></script>
   <script defer="" src="../assets/testimonials.js"></script>
+  <script defer="" src="../assets/review-details.js"></script>
+  <script type="module" src="../assets/context-help.js"></script>
   <link as="font" crossorigin="" href="../assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
   <link as="font" crossorigin="" href="../assets/fonts/dm-sans-latin.woff2" rel="preload" type="font/woff2"/>
  </head>
@@ -214,14 +216,9 @@
    <nav aria-label="Main navigation" id="site-navigation">
     <a href="/">Home</a>
     <a href="/#about">About</a>
+    <a aria-current="page" href="/lessons/">Lessons</a>
+    <a href="/recording/">Recording</a>
     <a href="/watch/">Watch</a>
-    <details class="nav-group is-current">
-     <summary aria-controls="nav-services" aria-describedby="nav-current-section" class="nav-disclosure">Services <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
-     <ul class="nav-submenu" id="nav-services">
-      <li><a aria-current="page" href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
-     </ul>
-    </details>
     <details class="nav-group">
      <summary aria-controls="nav-tools" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
      <ul class="nav-submenu" id="nav-tools">
@@ -257,7 +254,7 @@
    <section aria-labelledby="approach-heading" class="page-section lesson-approach section-shell section-band theme-light surface-panel">
     <header class="section-heading">
      <p class="eyebrow section-label">
-      01 / THE APPROACH
+      THE APPROACH
      </p>
     </header>
     <div class="section-intro">
@@ -321,7 +318,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Tormey Sheehan</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -333,7 +330,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>KZ S</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -345,7 +342,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Samantha Kraus</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -357,7 +354,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Karla Hosie</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -369,7 +366,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Helena Geoghegan</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -381,7 +378,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>MG Fun</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -393,7 +390,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>CS Liew</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -405,7 +402,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Grace Monique</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -417,7 +414,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Nicole Nicholls</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -429,7 +426,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Mary Deasy</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -441,7 +438,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Buddhika Naotunna</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -455,7 +452,7 @@
    <section aria-labelledby="levels-heading" class="page-section lesson-levels section-shell section-band theme-dark">
     <div class="section-intro">
      <p class="eyebrow section-label">
-      02 / YOUR STARTING POINT
+      YOUR STARTING POINT
      </p>
      <h2 data-reveal="" id="levels-heading">For every stage of <span class="heading-accent">your playing</span></h2>
      <p>
@@ -496,7 +493,7 @@
    <section aria-labelledby="teacher-heading" class="page-section lesson-teacher profile-layout section-band two-column theme-medium surface-panel">
     <header class="teacher-intro">
      <p class="eyebrow section-label">
-      03 / YOUR TEACHER
+      YOUR TEACHER
      </p>
      <h2 data-reveal="" id="teacher-heading">Learn with a <span class="heading-accent">working</span> drummer</h2>
     </header>
@@ -569,7 +566,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Steve Muir</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -581,7 +578,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Kellie Swain</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -593,7 +590,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Alan Willmore</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -605,7 +602,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>SharpE Sharp</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -617,7 +614,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Holly Daisy</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -629,7 +626,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Amanda jungeun PARK</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -641,7 +638,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Simon Beckett</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -653,7 +650,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Christin Warner</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -665,7 +662,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Jaiden Custom Guitars</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -677,7 +674,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>Joshwa</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -689,7 +686,7 @@
        <figcaption>
         <div class="testimonial-reviewer">
          <cite>N I</cite>
-         <img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/>
+         <span data-context-help="View our Google Business Profile and reviews."><a class="review-source-link" href="https://share.google/1A38X8U2UJPVkTOlF" target="_blank" rel="noopener noreferrer" aria-label="View our reviews on Google (opens in a new tab)"><img alt="Google" class="testimonial-google-logo" height="24" loading="lazy" src="../img/google-g.png" width="24"/></a></span>
         </div>
         <span aria-label="5 out of 5 stars" class="testimonial-rating" role="img">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
        </figcaption>
@@ -702,7 +699,7 @@
    </section>
    <div class="page-section lesson-details section-shell section-band two-column theme-dark">
      <p class="eyebrow section-label">
-      04 / THE DETAILS
+      THE DETAILS
      </p>
     <section aria-labelledby="location-heading" class="lesson-location">
      <h2 data-reveal="" id="location-heading">Drum lessons in Campbellfield &amp; <span class="heading-accent">Melbourne's northern suburbs</span></h2>
@@ -895,7 +892,7 @@
     <a aria-label="Dave Drums home" class="footer-brand" href="/">
      <img alt="Dave Drums" height="97" loading="lazy" src="/img/dd-logo-320.webp" width="320"/>
     </a>
-    <p class="footer-signature">A life driven by <em class="editorial-word">rhythm.</em></p>
+    <p class="footer-signature">A life in <em class="editorial-word">rhythm.</em></p>
     <p class="footer-location"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#pin"></use></svg> Melbourne, Australia</p>
    </div>
    <div class="footer-links">
@@ -903,18 +900,18 @@
      <ul class="footer-menu" aria-label="Explore">
       <li><a href="/">Home</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#about">About</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a aria-current="page" href="/lessons/">Lessons</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/">Recording</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/watch/">Watch</a></li>
       <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/#contact">Contact</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a aria-current="page" href="/lessons/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Drum Lessons</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/recording/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Drum Recording</a></li>
      </ul>
      <ul class="footer-menu" aria-label="Free tools">
-      <li><a href="/metronome/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#metronome"></use></svg> Metronome</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg> Groove Lab</a></li>
-      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/rudiments/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#sticks"></use></svg> Rudiment Trainer</a></li>
+      <li><a href="/metronome/">Metronome</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/groove/">Groove Lab</a></li>
+      <li><span class="footer-separator" aria-hidden="true">&#8226;</span><a href="/rudiments/">Rudiment Trainer</a></li>
      </ul>
     </nav>
-    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit">Website by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
+    <p class="footer-copyright"><span>&#169; 2026 Dave D&#8217;Amore</span> <span class="footer-credit"><span aria-hidden="true">&#8226;</span> Built by <a href="https://www.monoweb.com.au/" target="_blank" rel="noopener noreferrer" aria-label="MonoWeb (opens in a new tab)">MonoWeb</a></span></p>
    </div>
    <div class="footer-actions">
     <a class="footer-top" href="#top">Back to top <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up"></use></svg></a>

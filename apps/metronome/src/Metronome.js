@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { bindTempoStepper, TEMPO_STEP } from './tempo-stepper.js';
 import { startPlaybackTimer } from './playback-timer.js';
 import toolIcons from './tool-icons.json';
+import { bindContextHelp } from './context-help.js';
 
 export default function Metronome({ keyboardTarget = window, assetBase = new URL(import.meta.env.BASE_URL, window.location.origin).href } = {}) {
   const [bpm, setBpm] = useState(120);
@@ -41,6 +42,8 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   const minusRef = useRef(null);
   const plusRef = useRef(null);
   const popupReturnRef = useRef(null);
+  const helpRootRef = useRef(null);
+  useEffect(() => bindContextHelp(helpRootRef.current), []);
 
   const scheduleDisplay = (callback, delay, timers = displayTimeoutsRef.current) => {
     const id = setTimeout(() => { timers.delete(id); callback(); }, delay);
@@ -300,6 +303,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   }, [popupOpen]);
 
   const h = React.createElement;
+  const help = (label, text) => h('span', { 'data-context-help': text, 'data-help-label': `About ${label}` });
   const icon = (name, extra = {}) => h('svg', { className: 'tool-icon', viewBox: toolIcons[name].viewBox,
     'data-icon': name, 'aria-hidden': true, focusable: false, ...extra },
     ...toolIcons[name].nodes.map(([tag, attrs], key) => h(tag, { ...attrs, key })));
@@ -307,13 +311,16 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   const popup = (title, content, footer) => h('div', { className: 'met-popup-backdrop', onClick: closePopup },
     h('section', { className: 'met-popup', role: 'dialog', 'aria-modal': true, 'aria-label': title,
       onClick: e => e.stopPropagation(), onKeyDown: e => { if (e.key === 'Escape') closePopup(); } },
-      h('div', { className: 'met-popup-header' }, h('h2', null, title),
+      h('div', { className: 'met-popup-header' }, h('div', {className: 'help-label'}, h('h2', null, title),
+        help(title.toLowerCase(), title === 'Subdivision'
+          ? 'Subdivisions divide each beat into equal parts. Choose 2 for two clicks per beat, or 4 for four clicks per beat.'
+          : 'Beats sets how many pulses make up one bar. Start with 4 and count 1, 2, 3, 4 with the circles.')),
         h('button', { className: 'tool-control met-close', 'aria-label': 'Close', onClick: closePopup, autoFocus: true }, icon('close'))),
       h('div', { className: 'met-popup-body' }, content),
       footer && h('div', { className: 'met-popup-footer' }, footer)));
   const choice = (label, selected, onClick, extra = {}) => h('button', {
     className: 'tool-control', 'aria-pressed': selected, onClick, ...extra }, label);
-  return h('div', { className: 'metronome-wrapper tool-ui' },
+  return h('div', { className: 'metronome-wrapper tool-ui', ref: helpRootRef },
     h('div', { className: 'metronome-card' },
       h('div', { className: 'bpm-display tool-tempo-display' },
         h('div', { className: 'met-bpm-row' },
@@ -325,7 +332,8 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
             disabled: trainerActive, ref: plusRef }, icon('plus'))),
         h('input', { className: 'met-slider', type: 'range', 'aria-label': 'Tempo slider', min: '1', max: '300', disabled: trainerActive, value: bpm,
           onChange: e => setBpm(parseInt(e.target.value)) }),
-        h('div', { className: 'met-tempo-scale' }, h('span', null, '1'), h('span', null, 'Tempo · BPM'), h('span', null, '300'))),
+        h('div', { className: 'met-tempo-scale' }, h('span', null, '1'), h('span', {className: 'help-label'}, 'Tempo · BPM',
+          help('tempo', 'BPM means beats per minute. A higher number makes the beat faster. At 60 BPM, there is one beat each second.')), h('span', null, '300'))),
       h('div', { className: 'met-beats' }, getRowSplit(beatsPerBar).map((rowCount, rowIndex) => {
         const startIndex = rowIndex === 0 ? 0 : getRowSplit(beatsPerBar)[0];
         return h('div', { className: 'met-beat-row', 'data-beats': rowCount, key: rowIndex }, [...Array(rowCount)].map((_, colIndex) => {
@@ -366,7 +374,8 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
               h('input', { id: `met-trainer-${name}`, name, type: 'number', inputMode: 'numeric', required: true, min, max, step: 1,
                 disabled: isPlaying || !trainerEnabled, value, onChange: e => { setValue(e.target.value); setTrainerError(''); } })))),
         h('p', { className: 'met-trainer-error', role: 'alert' }, trainerError),
-        h('p', { className: 'tool-trainer-hint' }, 'Stop playback to edit speed trainer settings.'))),
+        h('p', { className: 'tool-trainer-hint' }, 'Stop playback to edit speed trainer settings. ',
+          help('speed trainer', 'Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is one complete round of the beat circles.')))),
     showBeatsPopup && popup('Beats', h('div', { className: 'beats-popup-grid' },
       [...Array(16)].map((_, i) => choice(i+1, beatsPerBar === i+1, () => { setBeatsPerBar(i+1); closePopup(); }, { key: i+1 })))),
     showSubdivisionsPopup && popup('Subdivision', h('div', { className: 'subdivisions-popup-grid' },

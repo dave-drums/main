@@ -25,12 +25,14 @@ node_modules/
 /apps/metronome/src/tool-icons.json
 /apps/metronome/src/tempo-stepper.js
 /apps/metronome/src/playback-timer.js
+/apps/metronome/src/context-help.js
 /apps/metronome/public/fonts/
 /apps/metronome/public/assets/icons-LICENSE.txt
 /apps/metronome/public/assets/metronome.svg
 /apps/metronome/public/assets/metronome-high.mp3
 /apps/metronome/public/assets/metronome-normal.mp3
 /apps/groovelab/css/dave-drums-theme.css
+/apps/groovelab/js/context-help.js
 /apps/groovelab/fonts/
 /apps/groovelab/images/tool-icons.svg
 /apps/groovelab/images/icons/

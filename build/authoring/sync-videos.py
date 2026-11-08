@@ -50,7 +50,7 @@ def video_info(item):
     return provider, video_id, canonical, kind
 
 
-def player(item, player_id, external_link=True):
+def player(item, player_id, external_link=True, priority=False):
     provider, video_id, url, kind = video_info(item)
     title = escape(item["title"], quote=True)
     label = "YouTube" if provider == "youtube" else "Instagram"
@@ -62,9 +62,10 @@ def player(item, player_id, external_link=True):
     width, height = item.get("poster_width", 480), item.get("poster_height", 360)
     if not all(isinstance(size, int) and size > 0 for size in (width, height)):
         raise ValueError("Poster dimensions must be positive integers.")
+    loading = 'loading="eager" fetchpriority="high"' if priority else 'loading="lazy"'
     image = (f'<img class="video-poster" src="{escape(poster, quote=True)}" '
              f'width="{width}" height="{height}" '
-             'alt="" loading="lazy" decoding="async"/>') if poster else ""
+             f'alt="" {loading} decoding="async"/>') if poster else ""
     portrait = " video-shell--portrait" if provider == "instagram" else ""
     action = "View" if provider == "instagram" else "Play"
     platform_link = (f'<a href="{escape(url, quote=True)}" target="_blank" rel="noopener noreferrer">'
@@ -88,11 +89,12 @@ def render(config):
     if featured:
         title = escape(featured["title"])
         description = escape(featured.get("description", ""))
-        heading = (escape(featured["artist"]) + "<br/>&quot;" + escape(featured["song"]) + "&quot;") if featured.get("artist") and featured.get("song") else title
+        heading = (escape(featured["artist"]) + " &quot;" + escape(featured["song"]) + "&quot;") if featured.get("artist") and featured.get("song") else title
         home_caption = (escape(featured["artist"]) + ' &quot;' + escape(featured["song"]) + '&quot; – Drum Cover') if featured.get("artist") and featured.get("song") else title + " – Drum Cover"
-        sections.append(f'''<section class="watch-feature section-shell page-section theme-dark" aria-labelledby="featured-heading">
- <div>{player(featured, "watch-featured", external_link=False)}</div>
- <div class="watch-feature-copy"><p class="eyebrow section-label">Featured performance</p><h2 id="featured-heading">{heading}</h2><p>{description}</p><a class="button button--primary" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a></div>
+        sections.append(f'''<section class="page-hero watch-hero section-shell section-band page-section theme-medium surface-panel" aria-labelledby="watch-heading">
+ <div class="watch-hero-copy"><p class="eyebrow section-label">Dave D'Amore / Performances</p><h1 id="watch-heading">Drums <span class="heading-accent">in motion</span></h1><h2 id="featured-heading">{heading}</h2><p>{description}</p></div>
+ <div class="watch-hero-media" aria-labelledby="featured-heading">{player(featured, "watch-featured", external_link=False, priority=True)}</div>
+ <div class="watch-hero-actions"><a class="button button--primary" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a><a class="text-link" href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener noreferrer">Follow on Instagram {icon("arrow-up-right")}</a></div>
 </section>''')
         home = f'''<section class="home-watch section-shell section-band page-section theme-dark" aria-labelledby="home-watch-heading">
  <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Drums <span class="heading-accent">in motion</span></h2><p class="lead">{home_caption}</p></div>
@@ -108,7 +110,7 @@ def render(config):
             title = escape(item["title"])
             description = escape(item.get("description", ""))
             cards.append(f'<article class="watch-reel" aria-labelledby="reel-heading-{index}">{player(item, "watch-reel-" + str(index), external_link=False)}<h3 id="reel-heading-{index}">{title}</h3><p>{description}</p></article>')
-        sections.append('<section class="watch-clips section-shell section-band theme-light page-section surface-panel" aria-labelledby="clips-heading"><div class="watch-clips-intro"><p class="eyebrow section-label">Selected moments</p><h2 id="clips-heading">Short <span class="heading-accent">performances</span></h2></div><div class="watch-reels">' + "\n".join(cards) + '</div></section>')
+        sections.append('<section class="watch-clips section-shell section-band theme-dark page-section" aria-labelledby="clips-heading"><div class="watch-clips-intro"><p class="eyebrow section-label">Selected moments</p><h2 id="clips-heading">Short <span class="heading-accent">performances</span></h2></div><div class="watch-reels">' + "\n".join(cards) + '</div></section>')
     return {"WATCH VIDEOS": "\n".join(sections), "HOME VIDEO": home, "NOTATION VIDEO": notation}
 
 

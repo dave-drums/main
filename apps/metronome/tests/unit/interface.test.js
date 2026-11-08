@@ -1,6 +1,6 @@
 import React from 'react';
 import { it, expect, vi } from 'vitest';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, waitFor } from '@testing-library/react';
 import Metronome from '../../src/Metronome.js';
 
 it('shows elapsed time only inside the stop button and resets on restart', async () => {
@@ -64,4 +64,23 @@ it('shows trainer state beside the checkbox and the cycle count as the last head
   fireEvent.click(toggle);
   expect(toggle.labels[0].textContent).toBe('Speed trainer inactive');
   expect(view.getByLabelText('Repetition in current cycle').hidden).toBe(true);
+});
+
+it('explains settings inside dialogs and closes help before closing the dialog', async () => {
+  const view = render(React.createElement(Metronome));
+  await act(async () => {});
+  fireEvent.click(view.getByText('Subdivision: 1'));
+  await waitFor(() => expect(view.getByRole('button', { name: 'About subdivision' })).toBeTruthy());
+  const help = view.getByRole('button', { name: 'About subdivision' });
+  help.focus();
+  const tip = view.container.querySelector(`#${help.getAttribute('aria-describedby')}`);
+  expect(tip.hidden).toBe(false);
+  expect(tip.textContent).toContain('two clicks per beat');
+  fireEvent.keyDown(help, { key: 'Escape' });
+  expect(tip.hidden).toBe(true);
+  expect(view.getByRole('dialog', { name: 'Subdivision' })).toBeTruthy();
+  fireEvent.keyDown(help, { key: 'Escape' });
+  expect(view.queryByRole('dialog')).toBeNull();
+  expect(view.getByText('Subdivision: 1')).toBeTruthy();
+  expect(view.getByLabelText('Start metronome')).toBeTruthy();
 });
