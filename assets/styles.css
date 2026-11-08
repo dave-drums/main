@@ -3665,7 +3665,7 @@ body.menu-open .site-header {
 
 .tool-trainer-heading {
   display: grid;
-  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  grid-template-columns: minmax(0,1fr) auto;
   align-items: center;
   gap: 8px;
 }
@@ -3676,18 +3676,12 @@ body.menu-open .site-header {
   justify-self: start;
 }
 
-.tool-trainer-heading > .tool-trainer-status {
-  grid-column: 3;
-  grid-row: 1;
-  justify-self: end;
-  text-align: right;
-}
-
 .tool-trainer-heading > .tool-trainer-cycle {
   grid-column: 2;
   grid-row: 1;
   margin: 0;
-  text-align: center;
+  justify-self: end;
+  text-align: right;
 }
 
 .tool-trainer-toggle {
@@ -3709,12 +3703,6 @@ body.menu-open .site-header {
 
 .tool-trainer-toggle > span {
   min-width: 0;
-}
-
-.tool-trainer-status {
-  margin: 0;
-  color: var(--link-color);
-  font-size: var(--type-caption);
 }
 
 .tool-trainer-fields {
@@ -4230,11 +4218,6 @@ body.menu-open .site-header {
 
 .rud-ramp-section {
   padding-top: var(--space-2);
-}
-
-#rud-ramp-status {
-  color: var(--link-color);
-  font-size: var(--type-caption);
 }
 
 .rud-ramp-fields {

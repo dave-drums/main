@@ -84,11 +84,7 @@ function updateCycle() {
 }
 
 function updateRampStatus() {
-  const target = Number($('rud-target').value);
-  $('rud-ramp-status').textContent = rampToggle.checked
-    ? engine?.running ? bpm >= target ? 'Target reached · holding tempo' : 'Speed trainer active'
-      : 'Speed trainer ready'
-    : 'Steady tempo';
+  $('rud-ramp-status').textContent = `Speed trainer ${rampToggle.checked ? 'active' : 'inactive'}`;
 }
 
 function updatePlayButton() {
