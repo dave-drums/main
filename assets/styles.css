@@ -1986,203 +1986,6 @@ body.menu-open .site-header {
   color: var(--accent);
 }
 
-/* A small, opt-in instrument tucked into the performance photograph. */
-
-.hero-rhythm {
-  position: absolute;
-  z-index: 2;
-  top: clamp(20px,3vw,48px);
-  left: clamp(20px,3vw,48px);
-  width: min(336px,calc(100% - 40px));
-}
-
-.hero-rhythm[hidden],
-.rhythm-panel[hidden] {
-  display: none;
-}
-
-.rhythm-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 14px;
-  border: 1px solid #71929b;
-  border-radius: 24px;
-  background: #101c20e8;
-  color: #edf4f6;
-  backdrop-filter: blur(16px);
-  font-size: var(--type-ui);
-  font-weight: var(--weight-medium);
-  box-shadow: 0 4px 20px #0003;
-  transition: border-color var(--duration-fast),background var(--duration-fast);
-}
-
-.rhythm-trigger > .icon {
-  width: 20px;
-  height: 20px;
-  color: #71d5f5;
-}
-
-.rhythm-trigger:is(:hover,[aria-expanded="true"]) {
-  border-color: #71d5f5;
-  background: #172e35f5;
-}
-
-.rhythm-trigger-mark {
-  margin-left: 6px;
-  color: #8cddf5;
-  font-size: 20px;
-  line-height: 1;
-  transition: transform var(--duration) var(--ease-out);
-}
-
-.rhythm-trigger[aria-expanded="true"] .rhythm-trigger-mark {
-  transform: rotate(45deg);
-}
-
-.rhythm-panel {
-  margin-top: 10px;
-  padding: 18px;
-  border: 1px solid #48666e;
-  border-radius: 16px;
-  background: #101c20f2;
-  color: #edf4f6;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 16px 48px #0004;
-}
-
-.rhythm-instruction {
-  margin-bottom: 16px;
-  font-size: var(--type-ui);
-  color: #c1d2d9;
-}
-
-.rhythm-pads {
-  display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
-  gap: 8px;
-}
-
-.rhythm-pad {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-width: 0;
-  min-height: 94px;
-  padding: 12px 4px 8px;
-  border: 1px solid #516c75;
-  border-radius: var(--control-radius);
-  background: linear-gradient(155deg,#2a414a,#1b2c32);
-  box-shadow: inset 0 1px 0 #ffffff12,0 3px 0 #0b171c;
-  color: #edf4f6;
-  font-size: var(--type-caption);
-  font-weight: var(--weight-medium);
-  touch-action: manipulation;
-  user-select: none;
-  transition: background 100ms,border-color 100ms,transform 100ms;
-}
-
-.rhythm-pad:hover {
-  border-color: #8cddf5;
-}
-
-.rhythm-pad:is(:active,.is-hit) {
-  transform: translateY(2px);
-  border-color: #96e4fa;
-  background: linear-gradient(155deg,#315e6a,#234651);
-  box-shadow: inset 0 1px 8px #0003,0 0 18px #39b8e526;
-}
-
-.pad-mark {
-  position: relative;
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #8cddf5;
-  border-radius: 50%;
-}
-
-.pad-mark--kick::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: #8cddf5;
-}
-
-.pad-mark--snare {
-  height: 12px;
-  margin-block: 4px;
-  border-radius: 4px;
-  background: repeating-linear-gradient(90deg,transparent 0 4px,#8cddf5 4px 5px);
-}
-
-.pad-mark--hat {
-  height: 8px;
-  margin-block: 6px;
-  border-radius: 50%;
-}
-
-.pad-mark--hat::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: -6px;
-  width: 2px;
-  height: 16px;
-  background: #8cddf5;
-}
-
-.rhythm-pad kbd {
-  font: 10px/1 var(--body);
-  color: #acbfc7;
-}
-
-.rhythm-panel-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.rhythm-demo {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #8cddf5;
-  font-size: var(--type-ui);
-  font-weight: var(--weight-semibold);
-}
-
-.rhythm-demo .icon {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-  stroke: none;
-}
-
-.rhythm-key-hint {
-  font-size: var(--type-label-small);
-  color: #acbfc7;
-}
-
-.rhythm-feedback {
-  font-size: var(--type-caption);
-  color: #ffbcb5;
-}
-
-.rhythm-feedback:not(:empty) {
-  margin-top: 8px;
-}
-
 /* A single five-column service strip below the portrait. */
 
 .performance-aside {
@@ -4863,14 +4666,6 @@ body.menu-open .site-header {
   }
 }
 
-@media (hover: none) {
-
-  .rhythm-key-hint,
-  .rhythm-pad kbd {
-    display: none;
-  }
-}
-
 @media (max-width: 1200px) {
 
   .performance-aside {
@@ -5842,14 +5637,6 @@ body.menu-open .site-header {
     min-height: 420px;
   }
 
-  .rhythm-panel {
-    padding: 14px;
-  }
-
-  .rhythm-pad {
-    min-height: 80px;
-  }
-
   .performance-hero {
     --type-name: clamp(1.875rem,6vw,2.25rem);
   }
@@ -6103,10 +5890,6 @@ body.menu-open .site-header {
 
   .surface-light {
     display: none;
-  }
-
-  .rhythm-pad:is(:active,.is-hit) {
-    transform: none;
   }
 
   ::view-transition-old(root),
