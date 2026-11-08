@@ -964,11 +964,12 @@ summary::-webkit-details-marker {
   display: grid;
   grid-template-columns: 34px minmax(0,1fr);
   column-gap: var(--space-2);
+  row-gap: var(--space-1);
 }
 
 .tool-symbol {
   grid-column: 1;
-  grid-row: 1 / span 2;
+  grid-row: 1;
   align-self: center;
   width: 30px;
   height: 30px;
@@ -981,7 +982,7 @@ summary::-webkit-details-marker {
 
 .tool-intro h1 {
   font-weight: var(--weight-heading);
-  margin-bottom: var(--space-1);
+  margin-bottom: 0;
   font-size: var(--type-tool-title);
   line-height: var(--leading-heading);
 }
@@ -1190,7 +1191,7 @@ body.tool-help-open,
 
 .app-workspace:fullscreen > .tool-fullscreen-toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   flex-shrink: 0;
   padding-block: var(--space-1);
 }
@@ -3609,6 +3610,11 @@ body.menu-open .site-header {
 
 .tool-ui .tool-playback {
   font-variant-numeric: tabular-nums;
+}
+
+.tool-ui .tool-playback :is(.icon,.tool-icon) {
+  fill: currentColor;
+  stroke: none;
 }
 
 .tool-ui .tool-tap {
