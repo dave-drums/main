@@ -1,0 +1,62 @@
+{
+  "direct": [
+    {
+      "id": "home",
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "href": "/#about"
+    },
+    {
+      "id": "watch",
+      "label": "Watch",
+      "href": "/watch/"
+    },
+    {
+      "id": "contact",
+      "label": "Contact",
+      "href": "/#contact"
+    }
+  ],
+  "groups": [
+    {
+      "id": "services",
+      "label": "Services",
+      "links": [
+        {
+          "label": "Drum Lessons",
+          "href": "/lessons/"
+        },
+        {
+          "label": "Drum Recording",
+          "href": "/recording/"
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "label": "Free Tools",
+      "links": [
+        {
+          "label": "Metronome",
+          "href": "/metronome/"
+        },
+        {
+          "label": "Groove Lab",
+          "href": "/groove/"
+        },
+        {
+          "label": "Rudiment Trainer",
+          "href": "/rudiments/"
+        },
+        {
+          "label": "Karnivool \"Drone\" Notation",
+          "href": "/notation/karnivool-drone"
+        }
+      ]
+    }
+  ]
+}

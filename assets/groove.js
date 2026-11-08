@@ -7,10 +7,19 @@
   const feedback = document.querySelector("#groove-feedback");
   if (!frame || !workspace || !fullscreenButton || !feedback) return;
 
-  // Match Practice Vault's groove links without changing the application origin.
+  // The public page and its editor now share this repository and origin.
   const appURL = new URL(frame.src);
   appURL.search = window.location.search;
   if (frame.src !== appURL.href) frame.src = appURL.href;
+
+  // Keep reloads and bookmarks on the public URL as the pattern changes.
+  window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin || event.source !== frame.contentWindow
+        || event.data?.type !== "dave-drums:groove-change" || typeof event.data.search !== "string") return;
+    const next = new URL(window.location.href);
+    next.search = event.data.search;
+    window.history.replaceState(null, "", next.href);
+  });
 
   // Like Practice Vault, rotating hides the prompt and tapping dismisses it for this visit.
   const orientationPrompt = document.querySelector("#groove-orientation");

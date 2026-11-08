@@ -1,0 +1,11 @@
+Groove Lab is derived from Groove Scribe by Lou Montulli and Mike Johnston.
+The original copyright notices and GNU GPL version 2 licence are retained.
+See LICENSE.txt and gscribe_about.html.
+
+This copy includes Dave Drums' existing interface and notation updates and the
+integration with https://www.davedrums.com.au/groove/.
+The editable source is maintained in apps/groovelab in the website repository:
+https://github.com/dave-drums/main
+
+The published /groove/app/ directory contains the same JavaScript, styles,
+sound assets and licence files used to run the application.

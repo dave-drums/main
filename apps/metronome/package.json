@@ -1,0 +1,27 @@
+{
+  "name": "dave-drums-metronome",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Embedded Dave Drums metronome",
+  "license": "MIT",
+  "author": "Dave Drums",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dave-drums/main.git",
+    "directory": "apps/metronome"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "16.3.3",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  }
+}

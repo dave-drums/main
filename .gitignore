@@ -1,14 +1,37 @@
 ﻿.DS_Store
 Thumbs.db
+.env
+.env.*
 
-# Local-only documentation and development sources
+# Private notes, historical material and local scratch work
+/.local/
 *.md
-/scripts/
-/config/
+!/README.md
 
 # Generated Python caches
 __pycache__/
 *.py[cod]
 
-# Unused original logo artwork (keep locally)
-/img/dd-logo-1000px-white.png
+# Dependencies and generated app/site builds
+node_modules/
+/dist/
+/metronome/app/
+/groove/app/
+/test-results/
+/playwright-report/
+
+# Tool exports are rebuilt from the canonical assets/ sources.
+/apps/metronome/src/dave-drums-theme.css
+/apps/metronome/src/tool-icons.json
+/apps/metronome/src/tempo-stepper.js
+/apps/metronome/src/playback-timer.js
+/apps/metronome/public/fonts/
+/apps/metronome/public/assets/icons-LICENSE.txt
+/apps/metronome/public/assets/metronome.svg
+/apps/metronome/public/assets/metronome-high.mp3
+/apps/metronome/public/assets/metronome-normal.mp3
+/apps/groovelab/css/dave-drums-theme.css
+/apps/groovelab/fonts/
+/apps/groovelab/images/tool-icons.svg
+/apps/groovelab/images/icons/
+/apps/groovelab/images/icons-LICENSE.txt

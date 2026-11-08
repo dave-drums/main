@@ -9,9 +9,14 @@ const slowLoad = window.setTimeout(() => {
 }, 15000);
 
 try {
-  const { mountMetronome } = await import(
-    "https://dave-drums.github.io/metronome/embed/metronome.js"
-  );
+  const app = new URL("../metronome/app/", import.meta.url);
+  const response = await fetch(new URL("version.json", app), { cache: "no-store" });
+  if (!response.ok) throw new Error("Metronome build is unavailable");
+  const { version } = await response.json();
+  if (typeof version !== "string") throw new Error("Invalid metronome build version");
+  const moduleURL = new URL("embed/metronome.js", app);
+  moduleURL.searchParams.set("v", version);
+  const { mountMetronome } = await import(moduleURL.href);
   await mountMetronome("#metronome-app");
   status.textContent = "";
 } catch (cause) {

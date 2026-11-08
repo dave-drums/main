@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex">
+    <title>Groove Lab | Dave Drums</title>
+    <meta name="application-name" content="Groove Lab">
+    <meta name="description" content="Groove Lab by Dave Drums. Create. Play. Explore.">
+    <link rel="icon" type="image/png" sizes="200x200" href="/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="200x200" href="/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- GrooveScribe core scripts -->
+    <script src="./js/groove_display.js"></script>
+
+    <!-- Inter font -->
+    <link rel="stylesheet" href="css/dave-drums-theme.css">
+
+    <!-- NEW: Count-in handler -->
+    <script src="./js/count-in-handler.js"></script>
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      /* Apply Inter font globally */
+      .gs-embed,
+      .gs-embed * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      }
+
+      /* Force hide swing row */
+      .swingRow {
+        display: none !important;
+      }
+
+      /* Force hide expand button, repeat button, GS logo */
+      .midiExpandImage,
+      .midiRepeatImage,
+      .midiGSLogo,
+      [id^="midiExpandImage"],
+      [id^="midiRepeatImage"],
+      [id^="midiGSLogo"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+  </head>
+
+  <body class="gs-embed">
+    <!-- Initialize GrooveScribe player -->
+    <script>
+      GrooveDisplay.AddGrooveDisplayToPage(location.search, true, true);
+    </script>
+
+    <!-- Inject BPM buttons and Count-in button -->
+    <script>
+      (function() {
+        'use strict';
+        
+        function clamp(n, min, max) {
+          return Math.max(min, Math.min(max, n));
+        }
+
+        function hideGsLogoHard() {
+          document.querySelectorAll('.midiGSLogo, [id^="midiGSLogo"], .midiExpandImage, [id^="midiExpandImage"], .midiRepeatImage, [id^="midiRepeatImage"]').forEach(function(el) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+            el.style.pointerEvents = 'none';
+          });
+        }
+
+        function injectCountInButton(playerRow) {
+          if (!playerRow) return;
+          if (playerRow.querySelector('.midiCountInButton')) return;
+
+          var playBtn = playerRow.querySelector('.midiPlayImage');
+          var timeDisplay = playerRow.querySelector('.MIDIPlayTime');
+          
+          if (!playBtn || !timeDisplay) return;
+
+          var countInBtn = document.createElement('span');
+          countInBtn.className = 'midiCountInButton';
+          countInBtn.textContent = '+1';
+          countInBtn.title = 'Count-in (1 bar before playing)';
+
+          if (timeDisplay.nextSibling) {
+            playerRow.insertBefore(countInBtn, timeDisplay.nextSibling);
+          } else {
+            playerRow.appendChild(countInBtn);
+          }
+
+          countInBtn.addEventListener('click', function() {
+            if (countInBtn.classList.contains('active')) {
+              countInBtn.classList.remove('active');
+            } else {
+              countInBtn.classList.add('active');
+            }
+          });
+        }
+
+        function injectBpmButtons(wrap) {
+          if (!wrap) return;
+
+          hideGsLogoHard();
+
+          var tempoRow = wrap.querySelector('.tempoRow');
+          var tempoField = wrap.querySelector('[id^="tempoTextField"]') || 
+                          wrap.querySelector('.tempoTextField') || 
+                          wrap.querySelector('input[type="text"]');
+
+          if (!tempoRow || !tempoField) return;
+
+          if (tempoRow.querySelector('.bpmBtns')) return;
+
+          tempoField.readOnly = false;
+          tempoField.style.cursor = 'text';
+          
+          tempoField.addEventListener('change', function() {
+            var slider = wrap.querySelector('input[type="range"]');
+            if (!slider) return;
+            
+            var v = parseInt(tempoField.value, 10);
+            if (Number.isNaN(v)) return;
+            
+            v = clamp(v, 30, 300);
+            slider.value = String(v);
+            tempoField.value = String(v);
+            
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+            slider.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+
+          var btnWrap = document.createElement('span');
+          btnWrap.className = 'bpmBtns';
+          btnWrap.innerHTML = 
+            '<span class="bpmBtn" data-d="-5">−</span>' +
+            '<span class="bpmBtn" data-d="5">+</span>';
+
+          tempoRow.appendChild(btnWrap);
+
+          btnWrap.addEventListener('click', function(e) {
+            var btn = e.target.closest('.bpmBtn');
+            if (!btn) return;
+
+            var delta = parseInt(btn.getAttribute('data-d'), 10) || 0;
+            var slider = wrap.querySelector('input[type="range"]');
+            if (!slider) return;
+
+            var cur = parseInt(slider.value, 10);
+            if (Number.isNaN(cur)) cur = parseInt(tempoField.value, 10) || 80;
+
+            var next = clamp(cur + delta, 30, 300);
+
+            slider.value = String(next);
+            tempoField.value = String(next);
+
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+            slider.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+        }
+
+        function injectAll() {
+          hideGsLogoHard();
+          
+          document.querySelectorAll('.playerControlsRow').forEach(function(row) {
+            injectCountInButton(row);
+          });
+          
+          document.querySelectorAll('[id^="tempoAndProgress"]').forEach(function(wrap) {
+            injectBpmButtons(wrap);
+          });
+        }
+
+        var tries = 0;
+        var maxTries = 120;
+        var interval = setInterval(function() {
+          tries++;
+          injectAll();
+
+          var playerRows = document.querySelectorAll('.playerControlsRow');
+          var tempoWraps = document.querySelectorAll('[id^="tempoAndProgress"]');
+          
+          var countInDone = playerRows.length > 0 && 
+                           Array.prototype.every.call(playerRows, function(row) {
+                             return row.querySelector('.midiCountInButton');
+                           });
+                           
+          var bpmDone = tempoWraps.length > 0 && 
+                       Array.prototype.every.call(tempoWraps, function(wrap) {
+                         var row = wrap.querySelector('.tempoRow');
+                         return row && row.querySelector('.bpmBtns');
+                       });
+
+          if ((countInDone && bpmDone) || tries > maxTries) {
+            clearInterval(interval);
+            
+            setTimeout(function() {
+              if (window.GrooveCountIn) {
+                window.GrooveCountIn.init();
+              }
+            }, 500);
+          }
+        }, 50);
+      })();
+    </script>
+
+    <!-- Report height to parent iframe -->
+    <script>
+      function sendGrooveHeight() {
+        var container = document.body;
+        var height = container.scrollHeight || 
+                    container.getBoundingClientRect().height || 
+                    0;
+
+        height = Math.ceil(height);
+
+        window.parent.postMessage(
+          { type: 'grooveHeight', height: height },
+          '*'
+        );
+      }
+
+      window.addEventListener('load', function() {
+        setTimeout(sendGrooveHeight, 200);
+      });
+
+      window.addEventListener('resize', function() {
+        setTimeout(sendGrooveHeight, 100);
+      });
+    </script>
+  </body>
+</html>
