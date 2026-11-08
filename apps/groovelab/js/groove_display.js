@@ -45,12 +45,19 @@ if (typeof(GrooveDisplay) === "undefined") {
 
 		root.getLocalScriptRoot = (function () {
 			var scripts = document.getElementsByTagName('script');
-			var index = scripts.length - 1;
-			var myScript = scripts[index];
-			var lastSlash = myScript.src.lastIndexOf("/");
-			myScript.rootSrc = myScript.src.slice(0, lastSlash + 1);
+			var myScript = document.currentScript;
+			if (!myScript || !myScript.src) {
+				for (var index = scripts.length - 1; index >= 0; index--) {
+					if (/\/groove_display\.js(?:[?#]|$)/.test(scripts[index].src)) {
+						myScript = scripts[index];
+						break;
+					}
+				}
+			}
+			var scriptURL = myScript && myScript.src ? myScript.src : new URL('js/groove_display.js', document.baseURI).href;
+			var scriptRoot = new URL('./', scriptURL).href;
 			return function () {
-				return myScript.rootSrc;
+				return scriptRoot;
 			};
 		})();
 

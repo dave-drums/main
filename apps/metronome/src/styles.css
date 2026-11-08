@@ -2,7 +2,7 @@
 @import './dave-drums-theme.css';
 :host { all: initial; display: block; }
 *,*::before,*::after { box-sizing: border-box; }
-.metronome-surface { font: 16px/1.5 "DM Sans",Arial,sans-serif; color: var(--text); }
+.metronome-surface { font: var(--weight-regular) var(--type-body)/var(--leading-ui) var(--body); color: var(--text); }
 .metronome-wrapper { width: 100%; padding-block: var(--space-4); }
 .metronome-card { width: 100%; max-width: 680px; margin-inline: auto; padding: clamp(16px,3vw,32px); border: 1px solid var(--line); border-radius: var(--panel-radius); background: var(--tool-panel-fill); box-shadow: var(--tool-panel-shadow); }
 .bpm-display { text-align: center; }

@@ -623,3 +623,37 @@ button {
     justify-content: flex-end;
   }
 }
+
+/* Standalone notation-embed presentation. */
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: transparent;
+      }
+
+      /* Shared UI type roles; preserve the notation's own musical engraving. */
+      .gs-embed,
+      .gs-embed :is(button,input,select,label,.bpmBtn,.midiCountInButton,.tempoLabel,.midiMetronomeMenu) {
+        font-family: var(--body);
+      }
+      .gs-embed :is(.tempoTextField,.MIDIPlayTime) {
+        font-family: var(--display);
+      }
+
+      /* Force hide swing row */
+      .swingRow {
+        display: none !important;
+      }
+
+      /* Force hide expand button, repeat button, GS logo */
+      .midiExpandImage,
+      .midiRepeatImage,
+      .midiGSLogo,
+      [id^="midiExpandImage"],
+      [id^="midiRepeatImage"],
+      [id^="midiGSLogo"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }

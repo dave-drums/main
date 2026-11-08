@@ -20,11 +20,11 @@
 		 */
 		position: relative;
 		background-color: var(--side-bg-color);
-		//background-color: #DDD;
+		/* background-color: #DDD; */
 		width: 100%;
 		min-width: 800px;
 		/* to embed, add your header height here.  Replace 0px with your header height */
-		//height: 100%;
+		/* height: 100%; */
 		font: var(--type-body)/var(--leading-ui) var(--body);
 
 	}
@@ -761,7 +761,7 @@
 	}
 	#PermutationOptions.displayed {
 		padding: 3px 0px 0px 10px;
-		//margin-bottom: -20px;
+		/* margin-bottom: -20px; */
 		background-color: var(--panel-bg-color);
 		color: var(--ui-text-color);
 	}

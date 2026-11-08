@@ -13,43 +13,12 @@
     <!-- GrooveScribe core scripts -->
     <script src="./js/groove_display.js"></script>
 
-    <!-- Inter font -->
+    <!-- Shared local fonts and tool tokens -->
     <link rel="stylesheet" href="css/dave-drums-theme.css">
 
-    <!-- NEW: Count-in handler -->
+    <!-- Count-in playback -->
     <script src="./js/count-in-handler.js"></script>
 
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: transparent;
-      }
-
-      /* Apply Inter font globally */
-      .gs-embed,
-      .gs-embed * {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-      }
-
-      /* Force hide swing row */
-      .swingRow {
-        display: none !important;
-      }
-
-      /* Force hide expand button, repeat button, GS logo */
-      .midiExpandImage,
-      .midiRepeatImage,
-      .midiGSLogo,
-      [id^="midiExpandImage"],
-      [id^="midiRepeatImage"],
-      [id^="midiGSLogo"] {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-      }
-    </style>
   </head>
 
   <body class="gs-embed">

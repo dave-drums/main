@@ -2,10 +2,7 @@
   "use strict";
 
   const frame = document.querySelector("#groove-frame");
-  const workspace = document.querySelector("#groove-workspace");
-  const fullscreenButton = document.querySelector("#groove-fullscreen");
-  const feedback = document.querySelector("#groove-feedback");
-  if (!frame || !workspace || !fullscreenButton || !feedback) return;
+  if (!frame) return;
 
   // The public page and its editor now share this repository and origin.
   const appURL = new URL(frame.src);
@@ -21,7 +18,7 @@
     window.history.replaceState(null, "", next.href);
   });
 
-  // Like Practice Vault, rotating hides the prompt and tapping dismisses it for this visit.
+  // Rotating hides the prompt; tapping dismisses it for this visit.
   const orientationPrompt = document.querySelector("#groove-orientation");
   if (orientationPrompt && typeof orientationPrompt.showModal === "function") {
     const mobilePortrait = window.matchMedia(

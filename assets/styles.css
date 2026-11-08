@@ -1,4 +1,4 @@
-/* Dave Drums V3 â€” single shared stylesheet.
+/* Dave Drums V3 - single shared stylesheet.
    Breakpoints: phone 600px / stacked 900px / compact desktop 1200px. */
 
 /* ==========================================================================
@@ -3812,8 +3812,8 @@ body.menu-open .site-header {
    ========================================================================== */
 
 /* TOOL UI SHARED START
-   Canonical tool components. scripts/sync-tool-theme.py exports this contract
-   and the site tokens/fonts to the independently hosted applications. */
+   Canonical tool components. build/sync-tool-theme.mjs exports this contract
+   and the site tokens/fonts to the isolated applications in apps/. */
 
 .tool-ui {
   --text: #edf2f5;
@@ -4103,7 +4103,7 @@ body.menu-open .site-header {
 
 /* TOOL UI SHARED END */
 
-/* Rudiment trainer â€” notation, transport and practice controls. */
+/* Rudiment trainer - notation, transport and practice controls. */
 
 .rud-shell {
   max-width: var(--frame-max);
@@ -4545,7 +4545,7 @@ body.menu-open .site-header {
   color: var(--muted);
 }
 
-/* Rhythm Reader â€” generator, notation, tap-along and saved exercises. */
+/* Rhythm Reader - generator, notation, tap-along and saved exercises. */
 
 .rr-modes {
   display: flex;

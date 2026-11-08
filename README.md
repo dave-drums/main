@@ -22,6 +22,10 @@ components. Shared tool fonts, icons, themes, timer and tempo helpers are export
 automatically into the app source folders. Those generated copies are ignored by
 Git; edit the originals in `assets/`.
 
+Rudiment Trainer runs directly from its page and `assets/rudiments*.js`; it does
+not need a generated `/app/` directory. Metronome's compiled bundle and Groove
+Lab's isolated document use those generated directories.
+
 ## Run locally
 
 Install Node.js 22.12 or newer, then run these commands from this folder:
