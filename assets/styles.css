@@ -549,7 +549,7 @@ main>.theme-dark+.theme-dark {
 
 /* Editorial action buttons follow their label width; app controls retain their layouts. */
 
-main:not(.tool-page) .button:not(.testimonial-control) {
+main:not(.tool-page) .button:not(.testimonial-control,[data-compare-version]) {
   width: fit-content;
   justify-self: start;
   align-self: flex-start;
@@ -2845,6 +2845,156 @@ body.menu-open .site-header {
 
 /* Full-width studio stage followed by four equally weighted releases. */
 
+.recording-showcase {
+  display: grid;
+  gap: var(--section-space);
+}
+
+.recording-comparison,
+.recording-process {
+  display: grid;
+  grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
+  column-gap: var(--column-gap);
+}
+
+.recording-comparison {
+  align-items: center;
+  row-gap: var(--column-gap);
+}
+
+.comparison-copy > p:not(.section-label) {
+  max-width: 42ch;
+  color: var(--muted);
+}
+
+.comparison-headphone-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  font-size: var(--type-ui);
+}
+
+.comparison-headphone-note .icon { color: var(--link-color); }
+
+.comparison-player {
+  min-width: 0;
+  padding: clamp(20px,3vw,32px);
+  border: 1px solid var(--line);
+  border-radius: var(--panel-radius);
+  background: #111c21;
+  box-shadow: var(--panel-shadow);
+}
+
+.comparison-player-heading {
+  margin: 0 0 var(--space-4);
+  font-size: var(--type-h3);
+}
+
+.comparison-versions {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: var(--space-1);
+}
+
+.comparison-versions .button {
+  width: 100%;
+  min-width: 0;
+  justify-content: center;
+  text-transform: none;
+}
+
+.comparison-versions .button[aria-pressed="true"] {
+  border-color: var(--link-color);
+  background: #183d49;
+  color: var(--link-color);
+}
+
+.comparison-caption {
+  display: grid;
+  grid-template-columns: 18px minmax(0,1fr);
+  align-items: start;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: var(--type-ui);
+}
+
+.comparison-caption .icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--link-color);
+}
+
+.comparison-scrubber {
+  position: relative;
+  margin-block: var(--space-3) var(--space-2);
+  border-radius: 6px;
+}
+
+.comparison-waveform {
+  display: block;
+  width: 100%;
+  height: 80px;
+}
+
+/* The native range keeps keyboard/touch semantics; the waveform is its visual track. */
+.comparison-scrubber input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  appearance: none;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.comparison-scrubber input:disabled {
+  opacity: 0;
+  cursor: wait;
+}
+
+.comparison-scrubber input::-webkit-slider-thumb {
+  appearance: none;
+  width: 0;
+  height: 80px;
+}
+
+.comparison-scrubber input::-moz-range-thumb {
+  width: 0;
+  height: 80px;
+  border: 0;
+}
+
+.comparison-scrubber:focus-within {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 4px;
+}
+
+.comparison-transport {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.comparison-play {
+  min-width: 104px;
+  justify-content: center;
+  text-transform: none;
+}
+
+.comparison-play .icon { fill: currentColor; stroke: none; }
+.comparison-player :disabled { opacity: .5; cursor: wait; }
+.comparison-times { display: flex; justify-content: flex-end; gap: 4px; color: var(--muted); font-size: var(--type-ui); font-variant-numeric: tabular-nums; }
+.comparison-status { margin-top: var(--space-2); color: var(--muted); font-size: var(--type-caption); min-height: 1.5em; }
+.comparison-status:empty { display: none; }
+
 .recording-hero-media img {
   object-position: 72% 45%;
 }
@@ -3080,13 +3230,26 @@ body.menu-open .site-header {
 }
 
 .recording-process {
-  display: grid;
-  grid-template-columns: .65fr 1.35fr;
-  gap: 0 var(--column-gap);
+  row-gap: 0;
 }
 
 .recording-process > .section-label {
   grid-column: 1/-1;
+}
+
+.recording-process-intro {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.recording-process-intro > h2 {
+  margin-bottom: var(--space-3);
+}
+
+.recording-process-intro > p {
+  max-width: 36ch;
+  color: var(--muted);
+  font-size: var(--type-body);
 }
 
 .recording-steps {
@@ -5310,6 +5473,11 @@ body.menu-open .site-header {
     gap: 24px;
   }
 
+  .recording-comparison {
+    grid-template-columns: minmax(0,1fr);
+    gap: var(--space-4);
+  }
+
   .lesson-approach {
     grid-template-columns: 1fr;
     gap: var(--space-5);
@@ -5380,7 +5548,8 @@ body.menu-open .site-header {
     grid-template-columns: 1fr;
   }
 
-  .recording-process > h2 {
+  .recording-process-intro {
+    grid-row: auto;
     margin-bottom: var(--space-4);
   }
 

@@ -1,0 +1,33 @@
+import { test, expect } from '@playwright/test';
+
+test('the drum waveform seeks with clicks, dragging and keyboard while retaining the chosen version', async ({ page }) => {
+  await page.goto('/recording/');
+  const scrubber = page.locator('.comparison-scrubber');
+  await scrubber.scrollIntoViewIfNeeded();
+  const play = page.getByRole('button', { name: 'Play raw drums', exact: true });
+  await expect(play).toBeEnabled();
+  const seek = page.getByRole('slider', { name: 'Playback position' });
+  const bounds = await scrubber.boundingBox();
+  const duration = Number(await seek.getAttribute('max'));
+  expect(duration).toBeGreaterThan(20);
+  await scrubber.click({ position: { x: bounds.width / 2, y: bounds.height / 2 } });
+  await expect.poll(async () => Math.abs(Number(await seek.inputValue()) - duration / 2)).toBeLessThan(1);
+  await expect(play).toBeVisible();
+  await seek.press('Home');
+  await expect(seek).toHaveValue('0');
+  await seek.press('ArrowRight');
+  await expect(seek).toHaveValue('1');
+  await play.click();
+  await expect(page.getByRole('button', { name: 'Pause drum comparison' })).toBeVisible();
+  const active = await scrubber.boundingBox();
+  await page.mouse.move(active.x + active.width / 4, active.y + active.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(active.x + active.width * .75, active.y + active.height / 2, { steps: 5 });
+  await page.mouse.up();
+  await expect(page.getByRole('button', { name: 'Pause drum comparison' })).toBeVisible();
+  await expect.poll(async () => Number(await seek.inputValue())).toBeGreaterThan(duration * .7);
+  await page.getByRole('button', { name: 'Mixed drums', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Mixed drums', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Pause drum comparison' }).click();
+  await expect(page.getByRole('button', { name: 'Play mixed drums' })).toBeVisible();
+});

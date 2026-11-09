@@ -149,6 +149,7 @@
   </script>
   <script defer="" src="../assets/navigation.js"></script>
   <script defer="" src="../assets/experience.js"></script>
+  <script type="module" src="../assets/drum-comparison.js"></script>
   <link as="font" crossorigin="" href="../assets/fonts/inter-latin.woff2" rel="preload" type="font/woff2"/>
   <link as="font" crossorigin="" href="../assets/fonts/dm-sans-latin.woff2" rel="preload" type="font/woff2"/>
  </head>
@@ -419,11 +420,41 @@
      </ul>
     </div>
    </section>
-   <section aria-labelledby="process-heading" class="page-section page-section--compact recording-process section-shell section-band theme-medium surface-panel">
+   <div class="recording-showcase page-section section-shell section-band theme-medium surface-panel">
+   <section aria-labelledby="comparison-heading" class="recording-comparison" data-drum-comparison="" data-audio-raw="/assets/drums-raw.mp3" data-audio-mixed="/assets/drums-mixed.mp3">
+    <div class="comparison-copy">
+     <p class="eyebrow section-label">Raw / Mixed</p>
+     <h2 id="comparison-heading">Hear the <span class="heading-accent">difference</span></h2>
+     <p>The same drum performance, before and after mixing. Switch between the two as you listen to compare the sound.</p>
+     <p class="comparison-headphone-note"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#headphones"></use></svg>Best heard with headphones.</p>
+    </div>
+    <div class="comparison-player" aria-label="Raw and mixed drum comparison">
+     <h3 class="comparison-player-heading">One performance, two sounds</h3>
+     <div class="comparison-versions" role="group" aria-label="Choose drum version">
+      <button class="button" type="button" data-compare-version="raw" aria-pressed="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#mic"></use></svg>Raw drums</button>
+      <button class="button" type="button" data-compare-version="mixed" aria-pressed="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#sparkles"></use></svg>Mixed drums</button>
+     </div>
+     <p class="comparison-caption" data-compare-caption=""><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#info"></use></svg><span data-compare-description="">Unprocessed drums recorded straight from the microphones, ready to shape in your own mix. Hear the natural sound of the kit and room before any added processing.</span></p>
+     <div class="comparison-scrubber">
+      <canvas class="comparison-waveform" aria-hidden="true" height="80"></canvas>
+      <label class="visually-hidden" for="drum-comparison-seek">Playback position</label><input id="drum-comparison-seek" data-compare-seek="" type="range" min="0" max="1" step="0.01" value="0" disabled=""/>
+     </div>
+     <div class="comparison-transport">
+      <button class="button button--primary comparison-play" type="button" data-compare-play="" aria-label="Play raw drums" disabled=""><svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#play"></use></svg><span>Play</span></button>
+      <div class="comparison-times"><span data-compare-elapsed="">0:00</span><span aria-hidden="true"> / </span><span data-compare-duration="">0:00</span></div>
+     </div>
+     <p class="comparison-status" data-compare-status="" role="status">Loading both versions…</p>
+     <noscript><p><a href="/assets/drums-raw.mp3">Listen to raw drums</a> · <a href="/assets/drums-mixed.mp3">Listen to mixed drums</a></p></noscript>
+    </div>
+   </section>
+   <section aria-labelledby="process-heading" class="recording-process">
     <p class="eyebrow section-label">
      THE PROCESS
     </p>
-    <h2 data-reveal="" id="process-heading">How it <span class="heading-accent">works</span></h2>
+    <div class="recording-process-intro">
+     <h2 data-reveal="" id="process-heading">How it <span class="heading-accent">works</span></h2>
+     <p>From your first idea to the finished drum tracks, we’ll shape the recording around your music.</p>
+    </div>
     <ol class="feature-grid feature-grid--compact recording-steps">
      <li class="feature-card">
       <span aria-hidden="true" class="recording-step-number"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#message"></use></svg><span>01</span></span>
@@ -466,6 +497,7 @@
      </li>
     </ol>
    </section>
+   </div>
    <section aria-labelledby="about-recording-heading" class="page-section recording-about profile-layout section-band two-column theme-dark">
     <div class="about-image" data-reveal="">
      <img class="festival-photo" alt="Dave D’Amore playing drums on stage at an outdoor festival" decoding="async" height="854" loading="lazy" sizes="(max-width: 800px) 100vw, 40vw" src="../img/dave-festival1-1200.webp" srcset="
