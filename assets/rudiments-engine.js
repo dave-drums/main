@@ -196,11 +196,13 @@ export class RudimentEngine {
     // The same samples and relative levels used by the Dave Drums metronome.
     // Source: https://github.com/dave-drums/metronome (MIT).
     if (!this.clickReady) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
       this.clickReady = Promise.all(['normal', 'high'].map(async (name) => {
-        const response = await fetch(new URL(`metronome-${name}.mp3`, import.meta.url));
+        const response = await fetch(new URL(`metronome-${name}.mp3`, import.meta.url), { signal: controller.signal });
         if (!response.ok) throw new Error(`Metronome sample unavailable: ${response.status}`);
         return this.context.decodeAudioData(await response.arrayBuffer());
-      })).then(([normal, high]) => { this.clickSamples = { normal, high }; });
+      })).then(([normal, high]) => { this.clickSamples = { normal, high }; }).finally(() => clearTimeout(timeout));
     }
     try { await this.clickReady; }
     catch (error) { this.clickReady = null; throw error; }

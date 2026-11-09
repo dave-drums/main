@@ -56,3 +56,5 @@
 }
 
 .met-note-icon { max-width: 100%; transform: scaleY(1.2); }
+
+.met-audio-status { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-block: 16px; color: var(--muted); font-size: var(--type-ui); }

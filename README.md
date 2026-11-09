@@ -67,6 +67,9 @@ The workflow installs pinned dependencies, checks the apps, builds `dist/`, runs
 browser checks, and publishes only that output. `CNAME` at the root is the domain
 source; `dist/CNAME` is generated from it.
 
+The production build also minifies the shared stylesheet. Keep editing the
+labelled, readable source in `assets/styles.css`; do not edit `dist/`.
+
 The public tool URLs remain `/metronome/`, `/groove/` and `/rudiments/`. Groove
 sharing uses `/groove/?...`; exported notation embeds use
 `/groove/app/GrooveEmbed.html?...`. Old sibling repositories remain backups;

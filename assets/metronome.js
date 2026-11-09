@@ -6,11 +6,17 @@ const error = document.querySelector("#metronome-error");
 status.textContent = "Loading metronome…";
 const slowLoad = window.setTimeout(() => {
   status.textContent = "Still loading the metronome. Please check your connection if this continues.";
+  const retry = document.createElement('a');
+  retry.href = window.location.href;
+  retry.textContent = 'Reload the metronome';
+  status.append(' ', retry);
 }, 15000);
+const controller = new AbortController();
+const fetchTimeout = setTimeout(() => controller.abort(), 15000);
 
 try {
   const app = new URL("../metronome/app/", import.meta.url);
-  const response = await fetch(new URL("version.json", app), { cache: "no-store" });
+  const response = await fetch(new URL("version.json", app), { cache: "no-store", signal: controller.signal });
   if (!response.ok) throw new Error("Metronome build is unavailable");
   const { version } = await response.json();
   if (typeof version !== "string") throw new Error("Invalid metronome build version");
@@ -26,5 +32,6 @@ try {
   console.error("Unable to load the metronome.", cause);
 } finally {
   window.clearTimeout(slowLoad);
+  clearTimeout(fetchTimeout);
   host.setAttribute("aria-busy", "false");
 }

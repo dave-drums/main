@@ -21,12 +21,20 @@
     }
 
     let detachFrameEvents = () => {};
+    const direct = document.createElement('a');
+    direct.href = launch.href;
+    direct.target = '_blank';
+    direct.rel = 'noopener noreferrer';
+    direct.textContent = provider === 'youtube' ? 'Open on YouTube' : 'Open on Instagram';
+    direct.hidden = true;
+    close.after(direct);
     const restore = (returnFocus = false) => {
       detachFrameEvents();
       shell.replaceChildren(launch);
       shell.classList.remove("is-playing");
       shell.removeAttribute("aria-busy");
       close.hidden = true;
+      direct.hidden = true;
       if (activePlayer === restore) activePlayer = undefined;
       if (returnFocus) launch.focus({ preventScroll: true });
     };
@@ -78,9 +86,11 @@
       shell.replaceChildren(frame);
       shell.classList.add("is-playing");
       close.hidden = false;
+      direct.hidden = false;
       activePlayer = restore;
       frame.focus({ preventScroll: true });
     });
     close.addEventListener("click", () => restore(true));
   });
+  window.addEventListener('pagehide', () => activePlayer?.());
 })();

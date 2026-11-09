@@ -86,8 +86,8 @@
   if (canAnimate && !reducedMotion.matches && stage) {
     stage.querySelectorAll(".hero-copy h1,.hero-role").forEach((element, index) => {
       entranceAnimations.push(element.animate([
-        { opacity: 0, transform: "translateY(18px)" },
-        { opacity: 1, transform: "none" }
+        { transform: "translateY(18px)" },
+        { transform: "none" }
       ], { duration: 720, delay: index * 100, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards" }));
     });
   }

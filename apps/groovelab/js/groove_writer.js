@@ -91,6 +91,20 @@ function GrooveWriter() {
 		return class_notes_per_measure;
 	};
 
+	// Read the same musical state used by notation/sharing for accessible controls.
+	root.accessibleNoteState = function (type, index) {
+		var state = type === "hh" ? get_hh_state(index, "URL") : type === "snare" ? get_snare_state(index, "URL") :
+			type === "kick" ? get_kick_state(index, "URL") : type === "sticking" ? get_sticking_state(index, "URL") : get_tom_state(index, type === "tom1" ? 1 : 4, "URL");
+		var names = type === "hh" ? { x:"hit", X:"accent", o:"open hi-hat", "+":"closed hi-hat", c:"crash", r:"ride", b:"ride bell", m:"cowbell", s:"stack", n:"click", N:"accented click" } :
+			type === "snare" ? { o:"hit", O:"accent", g:"ghost note", x:"cross stick", f:"flam", d:"drag", b:"buzz" } :
+			type === "sticking" ? { R:"right hand", L:"left hand", B:"both hands", c:"count" } :
+			type === "kick" ? { o:"hit", x:"foot splash", X:"kick and foot splash" } : { x:"hit", o:"hit" };
+		var local = index % class_notes_per_measure;
+		return { on:state !== "-" && state !== false, state:names[state] || (state === "-" || state === false ? "off" : state),
+			bar:Math.floor(index / class_notes_per_measure) + 1, beat:Math.floor(local * class_num_beats_per_measure / class_notes_per_measure) + 1,
+			step:local + 1, steps:class_notes_per_measure };
+	};
+
 	// is the division a triplet groove?   12, 24, or 48 notes
 	function usingTriplets() {
 		if (root.myGrooveUtils.isTripletDivision(class_time_division))
@@ -1522,7 +1536,7 @@ function GrooveWriter() {
 	root.noteLeftClick = function (event, type, id) {
 
 		// use a popup if advanced edit is on
-		if (class_advancedEditIsOn === true) {
+		if (class_advancedEditIsOn === true && !event.fromKeyboard) {
 			root.noteRightClick(event, type, id);
 
 		} else {
@@ -3262,6 +3276,7 @@ function GrooveWriter() {
 	root.setupWriterHotKeys = function () {
 
 		document.addEventListener("keydown", function (e) {
+			if (e.defaultPrevented || e.target.closest('input,textarea,select,button,[role="button"]')) return;
 
 			// only accept the event if it not going to an INPUT field   (allow for range types)
 			if (e.target.type == "range" || (e.target.tagName.toUpperCase() != "INPUT" && e.target.tagName.toUpperCase() != "TEXTAREA")) {

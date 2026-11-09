@@ -84,17 +84,23 @@ def render(config):
     featured, reels = config.get("featured"), config.get("reels", [])
     if featured and video_info(featured)[0] != "youtube":
         raise ValueError("The featured performance must be a YouTube video.")
-    sections = []
+    sections = ['''<section class="page-hero service-hero watch-hero section-shell section-band theme-dark" aria-labelledby="watch-heading">
+ <div class="service-title"><p class="eyebrow section-label">Dave D'Amore / Performances</p><h1 id="watch-heading">Drums <span class="heading-accent">in motion</span></h1></div>
+ <div class="service-summary"><p class="page-hero-subtitle">Drum performances and covers.</p><p class="page-hero-lead">Explore full drum covers, short performances and collaborations, with free notation for Karnivool's &quot;Drone&quot;.</p>
+  <div class="service-actions"><a class="button button--primary" href="#featured-performance">Watch the performances <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#arrow-down"></use></svg></a><a class="button" href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener noreferrer">Follow on Instagram <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a></div>
+ </div>
+ <div class="page-hero-media"><img alt="An overhead view of Dave D'Amore playing his acoustic drum kit" src="/img/dd-overhead-1600.webp" srcset="/img/dd-overhead-640.webp 640w, /img/dd-overhead-960.webp 960w, /img/dd-overhead-1600.webp 1600w" sizes="100vw" width="1600" height="903" fetchpriority="high" decoding="async"/></div>
+</section>''']
     home = notation = ""
     if featured:
         title = escape(featured["title"])
         description = escape(featured.get("description", ""))
         heading = (escape(featured["artist"]) + " &quot;" + escape(featured["song"]) + "&quot;") if featured.get("artist") and featured.get("song") else title
         home_caption = (escape(featured["artist"]) + ' &quot;' + escape(featured["song"]) + '&quot; – Drum Cover') if featured.get("artist") and featured.get("song") else title + " – Drum Cover"
-        sections.append(f'''<section class="page-hero watch-hero section-shell section-band page-section theme-medium surface-panel" aria-labelledby="watch-heading">
- <div class="watch-hero-copy"><p class="eyebrow section-label">Dave D'Amore / Performances</p><h1 id="watch-heading">Drums <span class="heading-accent">in motion</span></h1><h2 id="featured-heading">{heading}</h2><p>{description}</p></div>
- <div class="watch-hero-media" aria-labelledby="featured-heading">{player(featured, "watch-featured", external_link=False, priority=True)}</div>
- <div class="watch-hero-actions"><a class="button button--primary" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a><a class="text-link" href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener noreferrer">Follow on Instagram {icon("arrow-up-right")}</a></div>
+        sections.append(f'''<section class="watch-featured section-shell section-band page-section theme-medium surface-panel" id="featured-performance" aria-labelledby="featured-heading">
+ <div class="watch-featured-copy"><p class="eyebrow section-label">Featured performance</p><h2 id="featured-heading">{heading}</h2><p>{description}</p></div>
+ <div class="watch-featured-media" aria-labelledby="featured-heading">{player(featured, "watch-featured", external_link=False)}</div>
+ <div class="watch-featured-actions"><a class="button button--primary" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a></div>
 </section>''')
         home = f'''<section class="home-watch section-shell section-band page-section theme-dark" aria-labelledby="home-watch-heading">
  <div class="home-watch-copy"><p class="eyebrow section-label">Watch / Behind the kit</p><h2 class="heading-feature" id="home-watch-heading">Drums <span class="heading-accent">in motion</span></h2><p class="lead">{home_caption}</p></div>

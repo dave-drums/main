@@ -1,4 +1,5 @@
-import { cp, copyFile, writeFile } from 'node:fs/promises';
+import { transform } from 'lightningcss';
+import { cp, copyFile, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { ROOT, resetOutput } from './common.mjs';
 import { buildTools } from './tools.mjs';
@@ -12,6 +13,10 @@ for (const name of ['assets', 'img', 'lessons', 'recording', 'watch', 'notation'
   });
 }
 for (const name of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', 'CNAME', 'LICENSE']) await copyFile(resolve(ROOT, name), resolve(output, name));
+// Minify the deployed stylesheet; keep the labelled source readable.
+const stylesheet = resolve(output, 'assets/styles.css');
+const { code } = transform({ filename: stylesheet, code: await readFile(stylesheet), minify: true });
+await writeFile(stylesheet, code);
 await writeFile(resolve(output, '.nojekyll'), '');
 await verifySite(output);
 console.log(`Complete website built in ${output}`);

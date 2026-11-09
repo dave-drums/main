@@ -9,6 +9,8 @@ import { bindContextHelp } from './context-help.js';
 export default function Metronome({ keyboardTarget = window, assetBase = new URL(import.meta.env.BASE_URL, window.location.origin).href } = {}) {
   const [bpm, setBpm] = useState(120);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioState, setAudioState] = useState('loading');
+  const [audioAttempt, setAudioAttempt] = useState(0);
   const [beat, setBeat] = useState(0);
   const [subdivision, setSubdivision] = useState(0);
   const [beatsPerBar, setBeatsPerBar] = useState(4);
@@ -67,8 +69,12 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   useEffect(() => {
     let disposed = false;
     const abort = new AbortController();
-    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    setAudioState('loading');
+    if (!AudioContext) { setAudioState('unsupported'); return; }
+    const context = new AudioContext();
     audioContextRef.current = context;
+    const timeout = setTimeout(() => abort.abort(), 15000);
     const loadSound = async (url) => {
       const response = await fetch(new URL(url, assetBase), { signal: abort.signal });
       if (!response.ok) throw new Error(`Metronome sample unavailable: ${response.status}`);
@@ -80,10 +86,10 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
       loadSound('assets/metronome-normal.mp3'),
       loadSound('assets/metronome-high.mp3')
     ]).then(([low, normal, high]) => {
-      if (!disposed) audioBuffersRef.current = { low, normal, high };
-    }).catch(error => { if (!disposed) console.error('Could not load metronome audio', error); });
-    return () => { disposed = true; abort.abort(); context.close().catch(() => {}); };
-  }, []);
+      if (!disposed) { audioBuffersRef.current = { low, normal, high }; setAudioState('ready'); }
+    }).catch(() => { if (!disposed) setAudioState('error'); }).finally(() => clearTimeout(timeout));
+    return () => { disposed = true; clearTimeout(timeout); abort.abort(); context.close().catch(() => {}); };
+  }, [audioAttempt]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -99,14 +105,16 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
     };
     keyboardTarget.addEventListener('keydown', handleKeyPress);
     return () => keyboardTarget.removeEventListener('keydown', handleKeyPress);
-  }, [isPlaying, trainerEnabled, trainerStart, trainerStop, trainerAmount, trainerInterval]);
+  }, [isPlaying, audioState, trainerEnabled, trainerStart, trainerStop, trainerAmount, trainerInterval]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (audioContextRef.current?.state === 'suspended') audioContextRef.current.resume();
+      if (document.hidden) stopPlayback();
     };
+    const stopPlayback = () => { clearInterval(intervalRef.current); clearPlayback(); setIsPlaying(false); };
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', stopPlayback);
+    return () => { document.removeEventListener('visibilitychange', handleVisibilityChange); window.removeEventListener('pagehide', stopPlayback); };
   }, []);
 
   const subdivisions = [
@@ -254,6 +262,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
 
   function togglePlayback() {
     if (isPlaying) { setIsPlaying(false); return; }
+    if (audioState !== 'ready') return;
     let settings = null;
     if (trainerEnabled) {
       const fields = [...trainerInputsRef.current.querySelectorAll('input')];
@@ -353,11 +362,14 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
       })),
       h('div', { className: 'met-controls' },
         h('button', { className: 'tool-control tool-primary met-play tool-playback', 'aria-label': isPlaying ? 'Stop metronome' : 'Start metronome',
-          'aria-pressed': isPlaying, onClick: togglePlayback }, icon(isPlaying ? 'stop' : 'play'), h('span', null, isPlaying ? elapsedTime : 'Start')),
+          'aria-pressed': isPlaying, disabled: audioState !== 'ready', onClick: togglePlayback }, icon(isPlaying ? 'stop' : 'play'), h('span', null, isPlaying ? elapsedTime : 'Start')),
         h('button', { className: 'tool-control tool-tap', 'aria-label': 'Tap tempo', disabled: trainerActive, onClick: handleTapTempo },
           icon('tap'), h('span', null, 'Tap tempo')),
         h('button', { className: 'tool-control', disabled: trainerActive, onClick: e => { popupReturnRef.current = e.currentTarget; setShowBeatsPopup(true); } }, `Beats: ${beatsPerBar}`),
         h('button', { className: 'tool-control', disabled: trainerActive, onClick: e => { popupReturnRef.current = e.currentTarget; setShowSubdivisionsPopup(true); } }, `Subdivision: ${subdivisionType}`)),
+      audioState !== 'ready' && h('div', { className: 'met-audio-status', role: 'status' },
+        audioState === 'loading' ? 'Loading click sounds…' : audioState === 'unsupported' ? 'This browser does not support audio playback. Try a current browser.' : 'Click sounds could not load. Check your connection and try again.',
+        audioState === 'error' && h('button', { className: 'tool-control', onClick: () => setAudioAttempt(value => value + 1) }, 'Retry audio')),
       h('section', { className: 'tool-trainer met-trainer', 'aria-label': 'Speed trainer' },
         h('div', { className: 'tool-trainer-heading' },
           h('label', { className: 'tool-trainer-toggle', htmlFor: 'met-trainer-enabled' },

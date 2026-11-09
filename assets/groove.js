@@ -8,14 +8,31 @@
   const appURL = new URL(frame.src);
   appURL.search = window.location.search;
   if (frame.src !== appURL.href) frame.src = appURL.href;
+  const feedback = document.querySelector('#groove-feedback');
+  const fallback = document.createElement('a');
+  fallback.href = appURL.href;
+  fallback.textContent = 'Open the editor directly';
+  feedback.append('Loading the editor… ', fallback);
+  frame.setAttribute('aria-busy', 'true');
+  const timeout = setTimeout(() => {
+    feedback.replaceChildren('The editor is taking longer than expected. ', fallback);
+    frame.removeAttribute('aria-busy');
+  }, 15000);
 
   // Keep reloads and bookmarks on the public URL as the pattern changes.
   window.addEventListener("message", (event) => {
-    if (event.origin !== window.location.origin || event.source !== frame.contentWindow
-        || event.data?.type !== "dave-drums:groove-change" || typeof event.data.search !== "string") return;
+    if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+    if (event.data?.type === 'dave-drums:groove-ready') {
+      clearTimeout(timeout);
+      feedback.replaceChildren();
+      frame.removeAttribute('aria-busy');
+      return;
+    }
+    if (event.data?.type !== "dave-drums:groove-change" || typeof event.data.search !== "string") return;
     const next = new URL(window.location.href);
     next.search = event.data.search;
     window.history.replaceState(null, "", next.href);
+    fallback.href = new URL(`app/${next.search}`, window.location.href).href;
   });
 
   // Rotating hides the prompt; tapping dismisses it for this visit.

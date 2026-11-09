@@ -355,6 +355,29 @@
     about.classList.add("is-enhanced");
   }
 
+  // A third-party frame cannot report its internal errors; retain the direct score link.
+  const scoreFrame = document.querySelector('.notation-frame');
+  const scoreStatus = document.querySelector('#score-status');
+  if (scoreFrame && scoreStatus) {
+    let timeout, loaded = false;
+    scoreFrame.addEventListener('load', () => { loaded = true; clearTimeout(timeout); scoreStatus.textContent = ''; }, { once: true });
+    scoreFrame.addEventListener('error', () => {
+      clearTimeout(timeout);
+      scoreStatus.textContent = 'The score could not load. Use the Soundslice link below.';
+    });
+    const loading = () => {
+      if (loaded) return;
+      scoreStatus.textContent = 'Loading interactive score…';
+      timeout = setTimeout(() => { scoreStatus.textContent = 'Still loading? Open the score using the Soundslice link below.'; }, 15000);
+    };
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) { loading(); observer.disconnect(); }
+      });
+      observer.observe(scoreFrame);
+    } else loading();
+  }
+
   // Send enquiries without leaving the page. The native action also works without JavaScript.
   const contactForm = document.querySelector("#enquiry-form");
   const formStatus = document.querySelector("#form-status");
@@ -367,6 +390,26 @@
     enquiryType.value = requestedEnquiry;
   }
   let submitting = false;
+  const formFields = [...(contactForm?.querySelectorAll('input:not([type="hidden"]):not([type="checkbox"]),select,textarea') || [])];
+  const fieldErrors = new Map();
+  function showFieldError(field) {
+    let error = fieldErrors.get(field);
+    if (!error) {
+      error = document.createElement("span");
+      error.id = `${field.id}-error`;
+      error.className = "field-error";
+      field.after(error);
+      fieldErrors.set(field, error);
+      field.setAttribute("aria-describedby", [field.getAttribute("aria-describedby"), error.id].filter(Boolean).join(" "));
+    }
+    error.textContent = field.validationMessage;
+    field.setAttribute("aria-invalid", String(!field.validity.valid));
+  }
+  formFields.forEach(field => {
+    field.addEventListener("invalid", () => showFieldError(field));
+    field.addEventListener("input", () => { if (fieldErrors.has(field)) showFieldError(field); });
+    field.addEventListener("change", () => { if (fieldErrors.has(field)) showFieldError(field); });
+  });
   contactForm?.addEventListener("submit", async event => {
     event.preventDefault();
     if (submitting || !contactForm.reportValidity()) return;
@@ -394,9 +437,10 @@
       formStatus.textContent = "Thanks — your enquiry has been sent. I’ll be in touch.";
       formStatus.dataset.state = "success";
       contactForm.reset();
+      formFields.forEach(field => { field.removeAttribute("aria-invalid"); if (fieldErrors.has(field)) fieldErrors.get(field).textContent = ""; });
       if (enquiryType) enquiryType.value = submittedEnquiry;
     } catch {
-      formStatus.textContent = "I couldn’t confirm your enquiry was sent. Your message is still here — please try again, or get in touch on Instagram.";
+      formStatus.textContent = "I couldn’t confirm your enquiry was sent. Your message is still here — please try again, or email info@davedrums.com.au using the link below.";
       formStatus.dataset.state = "error";
     } finally {
       clearTimeout(timeout);

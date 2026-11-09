@@ -25,11 +25,14 @@ export async function mountApplication(target, { cssHref } = {}) {
     const stylesReady = new Promise((resolve, reject) => {
       const link = document.createElement('link');
       link.rel = 'stylesheet'; link.href = cssHref;
-      link.onload = resolve;
-      link.onerror = () => reject(new Error(`Unable to load metronome stylesheet: ${link.href}`));
+      const timeout = setTimeout(() => reject(new Error('Metronome stylesheet timed out')), 15000);
+      link.onload = () => { clearTimeout(timeout); resolve(); };
+      link.onerror = () => { clearTimeout(timeout); reject(new Error(`Unable to load metronome stylesheet: ${link.href}`)); };
       parent.append(link);
     });
-    await Promise.all([stylesReady, loadFonts(assetBase)]);
+    // Font failures must not prevent the controls from becoming available.
+    loadFonts(assetBase);
+    await stylesReady;
     parent.append(surface);
     root = createRoot(surface);
     flushSync(() => root.render(React.createElement(Metronome, { assetBase, keyboardTarget: surface })));
