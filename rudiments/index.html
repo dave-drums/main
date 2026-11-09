@@ -4,23 +4,23 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="theme-color" content="#101214"/>
-  <title>Drum Rudiment Trainer | Free Interactive Practice Tool</title>
-  <meta name="description" content="Practise drum rudiments online with interactive notation, accurate playback, adjustable tempo and automatic speed training."/>
+  <title>Rudiment Trainer | Free Interactive Drum Practice Tool</title>
+  <meta name="description" content="Practice all 40 drum rudiments with a free online rudiment trainer. Follow notation and sticking, adjust BPM and build speed with guided audio."/>
   <link rel="canonical" href="https://www.davedrums.com.au/rudiments/"/>
   <link rel="icon" href="../img/favicon.png" type="image/png"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="en_AU"/>
   <meta property="og:site_name" content="Dave Drums"/>
-  <meta property="og:title" content="Drum Rudiment Trainer | Free Interactive Practice Tool"/>
-  <meta property="og:description" content="Practise drum rudiments online with interactive notation, accurate playback, adjustable tempo and automatic speed training."/>
+  <meta property="og:title" content="Rudiment Trainer | Free Interactive Drum Practice Tool"/>
+  <meta property="og:description" content="Practice all 40 drum rudiments with a free online rudiment trainer. Follow notation and sticking, adjust BPM and build speed with guided audio."/>
   <meta property="og:url" content="https://www.davedrums.com.au/rudiments/"/>
   <meta property="og:image" content="https://www.davedrums.com.au/img/dave-studio1-1920.webp"/>
   <meta property="og:image:alt" content="Dave D’Amore behind his acoustic drum kit in the studio"/>
   <meta property="og:image:width" content="1920"/>
   <meta property="og:image:height" content="933"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Drum Rudiment Trainer | Free Interactive Practice Tool"/>
-  <meta name="twitter:description" content="Practise drum rudiments online with interactive notation, accurate playback, adjustable tempo and automatic speed training."/>
+  <meta name="twitter:title" content="Rudiment Trainer | Free Interactive Drum Practice Tool"/>
+  <meta name="twitter:description" content="Practice all 40 drum rudiments with a free online rudiment trainer. Follow notation and sticking, adjust BPM and build speed with guided audio."/>
   <meta name="twitter:image" content="https://www.davedrums.com.au/img/dave-studio1-1920.webp"/>
   <meta name="twitter:image:alt" content="Dave D’Amore behind his acoustic drum kit in the studio"/>
   <link rel="stylesheet" href="../assets/styles.css"/>
@@ -30,6 +30,7 @@
   <script defer="" src="../assets/navigation.js"></script>
   <script defer="" src="../assets/tools.js"></script>
   <script type="module" src="../assets/rudiments.js"></script>
+  <script type="module" src="../assets/tool-select.js"></script>
   <script type="module" src="../assets/context-help.js"></script>
   <script type="application/ld+json">
   {
@@ -39,8 +40,8 @@
         "@type": "WebPage",
         "@id": "https://www.davedrums.com.au/rudiments/#webpage",
         "url": "https://www.davedrums.com.au/rudiments/",
-        "name": "Drum Rudiment Trainer | Free Interactive Practice Tool",
-        "description": "Practise drum rudiments online with interactive notation, accurate playback, adjustable tempo and automatic speed training.",
+        "name": "Rudiment Trainer | Free Interactive Drum Practice Tool",
+        "description": "Practice all 40 drum rudiments with a free online rudiment trainer. Follow notation and sticking, adjust BPM and build speed with guided audio.",
         "inLanguage": "en-AU",
         "isPartOf": {"@id": "https://www.davedrums.com.au/#website"},
         "breadcrumb": {"@id": "https://www.davedrums.com.au/rudiments/#breadcrumbs"},
@@ -64,7 +65,7 @@
         "browserRequirements": "JavaScript and Web Audio support",
         "isAccessibleForFree": true,
         "inLanguage": "en-AU",
-        "description": "Practise all 40 PAS drum rudiments with percussion notation, scheduled audio, a metronome and automatic tempo progression.",
+        "description": "Practice all 40 drum rudiments with a free online rudiment trainer. Follow notation and sticking, adjust BPM and build speed with guided audio.",
         "featureList": ["All 40 PAS drum rudiments with notation and sticking", "40–240 BPM playback", "Metronome", "Speed trainer", "Tap tempo"],
         "publisher": {"@id": "https://www.davedrums.com.au/#dave"}
       },
@@ -98,13 +99,13 @@
    </button>
    <span hidden="" id="nav-current-section">Current section</span>
    <nav aria-label="Main navigation" id="site-navigation">
-    <a href="/">Home</a>
-    <a href="/#about">About</a>
-    <a href="/lessons/">Lessons</a>
-    <a href="/recording/">Recording</a>
-    <a href="/watch/">Watch</a>
+    <a href="/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#home"></use></svg> Home</a>
+    <a href="/#about"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#person"></use></svg> About</a>
+    <a href="/lessons/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Lessons</a>
+    <a href="/recording/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Recording</a>
+    <a href="/watch/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#play"></use></svg> Watch</a>
     <details class="nav-group is-current">
-     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
+     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg>Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
      <ul class="nav-submenu" id="nav-tools">
       <li><a href="/metronome/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#metronome"></use></svg> Metronome</a></li>
       <li><a href="/groove/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg> Groove Lab</a></li>
@@ -112,7 +113,7 @@
       <li><a href="/notation/karnivool-drone"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#book"></use></svg> Karnivool &quot;Drone&quot; Notation</a></li>
      </ul>
     </details>
-    <a class="nav-contact" href="/#contact">Contact <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
+    <a class="nav-contact" href="/#contact"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#message"></use></svg> Contact <svg aria-hidden="true" class="icon nav-contact-arrow" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
    </nav>
   </header>
   <main class="tool-page" id="main" tabindex="-1">
@@ -144,7 +145,8 @@
      </div>
     </details>
     <p class="app-feedback section-shell" id="rud-feedback" data-tool-feedback="" role="status" aria-live="polite"></p>
-    <section class="rud-shell section-shell" aria-label="Interactive drum rudiment practice">
+    <section class="rud-shell section-shell tool-loading-host" id="rud-loader" data-tool-loading="true" aria-label="Interactive drum rudiment practice">
+     <div class="tool-loading tool-loading-overlay" id="rud-loading" role="status"><span class="tool-loading-label">Loading rudiment trainer</span></div>
      <noscript><p>Please enable JavaScript to use the interactive notation and audio controls.</p></noscript>
      <fieldset class="rud-panel tool-ui" id="rud-controls" disabled="">
       <legend class="visually-hidden">Rudiment practice controls</legend>
@@ -153,7 +155,7 @@
         <label for="rud-select">Choose your rudiment</label>
         <div class="rud-selector">
          <button class="button tool-button rud-nav" id="rud-previous" type="button" aria-label="Previous rudiment" title="Previous rudiment"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#arrow-left"></use></svg></button>
-         <select id="rud-select"></select>
+         <select id="rud-select" data-tool-select></select>
          <button class="button tool-button rud-nav" id="rud-next" type="button" aria-label="Next rudiment" title="Next rudiment"><svg class="icon" aria-hidden="true" focusable="false"><use href="../assets/icons.svg#arrow-right"></use></svg></button>
         </div>
        </div>

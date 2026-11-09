@@ -29,14 +29,13 @@ def icon(name, css=""):
     return f'<svg aria-hidden="true" class="{classes}" focusable="false"><use href="/assets/icons.svg#{name}"></use></svg>'
 
 
-def link(item, current, contact=False, show_icon=True):
+def link(item, current, contact=False, show_icon=True, mobile_only=False):
     active = ' aria-current="page"' if item["href"] == current else ""
     if not active and item["href"] != "/" and item["href"].endswith("/") and current.startswith(item["href"]):
         active = ' aria-current="location"'
     css = ' class="nav-contact"' if contact else ""
-    arrow = " " + icon("arrow-up-right") if contact else ""
-    service_icons = {"/lessons/": "drum", "/recording/": "waveform", "/metronome/": "metronome", "/groove/": "grid", "/rudiments/": "sticks", "/rhythm/": "rhythm", "/notation/karnivool-drone": "book"}
-    prefix = icon(service_icons[item["href"]]) + " " if show_icon and item["href"] in service_icons else ""
+    arrow = " " + icon("arrow-up-right", "nav-contact-arrow") if contact else ""
+    prefix = icon(item["icon"], "nav-mobile-icon" if mobile_only else "") + " " if show_icon and item.get("icon") else ""
     return f'<a{active}{css} href="{escape(item["href"], quote=True)}">{prefix}{escape(item["label"])}{arrow}</a>'
 
 
@@ -61,10 +60,10 @@ def render_header(config, current):
         '   </button>',
         '   <span hidden="" id="nav-current-section">Current section</span>',
         '   <nav aria-label="Main navigation" id="site-navigation">',
-        '    ' + link(direct["home"], current, show_icon=False),
-        '    ' + link(direct["about"], current, show_icon=False),
+        '    ' + link(direct["home"], current, mobile_only=True),
+        '    ' + link(direct["about"], current, mobile_only=True),
     ]
-    parts.extend('    ' + link(item, current, show_icon=False) for key, item in direct.items()
+    parts.extend('    ' + link(item, current, mobile_only=True) for key, item in direct.items()
                  if key not in ("home", "about", "contact"))
     for group in config["groups"]:
         key = group["id"]
@@ -73,13 +72,13 @@ def render_header(config, current):
         description = ' aria-describedby="nav-current-section"' if active else ""
         parts.extend([
             f'    <details class="{css}">',
-            f'     <summary aria-controls="nav-{key}"{description} class="nav-disclosure">{escape(group["label"])} <span aria-hidden="true" class="nav-caret">{icon("chevron-down")}</span></summary>',
+            f'     <summary aria-controls="nav-{key}"{description} class="nav-disclosure">{icon(group["icon"], "nav-mobile-icon")}{escape(group["label"])} <span aria-hidden="true" class="nav-caret">{icon("chevron-down")}</span></summary>',
             f'     <ul class="nav-submenu" id="nav-{key}">',
         ])
         parts.extend('      <li>' + link(item, current) + '</li>' for item in group["links"])
         parts.extend(['     </ul>', '    </details>'])
     parts.extend([
-        '    ' + link(direct["contact"], current, contact=True),
+        '    ' + link(direct["contact"], current, contact=True, mobile_only=True),
         '   </nav>',
         '  </header>',
     ])

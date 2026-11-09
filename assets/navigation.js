@@ -10,6 +10,12 @@
   const hoverPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   let navigationAnimation;
+  let backdropAnimation;
+  const backdrop = document.createElement("div");
+  backdrop.className = "nav-backdrop";
+  backdrop.hidden = true;
+  backdrop.setAttribute("aria-hidden", "true");
+  header.after(backdrop);
   const pageRegions = [...document.querySelectorAll("main, .site-footer")];
   const isMenuOpen = () => toggle.getAttribute("aria-expanded") === "true";
   function focusNavigation(element) {
@@ -42,8 +48,13 @@
     const wasVisible = navigation.classList.contains("is-open");
     const startingOpacity = wasVisible ? getComputedStyle(navigation).opacity : "0";
     const startingTransform = wasVisible ? getComputedStyle(navigation).transform : "translateY(-8px)";
+    const clip = wasVisible ? getComputedStyle(navigation).clipPath : null;
+    const startingClip = clip && clip !== "none" ? clip : wasVisible ? "inset(0%)" : "inset(0 0 100% 0)";
+    const backdropOpacity = backdrop.hidden ? "0" : getComputedStyle(backdrop).opacity;
     navigationAnimation?.cancel();
+    backdropAnimation?.cancel();
     navigationAnimation = null;
+    backdropAnimation = null;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
     if (!open) closeGroups(true);
@@ -53,7 +64,9 @@
       pageRegions.forEach(region => {
         region.inert = open;
       });
+      backdrop.hidden = !open || !mobileViewport.matches;
       navigationAnimation = null;
+      backdropAnimation = null;
     };
     if (open) {
       navigation.classList.add("is-open");
@@ -61,18 +74,24 @@
       pageRegions.forEach(region => {
         region.inert = true;
       });
+      backdrop.hidden = !mobileViewport.matches;
     }
     if (mobileViewport.matches && !immediate && !motionPreference.matches && "animate" in Element.prototype && (open || wasVisible)) {
+      const timing = { duration: open ? 420 : 280, easing: "cubic-bezier(.25,.8,.25,1)" };
+      backdropAnimation = backdrop.animate([
+        { opacity: backdropOpacity || "0" },
+        { opacity: open ? "1" : "0" }
+      ], timing);
+      backdropAnimation.finished.catch(() => {});
       const animation = navigation.animate([{
         opacity: startingOpacity || "1",
-        transform: startingTransform || "none"
+        transform: startingTransform || "none",
+        clipPath: startingClip
       }, {
         opacity: open ? "1" : "0",
-        transform: open ? "none" : "translateY(-8px)"
-      }], {
-        duration: 180,
-        easing: "cubic-bezier(.22, 1, .36, 1)"
-      });
+        transform: open ? "none" : "translateY(-8px)",
+        clipPath: open ? "inset(0%)" : "inset(0 0 100% 0)"
+      }], timing);
       navigationAnimation = animation;
       animation.finished.then(() => {
         if (navigationAnimation === animation) finish();
@@ -174,7 +193,7 @@
   window.addEventListener("pagehide", () => setNavigation(false, false, true));
   window.addEventListener("pageshow", () => setNavigation(false, false, true));
   motionPreference.addEventListener("change", () => {
-    if (motionPreference.matches) navigationAnimation?.finish();
+    if (motionPreference.matches) { navigationAnimation?.finish(); backdropAnimation?.finish(); }
   });
   function updateHomeLocation() {
     if (window.location.pathname.replace(/index\.html$/, "") !== "/") return;

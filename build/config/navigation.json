@@ -3,32 +3,38 @@
     {
       "id": "home",
       "label": "Home",
-      "href": "/"
+      "href": "/",
+      "icon": "home"
     },
     {
       "id": "about",
       "label": "About",
-      "href": "/#about"
+      "href": "/#about",
+      "icon": "person"
     },
     {
       "id": "lessons",
       "label": "Lessons",
-      "href": "/lessons/"
+      "href": "/lessons/",
+      "icon": "drum"
     },
     {
       "id": "recording",
       "label": "Recording",
-      "href": "/recording/"
+      "href": "/recording/",
+      "icon": "waveform"
     },
     {
       "id": "watch",
       "label": "Watch",
-      "href": "/watch/"
+      "href": "/watch/",
+      "icon": "play"
     },
     {
       "id": "contact",
       "label": "Contact",
-      "href": "/#contact"
+      "href": "/#contact",
+      "icon": "message"
     }
   ],
   "groups": [
@@ -38,21 +44,26 @@
       "links": [
         {
           "label": "Metronome",
-          "href": "/metronome/"
+          "href": "/metronome/",
+          "icon": "metronome"
         },
         {
           "label": "Groove Lab",
-          "href": "/groove/"
+          "href": "/groove/",
+          "icon": "grid"
         },
         {
           "label": "Rudiment Trainer",
-          "href": "/rudiments/"
+          "href": "/rudiments/",
+          "icon": "sticks"
         },
         {
           "label": "Karnivool \"Drone\" Notation",
-          "href": "/notation/karnivool-drone"
+          "href": "/notation/karnivool-drone",
+          "icon": "book"
         }
-      ]
+      ],
+      "icon": "grid"
     }
   ]
 }

@@ -22,8 +22,8 @@ try {
   }
   assert.ok(button.querySelector('svg.toms-icon'));
   const buttons=[...doc.querySelectorAll('#bottomButtonRow > button')];
-  assert.equal(buttons.length,6);
+  assert.equal(buttons.length,7);
   assert.ok(buttons.every(node=>node.children.length===1&&node.firstElementChild.classList.contains('bottomButtonContents')));
   assert.ok(doc.querySelector('#stickingsButton .stickings-icon'));
-  console.log('PASS: Actual Toms visibility/pressed state, forced/toggled modes and stable icon/label wrappers on all six actions.');
+  console.log('PASS: Actual Toms visibility/pressed state, forced/toggled modes and stable icon/label wrappers on editing actions.');
 } finally { dom.window.close(); }

@@ -7,13 +7,21 @@
   const instruments = [ ['sticking','Sticking','.sticking'], ['hh','Hi-hat','.hi-hat'],
     ['tom1','High tom','[id^="tom1-"].tom'], ['snare','Snare','.snare'], ['tom4','Low tom','[id^="tom4-"].tom'], ['kick','Kick','.kick'] ];
   let rows = [], activeId, pending;
-  const audioStatus = document.createElement('p');
-  audioStatus.className = 'groove-keyboard-help';
+  const editor = document.getElementById('GrooveWriter');
+  editor.classList.add('tool-loading-host');
+  editor.setAttribute('data-tool-loading', 'true');
+  const audioStatus = document.createElement('div');
+  audioStatus.className = 'tool-loading tool-loading-overlay';
   audioStatus.setAttribute('role', 'status');
-  document.getElementById('midiPlayer').after(audioStatus);
-  audioStatus.textContent = 'Loading drum sounds…';
+  document.getElementById('groove-controls').after(audioStatus);
+  const audioLabel = document.createElement('span');
+  audioLabel.className = 'tool-loading-label';
+  audioLabel.textContent = 'Loading drum sounds';
+  audioStatus.append(audioLabel);
   const audioTimeout = setTimeout(() => {
     if (!audioStatus.hidden) {
+      audioStatus.className = 'groove-audio-status';
+      editor.setAttribute('data-tool-loading', 'false');
       const retry = document.createElement('a');
       retry.href = location.href;
       retry.textContent = 'Reload the editor';
@@ -38,9 +46,9 @@
     const cells = rows.flat();
     if (!cells.some(cell => cell.id === activeId)) activeId = cells[0]?.id;
     cells.forEach(cell => { cell.tabIndex = cell.id === activeId ? 0 : -1; });
-    document.querySelectorAll('#LeftHandNav [onclick],#TopNav [onclick],.line-labels [onclick],.noteContextMenu li[onclick]').forEach(control => {
+    document.querySelectorAll('#groove-controls [onclick],#grooveListWrapper [onclick],#gl-metronome-menu [onclick],.line-labels [onclick],.noteContextMenu li[onclick]').forEach(control => {
       control.setAttribute('role', 'button'); control.tabIndex = 0;
-      if (control.matches('.subdivision,#metronomeOff,#metronome4ths,#metronome8ths,#metronome16ths,#advancedEditAnchor')) {
+      if (control.matches('#advancedEditAnchor')) {
         control.setAttribute('aria-pressed', String(control.classList.contains('buttonSelected')));
       }
     });
@@ -48,7 +56,7 @@
       const playing = control.classList.contains('Playing');
       const ready = control.matches('.Stopped,.Paused,.Playing');
       control.setAttribute('aria-disabled', String(!ready));
-      if (ready && !audioStatus.hidden) { audioStatus.hidden = true; clearTimeout(audioTimeout); }
+      if (ready && !audioStatus.hidden) { audioStatus.hidden = true; editor.setAttribute('data-tool-loading', 'false'); clearTimeout(audioTimeout); schedule(); }
       control.setAttribute('role', 'button'); control.tabIndex = 0;
       control.setAttribute('aria-label', playing ? 'Stop groove playback' : 'Start groove playback');
       control.setAttribute('aria-pressed', String(playing));
@@ -60,7 +68,7 @@
   }
   const schedule = () => { if (!pending) pending = requestAnimationFrame(refresh); };
   new MutationObserver(records => {
-    if (records.some(record => record.type === 'childList' || record.target.matches('.note_part,.toms-container,.stickings-container,.tom-label,.midiPlayImage,.subdivision,.metronomeButton,#advancedEditAnchor'))) schedule();
+    if (records.some(record => record.type === 'childList' || record.target.matches('.note_part,.toms-container,.stickings-container,.tom-label,.midiPlayImage,#advancedEditAnchor'))) schedule();
   }).observe(document.getElementById('GrooveWriter'), { subtree:true,childList:true,attributes:true,attributeFilter:['style','class'] });
   grid.setAttribute('role', 'group');
   grid.setAttribute('aria-label', 'Drum pattern. Use arrow keys to move between notes.');

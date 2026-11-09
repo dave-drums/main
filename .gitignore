@@ -33,6 +33,8 @@ node_modules/
 /apps/metronome/public/assets/metronome-normal.mp3
 /apps/groovelab/css/dave-drums-theme.css
 /apps/groovelab/js/context-help.js
+/apps/groovelab/js/tool-select.js
+/apps/groovelab/js/tempo-stepper.js
 /apps/groovelab/fonts/
 /apps/groovelab/images/tool-icons.svg
 /apps/groovelab/images/icons/

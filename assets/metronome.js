@@ -3,8 +3,10 @@ const host = document.querySelector("#metronome-app");
 const status = document.querySelector("#metronome-status");
 const error = document.querySelector("#metronome-error");
 
-status.textContent = "Loading metronome…";
+const loader = document.querySelector("#metronome-loader");
 const slowLoad = window.setTimeout(() => {
+  status.classList.remove("tool-loading", "tool-loading-overlay");
+  loader.setAttribute("data-tool-loading", "false");
   status.textContent = "Still loading the metronome. Please check your connection if this continues.";
   const retry = document.createElement('a');
   retry.href = window.location.href;
@@ -31,6 +33,8 @@ try {
   error.hidden = false;
   console.error("Unable to load the metronome.", cause);
 } finally {
+  status.classList.remove("tool-loading", "tool-loading-overlay");
+  loader.setAttribute("data-tool-loading", "false");
   window.clearTimeout(slowLoad);
   clearTimeout(fetchTimeout);
   host.setAttribute("aria-busy", "false");

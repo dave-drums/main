@@ -427,10 +427,8 @@ input[type=range]:active::-webkit-slider-thumb {
   #GrooveWriter { color: var(--text); font-family: var(--body); }
   #GrooveWriter :is(input,select,textarea,button,label), .playerControl { font-family: var(--body); }
   #GrooveWriter :is(h1,h2,h3,.tempoTextField,.MIDIPlayTime,.totalTimeNum) { font-family: var(--display); font-variant-numeric: tabular-nums; }
-  #TopNav { background: var(--tool-panel-fill); box-shadow: inset 0 1px 0 rgb(255 255 255 / .04); padding-inline: 16px; gap: 16px; }
   .tool-ui .metronomeButton.options { width: auto; }
   .metronomeButton:hover,.rightButtons:hover { transform: none; font-weight: var(--weight-semibold); }
-  #LeftHandNav { background: linear-gradient(180deg,#202b33,#172128); border-right: 1px solid var(--line); }
   #midiPlayer { height: 64px; background: var(--tool-panel); }
   #RightHandContent { background: var(--tool-well); }
   .playerControl { background: linear-gradient(180deg,#26333c,#202b33); color: var(--text); }
@@ -443,15 +441,10 @@ input[type=range]:active::-webkit-slider-thumb {
   .midiExpandImage.small:hover,.midiExpandImage.large:hover { transform: none; color: var(--link-color); }
   .tempoLabel,.swingLabel,.swingOutput,.MIDIPlayTime { color: var(--muted); }
   .tempoRow,.swingRow { height: 24px; align-items: center; }
-  .tempoTextField { min-width: 44px; height: 24px; margin-block: 0; border: 1px solid var(--field-border); border-radius: 4px; background: var(--field-bg); color: var(--text); }
+  .tempoTextField { min-width: 44px; height: 24px; margin-block: 0; border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); color: var(--text); }
   .tempoInput,.swingInput { margin-block: 0; }
   .MIDIPlayTime { font-size: 24px; }
   #totalPlayTime { color: var(--muted); font-size: var(--type-ui); }
-  .left-button { min-height: 56px; border-radius: var(--control-radius); color: var(--muted); }
-  .left-button:hover,.left-button.buttonSelected,.left-button:active { background: var(--tool-selected-fill); color: var(--link-color); transform: none; }
-  .left-button-content { font: var(--weight-semibold) 12px/1.25 var(--body); letter-spacing: 0; }
-  .left-button.disabled,.left-button.disabled:hover,#permutationAnchor:not(.enabled) { background: var(--field-bg); color: var(--muted); opacity: .5; }
-  #permutationAnchor.enabled { color: var(--text); }
   #advancedEditAnchor.buttonSelected { color: var(--link-color); background: var(--surface-blue); }
   #advancedEditAnchor.buttonSelected { font-size: var(--type-ui); }
   .tempoSettings,.swingSettings { color: var(--text); }
@@ -466,21 +459,23 @@ input[type=range]:active::-webkit-slider-thumb {
   #stickingsButton:before,#stickingsButton.ClickToHide:before { content: none; }
   #stickingsButton .stickings-icon:before { font-family: FontAwesome; content: "\f065"; font-size: 20px; line-height: 24px; }
   #stickingsButton.ClickToHide .stickings-icon:before { content: "\f066"; }
-  #KeyButton #LegendLabel { box-sizing: border-box; min-height: 48px; padding: 10px 16px; border: 1px solid #52636f; border-radius: var(--control-radius); background: var(--tool-control-fill); box-shadow: var(--tool-control-shadow); color: var(--text); }
-  #KeyButton #LegendLabel:hover { border-color: var(--link-color); background: var(--tool-control-hover); color: var(--link-color); }
-  #showLegend:checked + #LegendLabel { border-color: var(--link-color); background: var(--tool-selected-fill); color: var(--link-color); }
-  #PermutationOptions.displayed,#grooveListWrapper,#fullURLPopup,#metronomeAutoSpeedupConfiguration,#timeSigPopup,.noteContextMenu > ul.list { background: var(--tool-panel-fill); color: var(--text); border: 1px solid var(--line); border-radius: var(--panel-radius); box-shadow: var(--tool-panel-shadow); }
+  /* A compact legend control belongs to the score, with a full touch target. */
+  #sheetMusicDiv { position: relative; }
+  #svgTarget { padding-top: 32px; }
+  #KeyButton { position: absolute; top: 0; right: 6px; z-index: 2; }
+  #KeyButton #LegendLabel { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: #40545e; cursor: pointer; }
+  #LegendLabel:before { content: ""; position: absolute; inset: 6px; border: 1px solid #ced9dd; border-radius: 8px; background: #f5f8f9; }
+  #LegendLabel .tool-icon { position: relative; width: 18px; height: 18px; }
+  #LegendLabel:hover:before, #showLegend:checked + #LegendLabel:before { border-color: #00749a; background: #e1f5fc; }
+  #LegendLabel:hover, #showLegend:checked + #LegendLabel { color: #00749a; }
+  #PermutationOptions.displayed,#grooveListWrapper,#fullURLPopup,#metronomeAutoSpeedupConfiguration,.noteContextMenu > ul.list { background: var(--tool-panel-fill); color: var(--text); border: 1px solid var(--line); border-radius: var(--panel-radius); box-shadow: var(--tool-panel-shadow); }
   .grooveListUL { background: transparent; }
   .grooveListHeaderLI,.noteContextMenu > ul.list li:hover,.grooveListLI:hover { background: var(--tool-selected-fill); color: var(--link-color); }
-  .sheetMusicInputField,#fullURLPopupTextField,#timeSigPopupTimeSigTop,#timeSigPopupTimeSigBottom { border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); color: var(--text); font-family: var(--body); }
+  .sheetMusicInputField,#fullURLPopupTextField{ border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); color: var(--text); font-family: var(--body); }
   #sheetMusicTextFields .sheetMusicInputField { min-height: 44px; padding: 8px 12px; }
   #grooveDetailsClose { min-height: 44px; padding: 10px 16px; border-color: var(--accent); background: var(--tool-primary-fill); color: var(--bg); box-shadow: var(--tool-control-shadow); }
   #grooveDetailsClose:hover { border-color: var(--link-color); background: var(--tool-primary-hover); color: var(--bg); }
-  .sheetMusicInputField::placeholder,#fullURLPopupTextField::placeholder { color: var(--muted); }
-  #timeSigPopupOK,#timeSigPopupCancel,#fullURLPopupCopyButton,#shareButton,#metronomeAutoSpeedupConfigurationCloseButton { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--control-radius); background: var(--tool-control-fill); box-shadow: var(--tool-control-shadow); color: var(--text); font: var(--weight-semibold) var(--type-ui)/var(--leading-ui) var(--body); cursor: pointer; }
-  #timeSigPopupOK,#metronomeAutoSpeedupConfigurationCloseButton { border-color: var(--accent); background: var(--tool-primary-fill); color: var(--bg); box-shadow: var(--tool-control-shadow); }
-  #timeSigPopupOK:hover,#timeSigPopupCancel:hover,#fullURLPopupCopyButton:hover,#shareButton:hover,#metronomeAutoSpeedupConfigurationCloseButton:hover { border-color: var(--link-color); background: var(--tool-selected-fill); color: var(--link-color); }
-  #timeSigPopupOK:hover,#metronomeAutoSpeedupConfigurationCloseButton:hover { background: var(--tool-primary-hover); color: var(--bg); }
+  .sheetMusicInputField::placeholder,#fullURLPopupTextField::placeholder { color: var(--muted); }#fullURLPopupCopyButton,#shareButton,#metronomeAutoSpeedupConfigurationCloseButton { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: var(--control-radius); background: var(--tool-control-fill); box-shadow: var(--tool-control-shadow); color: var(--text); font: var(--weight-semibold) var(--type-ui)/var(--leading-ui) var(--body); cursor: pointer; }#metronomeAutoSpeedupConfigurationCloseButton { border-color: var(--accent); background: var(--tool-primary-fill); color: var(--bg); box-shadow: var(--tool-control-shadow); }#fullURLPopupCopyButton:hover,#shareButton:hover,#metronomeAutoSpeedupConfigurationCloseButton:hover { border-color: var(--link-color); background: var(--tool-selected-fill); color: var(--link-color); }#metronomeAutoSpeedupConfigurationCloseButton:hover { background: var(--tool-primary-hover); color: var(--bg); }
   #fullURLPopupCloseButton:hover { color: var(--link-color); }
   #GrooveWriter input[type=range] { background: transparent; }
   #GrooveWriter input[type=range]:before,#GrooveWriter input[type=range]:after { content: none; }
@@ -514,29 +509,127 @@ input[type=range]:active::-webkit-slider-thumb {
 .myCheckbox+label:before { font-family:inherit; }
 .myCheckbox:checked+label:before { content:"";width:16px;height:16px;vertical-align:middle;margin-right:8px;letter-spacing:0;background:currentColor;-webkit-mask:url("../images/icons/check.svg") no-repeat center / contain;mask:url("../images/icons/check.svg") no-repeat center / contain; }
 
-/* Keep transport visible; only the score/editor scrolls inside the tool. */
-html, body { width: 100%; min-width: 0; }
-#GrooveWriter { min-width: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
-#GrooveWriter > .nonPrintable { flex: 0 0 auto; min-width: 0; }
-#LeftHandNav { position: relative; inset: auto; width: 100%; height: auto; border-right: 0; overflow-x: auto; }
-#divisionButtonContainer { display: flex; width: max-content; }
-.left-button { float: none; flex: 0 0 64px; min-height: 48px; }
-#TopNav { position: relative; inset: auto; width: 100%; height: auto; min-height: 56px; padding: 4px 8px; gap: 12px; }
-#midiPlayer { position: relative; inset: auto; width: 100%; height: auto; min-height: 64px; }
-#RightHandContent { inset: auto; width: 100%; height: auto; min-height: 0; flex: 1; overflow-y: auto; }
-#musicalInput { max-width: 100%; white-space: nowrap; overscroll-behavior-x: contain; }
+/* Unified editor toolbar. Controls share one height; only the musical grid
+   scrolls horizontally on narrow screens. */
+html, body { width: 100%; min-width: 0; height: auto; }
+/* Embedded editors grow with their content; the surrounding page owns scrolling. */
+html[data-embedded="true"] { overflow-y: hidden; }
+#GrooveWriter { min-width: 0; height: auto; display: flow-root; }
+#GrooveWriter .fullWidthEle { max-width: none; }
+#groove-controls { --gl-toolbar-gap: 64px; --gl-tempo-width: 240px; container-type: inline-size; display: flex; align-items: center; gap: var(--gl-toolbar-gap); min-width: 0; padding: 46px 32px 24px; background: var(--tool-panel-fill); box-sizing: border-box; }
+#midiPlayer { position: static; inset: auto; flex: 0 0 auto; min-width: 0; width: auto; height: auto; border: 0; background: transparent; }
+#midiPlayer .playerControl { background: transparent; }
+#midiPlayer .playerControlsRow { display: flex; align-items: center; flex-wrap: nowrap; gap: var(--gl-toolbar-gap); width: max-content; height: auto; min-height: 44px; padding: 0; }
+/* Start and the four settings share the remaining width, after tempo and gaps. */
+#midiPlayer .midiPlayImage { flex: 0 0 auto; width: calc((100cqi - var(--gl-tempo-width) - var(--gl-toolbar-gap) - var(--gl-toolbar-gap) - 30px) / 5); height: 44px; min-height: 44px; margin: 0; padding: 10px 16px; gap: 10px; border: 1px solid var(--accent); box-sizing: border-box; }
+#midiPlayer .MIDIPlayTime { flex: none; width: auto; height: auto; padding: 0; margin: 0; color: inherit; font: var(--weight-semibold) 16px/1.4 var(--body); font-variant-numeric: tabular-nums; background: transparent; }
+#midiPlayer .tempoAndProgress.gl-step-controls { display: flex; flex: none; gap: 12px; width: var(--gl-tempo-width); height: auto; min-width: 0; }
+#midiPlayer .tempoRow.gl-stepper { width: 100%; justify-content: space-between; }
+#midiPlayer .gl-stepper { display: flex; align-items: center; flex: none; gap: 4px; width: auto; height: 44px; white-space: nowrap; }
+/* Swing remains in the engine and shared patterns; its editor UI is temporarily hidden. */
+#midiPlayer .swingRow.gl-stepper { display: none; }
+#midiPlayer .gl-stepper :is(.tempoLabel,.swingLabel) { width: auto; padding: 0; margin: 0 2px; color: var(--muted); font-size: 20px; line-height: 1; }
+#midiPlayer .gl-step-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; min-width: 44px; min-height: 44px; height: 44px; margin: 0; padding: 0; line-height: 1; }
+#midiPlayer .gl-step-button .tool-icon { width: 24px; height: 24px; }
+#midiPlayer .gl-step-value { appearance: textfield; flex: none; width: 84px; min-width: 0; height: 44px; margin: 0; padding: 4px; box-sizing: border-box; border: 1px solid var(--field-border); border-radius: var(--control-radius); background: var(--field-bg); color: var(--text); font: var(--weight-semibold) 22px/1 var(--display); text-align: center; }
+#midiPlayer .gl-step-value::-webkit-inner-spin-button, #midiPlayer .gl-step-value::-webkit-outer-spin-button { appearance: none; margin: 0; }
+#midiPlayer .gl-swing-value { display: inline-flex; align-items: center; gap: 2px; }
+#midiPlayer .gl-swing-value .gl-step-value { width: 34px; }
+#midiPlayer .swingOutput { width: auto; height: auto; padding: 0; font-size: 12px; color: var(--muted); }
+#gl-settings { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); align-items: end; flex: 1 1 0; gap: 10px; min-width: 0; }
+.gl-setting { position: relative; display: grid; min-width: 0; gap: 5px; color: var(--muted); font-size: 12px; line-height: 1.3; }
+#gl-settings .gl-setting > span:first-child { position: absolute; bottom: calc(100% + 6px); white-space: nowrap; }
+.gl-setting .tool-select-trigger { min-height: 44px; font-size: 13px; }
+.gl-setting > .tool-icon { display: none; }
+#gl-settings #groovesAnchor { display: flex; width: 100%; margin: 0; }
+#KeyButton { display: inline-flex; }
+#RightHandContent { position: relative; inset: auto; width: 100%; height: auto; min-height: 0; overflow: visible; }
+#fullURLPopup, #metronomeAutoSpeedupConfiguration { left: 50%; transform: translateX(-50%); width: min(400px,calc(100% - 24px)); box-sizing: border-box; }
+#metronomeOptionsContextMenu, #metronomeOptionsOffsetClickContextMenu, #metronomeOptionsOffsetClickForTripletsContextMenu { width: max-content; min-width: 190px; max-width: calc(100% - 16px); box-sizing: border-box; white-space: nowrap; }
+#fullURLPopupCheckboxes, #fullURLPopupTextFieldContainer { width: 100%; }
+#fullURLPopupTextField { width: 100%; box-sizing: border-box; }
+/* Sharing uses matching native controls; there is no nested widget surface. */
+#fullURLPopup { padding: 24px; }
+#fullURLPopupCloseButton { position: absolute; top: 6px; right: 6px; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+#fullURLPopupTitle { padding-inline: 0; font-size: 20px; line-height: 1.3; }
+#fullURLPopupSubTitle { margin-top: 10px; font-weight: var(--weight-regular); line-height: 1.5; }
+#fullURLPopupSubSubTitle { margin-top: 4px; color: var(--muted); line-height: 1.5; }
+#fullURLPopupCheckboxes { margin-block: 18px 12px; }
+#fullURLPopupTextField { min-height: 44px; text-align: left; font-size: 14px; }
+#shareButtonContainer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-top: 20px; }
+#shareButtonContainer > button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 48px; margin: 0; padding: 10px 16px; font-size: 14px; line-height: 1.4; }
+#shareButtonContainer .tool-icon { flex: none; width: 20px; height: 20px; }
+#groove-share-status { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; }
+#groove-share-status:empty { display: none; }
+#musicalInput { max-width: 100%; padding-bottom: 20px; white-space: nowrap; overscroll-behavior-x: contain; }
 .staff-container { min-width: max-content; }
 .line-labels { position: sticky; left: 0; z-index: 3; background: white; }
-.groove-keyboard-help { padding: 8px 12px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
-.tool-help-topics { padding: 4px 12px; margin: 0; }
+#totalPlayTime.gl-play-stats { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 24px; padding: 10px 16px; color: #334147; background: #fff; font-size: 14px; line-height: 1.5; white-space: normal; }
+#totalPlayTime.gl-play-stats > span { white-space: nowrap; }
+.groove-audio-status { padding: 8px 16px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.groove-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 [data-groove-note]:focus-visible { outline: 3px solid #00749a; outline-offset: -2px; position: relative; z-index: 4; }
-@media (max-width: 600px) {
-  .playerControlsRow { display: flex; align-items: center; gap: 4px; padding-inline: 8px; }
-  .tempoAndProgress { min-width: 0; width: auto; height: auto; }
-  .tempoRow, .swingRow { min-width: 0; }
-  .tempoLabel, .swingLabel { width: 42px; font-size: 13px; }
-  .tempoInput, .swingInput { min-width: 0; margin-right: 4px; }
-  .MIDIPlayTime { font-size: 16px; width: 44px; margin: 0; }
-  .tempoTextField { font-size: 16px; }
+/* Match the shared selector's menu surface in the legacy action menus. */
+#GrooveWriter .noteContextMenu > ul.list, #grooveListWrapper { background: var(--tool-menu-bg); border: 1px solid var(--tool-menu-border); border-radius: 12px; box-shadow: var(--tool-menu-shadow); }
+#GrooveWriter .noteContextMenu > ul.list { padding: 6px; width: max-content; min-width: 190px; max-width: calc(100vw - 16px); box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; }
+#GrooveWriter .noteContextMenu > ul.list > li { min-height: 44px; box-sizing: border-box; padding: 10px 12px; border: 0; border-radius: 5px; font-size: 14px; line-height: 1.5; }
+#GrooveWriter .noteContextMenu > ul.list > li:hover, #grooveListWrapper .grooveListLI:hover { background: var(--tool-menu-hover); color: var(--text); }
+#GrooveWriter .noteContextMenu > ul.list > li[data-menu-section] { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--tool-menu-divider); border-start-start-radius: 0; border-start-end-radius: 0; }
+#grooveListWrapper .grooveListHeaderLI { padding: 12px; margin-top: 6px; border-top: 1px solid var(--tool-menu-divider); background: transparent; color: var(--muted); font-size: 12px; }
+#grooveListWrapper .grooveListUL > .grooveListHeaderLI:first-child { margin-top: 0; border-top: 0; }
+#grooveListWrapper .grooveListLI { padding: 10px 12px; border: 0; font-size: 14px; }
+/* One menu combines permutations, grouped presets and groove details. */
+#grooveListWrapper { width: 300px; max-width: calc(100% - 16px); height: auto; box-sizing: border-box; padding: 6px; overscroll-behavior: contain; }
+.groove-menu-section + .groove-menu-section { border-top: 1px solid var(--tool-menu-divider); margin-top: 6px; padding-top: 6px; }
+.gl-permutation-menu { list-style: none; padding: 0; margin: 0; }
+:is(#grooveListWrapper,#gl-metronome-menu) .groove-menu-option, #grooveListWrapper #grooveDetailsButton { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 44px; box-sizing: border-box; padding: 10px 12px; border: 0; border-radius: 5px; background: transparent; box-shadow: none; color: var(--text); font: var(--weight-semibold) 14px/1.5 var(--body); text-align: left; }
+:is(#grooveListWrapper,#gl-metronome-menu) .groove-menu-option:before { content: ""; width: 16px; height: 16px; flex: 0 0 16px; }
+:is(#grooveListWrapper,#gl-metronome-menu) .groove-menu-option[aria-pressed="true"] { background: var(--tool-menu-selected); color: var(--link-color); }
+:is(#grooveListWrapper,#gl-metronome-menu) .groove-menu-option[aria-pressed="true"]:before { background: currentColor; mask: url("../images/icons/check.svg") no-repeat center / contain; }
+:is(#grooveListWrapper,#gl-metronome-menu) :is(.groove-menu-option,#grooveDetailsButton):hover:not(:disabled) { background: var(--tool-menu-hover); }
+/* Full note names and notation icons identify each metronome pulse. */
+#gl-metronome-toggle .gl-click-icon, #gl-metronome-menu .gl-click-icon { flex: 0 0 20px; width: 20px; height: 20px; }
+#gl-metronome-value { min-width: 0; }
+#gl-metronome-toggle { gap: 8px; }
+#gl-click-rates .groove-menu-option { display: grid; grid-template-columns: 20px minmax(0,1fr) 16px; }
+#gl-click-rates .groove-menu-option:before { grid-column: 3; grid-row: 1; }
+#gl-click-rates .gl-click-icon { grid-column: 1; grid-row: 1; }
+#gl-click-rates .groove-menu-option > span { grid-column: 2; grid-row: 1; white-space: nowrap; }
+#gl-click-options > li { display: flex; align-items: center; gap: 8px; }
+#gl-click-options > li:before { content: none; }
+#gl-click-options > li.menuChecked:after { content: ""; width: 16px; height: 16px; margin-left: auto; background: currentColor; mask: url("../images/icons/check.svg") no-repeat center / contain; }
+/* Metronome keeps its pulse choices and click options together. */
+#gl-metronome-menu { display: none; position: fixed; z-index: 999; width: 240px; max-width: calc(100% - 16px); padding: 6px; overflow: auto; overscroll-behavior: contain; }
+.gl-metronome-options { list-style: none; margin: 0; padding: 0; }
+.gl-metronome-options > li { min-height: 44px; box-sizing: border-box; padding: 10px 12px; border-radius: 5px; font-size: 14px; line-height: 1.5; cursor: pointer; }
+.gl-metronome-options > li:hover { background: var(--tool-menu-hover); }
+.gl-metronome-options > li[aria-pressed="true"] { color: var(--link-color); }
+#gl-metronome-menu .groove-menu-section { border-top: 1px solid var(--tool-menu-divider); margin-top: 6px; padding-top: 6px; }
+.groove-menu-note { margin: 0; padding: 0 12px 6px; color: var(--muted); font-size: 12px; }
+@media (max-width: 1100px) {
+  #groove-controls { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 12px; }
+  #midiPlayer.gl-playback-strip { width: 100%; max-width: 100%; flex: none; }
+  #midiPlayer .playerControlsRow { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: 100%; gap: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  #midiPlayer .midiPlayImage { width: 100%; height: 44px; padding-inline: 10px; }
+  #midiPlayer .tempoAndProgress.gl-step-controls { display: block; width: 100%; }
+  #midiPlayer .tempoRow.gl-stepper { display: grid; grid-template-columns: minmax(max-content,1fr) 44px 60px 44px; gap: 4px; width: 100%; height: 44px; }
+  #midiPlayer .gl-stepper .tempoLabel { justify-self: start; margin: 0; font-size: 14px; }
+  #midiPlayer .gl-step-value { width: 100%; font-size: 20px; }
+  #gl-settings .gl-setting > span:first-child { position: static; }
+  #gl-settings { flex: none; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 24px; width: 100%; }
+  #totalPlayTime.gl-play-stats { gap: 4px 12px; padding: 10px; font-size: 13px; }
+}
+@media (max-width: 400px) {
+  #midiPlayer .tempoRow.gl-stepper { grid-template-columns: minmax(max-content,1fr) 32px 48px 32px; gap: 3px; }
+  #midiPlayer .gl-step-button { width: 32px; min-width: 32px; }
+  #midiPlayer .gl-stepper .tempoLabel { font-size: 12px; }
+  #midiPlayer .gl-step-value { padding-inline: 2px; font-size: 18px; }
+}
+/* Narrow phones retain a readable three-digit BPM field inside the right column. */
+@media (max-width: 330px) {
+  #midiPlayer .tempoRow.gl-stepper { grid-template-columns: minmax(max-content,1fr) 28px 34px 28px; gap: 1px; }
+  #midiPlayer .gl-step-button { width: 28px; min-width: 28px; }
+  #midiPlayer .gl-stepper .tempoLabel { font-size: 12px; }
+  #midiPlayer .gl-step-value { padding-inline: 1px; font-size: 13px; }
 }
 }

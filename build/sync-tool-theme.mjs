@@ -28,6 +28,8 @@ export async function syncToolTheme({ check = false } = {}) {
   }
   for (const file of ['tempo-stepper.js', 'playback-timer.js', 'context-help.js']) files.set(resolve(METRONOME, 'src', file), await readFile(resolve(ROOT, 'assets', file)));
   files.set(resolve(GROOVE, 'js/context-help.js'), await readFile(resolve(ROOT, 'assets/context-help.js')));
+  files.set(resolve(GROOVE, 'js/tool-select.js'), await readFile(resolve(ROOT, 'assets/tool-select.js')));
+  files.set(resolve(GROOVE, 'js/tempo-stepper.js'), await readFile(resolve(ROOT, 'assets/tempo-stepper.js')));
   files.set(resolve(METRONOME, 'src/tool-icons.json'), JSON.stringify(Object.fromEntries(
     ['close', 'minus', 'plus', 'speaker-off', 'chevron-up', 'stop', 'play', 'tap'].map(name => [name, data(name)])
   ), null, 2) + '\n');

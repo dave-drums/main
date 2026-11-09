@@ -72,7 +72,7 @@ test('Groove Lab supports keyboard editing and contains portrait grid scrolling'
   await expect(app.locator('[data-groove-note="hh"]').nth(1)).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(app.locator('[data-groove-note="snare"]').nth(1)).toBeFocused();
-  await expect(app.getByRole('slider', { name: 'Tempo slider in beats per minute' })).toBeVisible();
+  await expect(app.getByRole('spinbutton', { name: 'Tempo in beats per minute' })).toBeVisible();
   const frame = page.frames().find(frame => /groove\/app\//.test(frame.url()));
   const dimensions = await frame.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth,
     grid: document.getElementById('musicalInput').scrollWidth }));
@@ -88,7 +88,7 @@ test('Groove Lab supports keyboard editing and contains portrait grid scrolling'
   await app.locator('#showHideTomsButton').click();
   await expect(app.locator('[data-groove-note="tom1"]').first()).toHaveAttribute('aria-label', /High tom, bar 1/);
   await app.locator('#stickingsButton').click();
-  await app.getByRole('button', { name: 'Show or Hide stickings', exact: true }).click();
+  await app.getByRole('button', { name: 'Show or hide stickings', exact: true }).click();
   await expect(app.locator('[data-groove-note="sticking"]').first()).toHaveAttribute('aria-label', /Sticking, bar 1/);
 });
 
@@ -132,6 +132,13 @@ test('mobile menu, skip link and tool modal preserve keyboard focus', async ({ p
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.getByRole('button', { name: 'Open navigation' }).click();
   await expect(page.locator('main')).toHaveAttribute('inert');
+  await expect(page.locator('.nav-backdrop')).toBeVisible();
+  const bounds = await page.locator('#site-navigation').boundingBox();
+  expect(bounds.y + bounds.height).toBeLessThan(page.viewportSize().height - 50);
+  await page.locator('.nav-backdrop').click({ position: { x: 10, y: page.viewportSize().height - 20 } });
+  await expect(page.locator('.nav-backdrop')).not.toBeVisible();
+  await expect(page.locator('main')).not.toHaveAttribute('inert');
+  await page.getByRole('button', { name: 'Open navigation' }).click();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
   await expect(page.locator('main')).not.toHaveAttribute('inert');
@@ -180,13 +187,8 @@ for (const viewport of [{ width: 320, height: 568 }, { width: 844, height: 390 }
       if (path === '/groove/') {
         const frame = page.frames().find(frame => /groove\/app\//.test(frame.url()));
         expect(await frame.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-        const scroll = await frame.evaluate(() => {
-          const area = document.getElementById('RightHandContent'); area.scrollTop = area.scrollHeight;
-          const rect = document.querySelector('.midiPlayImage').getBoundingClientRect();
-          return { top: rect.top, bottom: rect.bottom, height: innerHeight };
-        });
-        expect(scroll.top).toBeGreaterThanOrEqual(0);
-        expect(scroll.bottom).toBeLessThanOrEqual(scroll.height);
+        await expect.poll(() => frame.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2)).toBe(true);
+        expect(await frame.evaluate(() => getComputedStyle(document.getElementById('RightHandContent')).overflowY)).toBe('visible');
       }
     });
   }

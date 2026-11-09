@@ -318,7 +318,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
     ...toolIcons[name].nodes.map(([tag, attrs], key) => h(tag, { ...attrs, key })));
   const closePopup = () => { setShowBeatsPopup(false); setShowSubdivisionsPopup(false); };
   const popup = (title, content, footer) => h('div', { className: 'met-popup-backdrop', onClick: closePopup },
-    h('section', { className: 'met-popup', role: 'dialog', 'aria-modal': true, 'aria-label': title,
+    h('section', { className: 'met-popup tool-menu-surface', role: 'dialog', 'aria-modal': true, 'aria-label': title,
       onClick: e => e.stopPropagation(), onKeyDown: e => { if (e.key === 'Escape') closePopup(); } },
       h('div', { className: 'met-popup-header' }, h('div', {className: 'help-label'}, h('h2', null, title),
         help(title.toLowerCase(), title === 'Subdivision'
@@ -330,7 +330,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   const choice = (label, selected, onClick, extra = {}) => h('button', {
     className: 'tool-control', 'aria-pressed': selected, onClick, ...extra }, label);
   return h('div', { className: 'metronome-wrapper tool-ui', ref: helpRootRef },
-    h('div', { className: 'metronome-card' },
+    h('div', { className: 'metronome-card tool-loading-host', 'data-tool-loading': String(audioState === 'loading') },
       h('div', { className: 'bpm-display tool-tempo-display' },
         h('div', { className: 'met-bpm-row' },
           h('button', { className: 'tool-control tool-tempo-step met-step', 'aria-label': 'Decrease tempo by 5 BPM',
@@ -367,9 +367,11 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
           icon('tap'), h('span', null, 'Tap tempo')),
         h('button', { className: 'tool-control', disabled: trainerActive, onClick: e => { popupReturnRef.current = e.currentTarget; setShowBeatsPopup(true); } }, `Beats: ${beatsPerBar}`),
         h('button', { className: 'tool-control', disabled: trainerActive, onClick: e => { popupReturnRef.current = e.currentTarget; setShowSubdivisionsPopup(true); } }, `Subdivision: ${subdivisionType}`)),
-      audioState !== 'ready' && h('div', { className: 'met-audio-status', role: 'status' },
-        audioState === 'loading' ? 'Loading click sounds…' : audioState === 'unsupported' ? 'This browser does not support audio playback. Try a current browser.' : 'Click sounds could not load. Check your connection and try again.',
-        audioState === 'error' && h('button', { className: 'tool-control', onClick: () => setAudioAttempt(value => value + 1) }, 'Retry audio')),
+      audioState === 'loading'
+        ? h('div', { className: 'tool-loading tool-loading-overlay', role: 'status' }, h('span', { className: 'tool-loading-label' }, 'Loading click sounds'))
+        : audioState !== 'ready' && h('div', { className: 'met-audio-status', role: 'status' },
+          audioState === 'unsupported' ? 'This browser does not support audio playback. Try a current browser.' : 'Click sounds could not load. Check your connection and try again.',
+          audioState === 'error' && h('button', { className: 'tool-control', onClick: () => setAudioAttempt(value => value + 1) }, 'Retry audio')),
       h('section', { className: 'tool-trainer met-trainer', 'aria-label': 'Speed trainer' },
         h('div', { className: 'tool-trainer-heading' },
           h('label', { className: 'tool-trainer-toggle', htmlFor: 'met-trainer-enabled' },
@@ -390,8 +392,14 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
           help('speed trainer', 'Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is one complete round of the beat circles.')))),
     showBeatsPopup && popup('Beats', h('div', { className: 'beats-popup-grid' },
       [...Array(16)].map((_, i) => choice(i+1, beatsPerBar === i+1, () => { setBeatsPerBar(i+1); closePopup(); }, { key: i+1 })))),
-    showSubdivisionsPopup && popup('Subdivision', h('div', { className: 'subdivisions-popup-grid' },
-      subdivisions.map(sub => choice(h(React.Fragment, null, h('span', { className: 'met-subdivision-icon' }, sub.svg),
-        h('span', null, sub.name)), subdivisionType === sub.value, () => { setSubdivisionType(sub.value); closePopup(); }, { key: sub.value }))))
+    showSubdivisionsPopup && popup('Subdivision',
+      [ ['Even divisions', [1, 2, 4, 8]], ['Tuplets', [3, 5, 6, 7]] ].map(([heading, values]) =>
+        h('section', { className: 'tool-menu-section', key: heading },
+          h('h3', { className: 'tool-menu-heading' }, heading),
+          h('div', { className: 'subdivisions-popup-grid' },
+            subdivisions.filter(sub => values.includes(sub.value)).map(sub => choice(h(React.Fragment, null,
+              h('span', { className: 'met-subdivision-icon' }, sub.svg), h('span', null, sub.name)),
+              subdivisionType === sub.value, () => { setSubdivisionType(sub.value); closePopup(); }, { key: sub.value }))))))
+
   );
 }

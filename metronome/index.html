@@ -4,15 +4,15 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta content="#101214" name="theme-color"/>
-  <title>Free Online Metronome with Subdivisions | Dave Drums</title>
-  <meta content="Practice with a free online BPM metronome for drummers and musicians. Set your tempo, use tap tempo and explore subdivisions in your browser." name="description"/>
+  <title>Online Metronome | Free Interactive Drum Practice Tool</title>
+  <meta content="Practice with a free online metronome for drummers and musicians. Adjust BPM, use tap tempo and subdivisions, and build speed with the speed trainer." name="description"/>
   <link href="https://www.davedrums.com.au/metronome/" rel="canonical"/>
   <link href="../img/favicon.png" rel="icon" type="image/png"/>
   <meta content="website" property="og:type"/>
   <meta content="en_AU" property="og:locale"/>
   <meta content="Dave Drums" property="og:site_name"/>
-  <meta content="Free Online Metronome with Subdivisions | Dave Drums" property="og:title"/>
-  <meta content="Practice with a free online BPM metronome for drummers and musicians. Set your tempo, use tap tempo and explore subdivisions in your browser." property="og:description"/>
+  <meta content="Online Metronome | Free Interactive Drum Practice Tool" property="og:title"/>
+  <meta content="Practice with a free online metronome for drummers and musicians. Adjust BPM, use tap tempo and subdivisions, and build speed with the speed trainer." property="og:description"/>
   <meta content="https://www.davedrums.com.au/metronome/" property="og:url"/>
   <link href="../assets/styles.css" rel="stylesheet"/>
   <script defer="" src="../assets/script.js">
@@ -28,8 +28,8 @@
   <meta content="1920" property="og:image:width"/>
   <meta content="933" property="og:image:height"/>
   <meta content="summary_large_image" name="twitter:card"/>
-  <meta content="Free Online Metronome with Subdivisions | Dave Drums" name="twitter:title"/>
-  <meta content="Practice with a free online BPM metronome for drummers and musicians. Set your tempo, use tap tempo and explore subdivisions in your browser." name="twitter:description"/>
+  <meta content="Online Metronome | Free Interactive Drum Practice Tool" name="twitter:title"/>
+  <meta content="Practice with a free online metronome for drummers and musicians. Adjust BPM, use tap tempo and subdivisions, and build speed with the speed trainer." name="twitter:description"/>
   <meta content="https://www.davedrums.com.au/img/dave-studio1-1920.webp" name="twitter:image"/>
   <meta content="Dave D’Amore behind his acoustic drum kit in the studio" name="twitter:image:alt"/>
   <script type="application/ld+json">
@@ -40,11 +40,11 @@
       "@type": "WebPage",
       "@id": "https://www.davedrums.com.au/metronome/#webpage",
       "url": "https://www.davedrums.com.au/metronome/",
-      "name": "Free Online Metronome with Subdivisions | Dave Drums",
+      "name": "Online Metronome | Free Interactive Drum Practice Tool",
       "isPartOf": {
         "@id": "https://www.davedrums.com.au/#website"
       },
-      "description": "Practice with a free online BPM metronome for drummers and musicians. Set your tempo, use tap tempo and explore subdivisions in your browser.",
+      "description": "Practice with a free online metronome for drummers and musicians. Adjust BPM, use tap tempo and subdivisions, and build speed with the speed trainer.",
       "inLanguage": "en-AU",
       "breadcrumb": {
         "@id": "https://www.davedrums.com.au/metronome/#breadcrumbs"
@@ -80,11 +80,13 @@
       "operatingSystem": "Web browser",
       "browserRequirements": "JavaScript and an internet connection",
       "isAccessibleForFree": true,
-      "description": "Practice with a free online BPM metronome for drummers and musicians. Set your tempo, use tap tempo and explore subdivisions in your browser.",
+      "description": "Practice with a free online metronome for drummers and musicians. Adjust BPM, use tap tempo and subdivisions, and build speed with the speed trainer.",
       "featureList": [
         "Adjust tempo in BPM",
         "Tap tempo",
-        "Rhythmic subdivisions"
+        "Rhythmic subdivisions",
+        "Beat accents and muting",
+        "Speed trainer"
       ],
       "publisher": {
         "@id": "https://www.davedrums.com.au/#dave"
@@ -124,13 +126,13 @@
    </button>
    <span hidden="" id="nav-current-section">Current section</span>
    <nav aria-label="Main navigation" id="site-navigation">
-    <a href="/">Home</a>
-    <a href="/#about">About</a>
-    <a href="/lessons/">Lessons</a>
-    <a href="/recording/">Recording</a>
-    <a href="/watch/">Watch</a>
+    <a href="/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#home"></use></svg> Home</a>
+    <a href="/#about"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#person"></use></svg> About</a>
+    <a href="/lessons/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#drum"></use></svg> Lessons</a>
+    <a href="/recording/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#waveform"></use></svg> Recording</a>
+    <a href="/watch/"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#play"></use></svg> Watch</a>
     <details class="nav-group is-current">
-     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure">Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
+     <summary aria-controls="nav-tools" aria-describedby="nav-current-section" class="nav-disclosure"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg>Free Tools <span aria-hidden="true" class="nav-caret"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#chevron-down"></use></svg></span></summary>
      <ul class="nav-submenu" id="nav-tools">
       <li><a aria-current="page" href="/metronome/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#metronome"></use></svg> Metronome</a></li>
       <li><a href="/groove/"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#grid"></use></svg> Groove Lab</a></li>
@@ -138,7 +140,7 @@
       <li><a href="/notation/karnivool-drone"><svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#book"></use></svg> Karnivool &quot;Drone&quot; Notation</a></li>
      </ul>
     </details>
-    <a class="nav-contact" href="/#contact">Contact <svg aria-hidden="true" class="icon" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
+    <a class="nav-contact" href="/#contact"><svg aria-hidden="true" class="icon nav-mobile-icon" focusable="false"><use href="/assets/icons.svg#message"></use></svg> Contact <svg aria-hidden="true" class="icon nav-contact-arrow" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a>
    </nav>
   </header>
   <main class="tool-page" id="main" tabindex="-1">
@@ -168,12 +170,11 @@
     </div>
    </details>
     <p aria-live="polite" class="app-feedback section-shell" id="metronome-feedback" role="status"></p>
-   <section aria-label="Interactive metronome" class="metronome-player section-shell">
+   <section aria-label="Interactive metronome" class="metronome-player section-shell tool-loading-host" id="metronome-loader" data-tool-loading="true">
     <h2 class="visually-hidden">
      Interactive online metronome
     </h2>
-    <p aria-live="polite" class="metronome-status" id="metronome-status" role="status">
-    </p>
+    <div aria-live="polite" class="metronome-status tool-loading tool-loading-overlay" id="metronome-status" role="status"><span class="tool-loading-label">Loading metronome</span></div>
     <div aria-busy="true" id="metronome-app">
     </div>
     <div class="metronome-error" hidden="" id="metronome-error">

@@ -932,41 +932,10 @@ function GrooveWriter() {
 	}
 
 
-	root.setMetronomeButton = function (metronomeInterval) {
-
-		var id = "";
-		switch (metronomeInterval) {
-			case 4:
-				id = "metronome4ths";
-				break;
-			case 8:
-				id = "metronome8ths";
-				break;
-			case 16:
-				id = "metronome16ths";
-				break;
-			case 0:
-				/* falls through */
-			default:
-				id = "metronomeOff";
-				if (root.myGrooveUtils.getMetronomeSolo()) {
-					// turn off solo if we are turning off the metronome
-					root.metronomeOptionsMenuPopupClick("Solo");
-				}
-				break;
-		}
-
-		// clear other buttons
-		var myElements = document.querySelectorAll(".metronomeButton");
-		for (var i = 0; i < myElements.length; i++) {
-			var thisButton = myElements[i];
-			// remove active status
-			unselectButton(thisButton);
-		}
-
-		selectButton(document.getElementById(id));
-
-		root.myGrooveUtils.midiNoteHasChanged(); // pretty likely the case
+	root.setMetronomeButton = function (frequency) {
+		if (frequency === 0 && root.myGrooveUtils.getMetronomeSolo()) root.metronomeOptionsMenuPopupClick("Solo");
+		root.myGrooveUtils.midiNoteHasChanged();
+		document.dispatchEvent(new Event("groove:controls-change"));
 	};
 
 	root.class_metronome_frequency = 0;
@@ -982,57 +951,41 @@ function GrooveWriter() {
 		root.updateCurrentURL();
 	};
 
-	// the user has clicked on the metronome options button
-	root.metronomeOptionsAnchorClick = function (event) {
-
-		var contextMenu = document.getElementById("metronomeOptionsContextMenu");
-		if (contextMenu) {
-
-			var anchorPoint = document.getElementById("metronomeOptionsAnchor");
-
-			if (anchorPoint) {
-				var anchorPos = getTagPosition(anchorPoint);
-				contextMenu.style.top = anchorPos.y + anchorPoint.offsetHeight + "px";
-				contextMenu.style.left = anchorPos.x + anchorPoint.offsetWidth - 150 + "px";
+	// Position settings menus within the visible part of an embedded editor.
+	root.toggleControlMenu = function (menu, anchor) {
+		if (!menu || !anchor) return;
+		if (menu.style.display === "block") { root.myGrooveUtils.hideContextMenu(menu); return; }
+		menu.style.display = "block";
+		var bounds = anchor.getBoundingClientRect();
+		var visibleTop = 0, visibleBottom = window.innerHeight;
+		try {
+			if (window.frameElement) {
+				var frameBounds = window.frameElement.getBoundingClientRect();
+				visibleTop = Math.max(0, -frameBounds.top);
+				visibleBottom = Math.min(visibleBottom, window.parent.innerHeight - frameBounds.top);
 			}
-
-			root.myGrooveUtils.showContextMenu(contextMenu);
-		}
+		} catch (error) { /* Cross-origin embeds use their own viewport. */ }
+		var below = visibleBottom - bounds.bottom - 12, above = bounds.top - visibleTop - 12;
+		var showAbove = below < 200 && above > below;
+		menu.style.maxHeight = Math.min(480, Math.max(120, showAbove ? above : below), Math.max(80, visibleBottom - visibleTop - 16)) + "px";
+		menu.style.left = Math.max(8, Math.min(bounds.right - menu.offsetWidth, window.innerWidth - menu.offsetWidth - 8)) + "px";
+		var preferredTop = showAbove ? bounds.top - menu.offsetHeight - 6 : bounds.bottom + 6;
+		menu.style.top = Math.max(visibleTop + 8, Math.min(preferredTop, visibleBottom - menu.offsetHeight - 8)) + "px";
+		root.myGrooveUtils.showContextMenu(menu);
+		menu.querySelector('button:not(:disabled), [role="button"]').focus({ preventScroll: true });
 	};
 
-	// the user has clicked on the permutation menu
-	root.permutationAnchorClick = function (event) {
-
-		if (class_num_beats_per_measure != 4 || class_note_value_per_measure != 4)
-			return;   // permutations disabled except in 4/4 time
-
-		var contextMenu = document.getElementById("permutationContextMenu");
-		if (contextMenu) {
-			var anchorPoint = document.getElementById("permutationAnchor");
-
-			if (anchorPoint) {
-				var anchorPos = getTagPosition(anchorPoint);
-				contextMenu.style.top = anchorPos.y + anchorPoint.offsetHeight + "px";
-				contextMenu.style.left = anchorPos.x + anchorPoint.offsetWidth - 150 + "px";
-			}
-			root.myGrooveUtils.showContextMenu(contextMenu);
-		}
+	root.groovesAnchorClick = function () {
+		root.toggleControlMenu(document.getElementById("grooveListWrapper"), document.getElementById("groovesAnchor"));
 	};
 
-	// the user has clicked on the grooves menu
-	root.groovesAnchorClick = function (event) {
-
-		var contextMenu = document.getElementById("grooveListWrapper");
-		if (contextMenu) {
-			var anchorPoint = document.getElementById("groovesAnchor");
-
-			if (anchorPoint) {
-				var anchorPos = getTagPosition(anchorPoint);
-				contextMenu.style.top = anchorPos.y + anchorPoint.offsetHeight + "px";
-				contextMenu.style.left = anchorPos.x + anchorPoint.offsetWidth - 283 + "px";
-			}
-			root.myGrooveUtils.showContextMenu(contextMenu);
-		}
+	root.toggleLegend = function () {
+		var checkbox = document.getElementById("showLegend");
+		checkbox.checked = !checkbox.checked;
+		var button = document.getElementById("LegendLabel");
+		button.setAttribute("aria-pressed", String(checkbox.checked));
+		button.title = checkbox.checked ? "Hide drum key legend" : "Show drum key legend";
+		root.refresh_ABC();
 	};
 
 	// the user has clicked on the help menu
@@ -1091,16 +1044,7 @@ function GrooveWriter() {
 
 	// figure out if the metronome options menu should be selected and change the UI
 	root.metronomeOptionsMenuSetSelectedState = function () {
-
-		if (root.myGrooveUtils.getMetronomeSolo() ||
-				class_metronome_auto_speed_up_active ||
-				root.myGrooveUtils.getMetronomeOffsetClickStart() != "1") {
-			// make menu look active
-			addOrRemoveKeywordFromClassById("metronomeOptionsAnchor", "selected", true)
-		} else {
-			// inactive
-			addOrRemoveKeywordFromClassById("metronomeOptionsAnchor", "selected", false)
-		}
+		document.dispatchEvent(new Event("groove:controls-change"));
 	};
 
 	root.metronomeOptionsMenuPopupClick = function (option_type) {
@@ -1154,14 +1098,19 @@ function GrooveWriter() {
 				else
 					contextMenu = document.getElementById("metronomeOptionsOffsetClickContextMenu");
 				if (contextMenu) {
-					var anchorPoint = document.getElementById("metronomeOptionsContextMenuOffTheOne");
+					var anchorPoint = document.getElementById("gl-metronome-toggle");
 
 					if (anchorPoint) {
 						var anchorPos = getTagPosition(anchorPoint);
 						contextMenu.style.top = anchorPos.y + anchorPoint.offsetHeight + "px";
-						contextMenu.style.left = anchorPos.x + anchorPoint.offsetWidth - 150 + "px";
+						contextMenu.style.display = "block";
+						var menuWidth = contextMenu.offsetWidth;
+						var rightAligned = anchorPos.x + anchorPoint.offsetWidth - menuWidth;
+						contextMenu.style.left = Math.max(8, Math.min(rightAligned, document.documentElement.clientWidth - menuWidth - 8)) + "px";
 					}
+					document.getElementById("metronomeOptionsContextMenuOffTheOne").setAttribute("aria-controls", contextMenu.id);
 					root.myGrooveUtils.showContextMenu(contextMenu);
+					contextMenu.querySelector("li[onclick]").focus({ preventScroll: true });
 				}
 				break;
 
@@ -1212,19 +1161,24 @@ function GrooveWriter() {
 	};
 
 	function setupPermutationMenu() {
-
-		if (class_num_beats_per_measure == 4 && class_note_value_per_measure == 4) {
-
-			addOrRemoveKeywordFromClassById("permutationAnchor", "enabled", true);
-
-		} else {
-			// permutations disabled except in 4/4 time
-			addOrRemoveKeywordFromClassById("permutationAnchor", "enabled", false);
-			root.permutationPopupClick("none");  // make sure permutation is off
-		}
+		var enabled = class_num_beats_per_measure == 4 && class_note_value_per_measure == 4;
+		document.querySelectorAll('#permutationContextMenu [data-permutation]').forEach(function (button) {
+			button.disabled = !enabled && button.dataset.permutation !== "none";
+			button.setAttribute("aria-pressed", String(button.dataset.permutation === class_permutation_type));
+		});
+		var note = document.getElementById("permutation-meter-note");
+		if (note) note.hidden = enabled;
+		if (!enabled && class_permutation_type !== "none") root.permutationPopupClick("none");
 	}
 
+	root.selectPermutation = function (type) {
+		root.permutationPopupClick(type);
+		root.myGrooveUtils.hideContextMenu(document.getElementById("grooveListWrapper"));
+		document.getElementById("groovesAnchor").focus({ preventScroll: true });
+	};
+
 	root.permutationPopupClick = function (perm_type) {
+		if (perm_type !== "none" && (class_num_beats_per_measure != 4 || class_note_value_per_measure != 4)) return;
 
 		if (class_permutation_type == perm_type)
 			return;
@@ -1238,7 +1192,6 @@ function GrooveWriter() {
 				while (class_number_of_measures > 1) {
 					root.closeMeasureButtonClick(2);
 				}
-				selectButton(document.getElementById("permutationAnchor"));
 				document.getElementById("PermutationOptions").innerHTML = root.HTMLforPermutationOptions();
 				document.getElementById("PermutationOptions").className += " displayed";
 				break;
@@ -1249,7 +1202,6 @@ function GrooveWriter() {
 				while (class_number_of_measures > 1) {
 					root.closeMeasureButtonClick(2);
 				}
-				selectButton(document.getElementById("permutationAnchor"));
 				document.getElementById("PermutationOptions").innerHTML = root.HTMLforPermutationOptions();
 				document.getElementById("PermutationOptions").className += " displayed";
 				break;
@@ -1261,12 +1213,12 @@ function GrooveWriter() {
 				showHideCSS_ClassVisibility(".snare-container", true, true); // show it
 				class_permutation_type = "none";
 
-				unselectButton(document.getElementById("permutationAnchor"));
 				document.getElementById("PermutationOptions").innerHTML = root.HTMLforPermutationOptions();
 				addOrRemoveKeywordFromClassById("PermutationOptions", "displayed", false);
 				break;
 		}
 
+		setupPermutationMenu();
 		updateSheetMusic();
 	};
 
@@ -1379,6 +1331,7 @@ function GrooveWriter() {
 	};
 
 	root.noteLabelPopupClick = function (instrument, action) {
+		if (root.myGrooveUtils.visible_context_menu) root.myGrooveUtils.hideContextMenu(root.myGrooveUtils.visible_context_menu);
 		var setFunction = false;
 		var contextMenu = false;
 
@@ -1572,6 +1525,7 @@ function GrooveWriter() {
 	};
 
 	root.notePopupClick = function (type, new_setting) {
+		if (root.myGrooveUtils.visible_context_menu) root.myGrooveUtils.hideContextMenu(root.myGrooveUtils.visible_context_menu);
 		var id = class_which_index_last_clicked;
 
 		switch (type) {
@@ -3274,51 +3228,23 @@ function GrooveWriter() {
 	};
 
 	root.setupWriterHotKeys = function () {
-
-		document.addEventListener("keydown", function (e) {
-			if (e.defaultPrevented || e.target.closest('input,textarea,select,button,[role="button"]')) return;
-
-			// only accept the event if it not going to an INPUT field   (allow for range types)
-			if (e.target.type == "range" || (e.target.tagName.toUpperCase() != "INPUT" && e.target.tagName.toUpperCase() != "TEXTAREA")) {
-				switch (e.which) {
-				case 90: // ctrl-z
-					if (e.ctrlKey) {
-						// ctrl-z
-						root.undoCommand();
-						return false;
-					}
-					break;
-
-				case 89: // ctrl-y
-					if (e.ctrlKey) {
-						// ctrl-y
-						root.redoCommand();
-						return false;
-					}
-					break;
-
-				case 37: // left arrow
-					// left arrow
-					root.myGrooveUtils.downTempo();
-					return false;
-					//break;
-
-				case 39: // right arrow
-					// right arrow
-					root.myGrooveUtils.upTempo();
-					return false;
-					//break;
-
-				default:
-					/* DEBUG
-					else if(e.ctrlKey && e.which !=17 && e.target.type != "text") {
-					alert("Key is: " + e.which);
-					}
-					 */
-					break;
-				}
+		document.addEventListener("keydown", function (event) {
+			// Leave text editing and open pickers to their native keyboard handlers.
+			if (event.defaultPrevented || event.target.closest('input,textarea,select,[contenteditable="true"],[role="combobox"]')) return;
+			var key = event.key.toLowerCase();
+			if (event.ctrlKey && !event.altKey && (key === "z" || key === "y")) {
+				event.preventDefault();
+				if (key === "z") root.undoCommand();
+				else root.redoCommand();
+				return;
 			}
-			return true; // let the default handler deal with the keypress
+			// Grid arrows navigate notes; buttons also retain their own keys.
+			if (event.target.closest('button,[role="button"]')) return;
+			if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+				event.preventDefault();
+				if (event.key === "ArrowLeft") root.myGrooveUtils.downTempo();
+				else root.myGrooveUtils.upTempo();
+			}
 		});
 	};
 
@@ -3330,7 +3256,7 @@ function GrooveWriter() {
 			showHideCSS_ClassDisplay(".edit-block", true, true, "block"); // show
 
 			if(view_edit_button)
-				view_edit_button.innerHTML = "Switch to VIEW mode";
+				view_edit_button.textContent = "Switch to view mode";
 			root.myGrooveUtils.viewMode = false;
 
 			if(!dontUpdateURL)
@@ -3340,7 +3266,7 @@ function GrooveWriter() {
 			showHideCSS_ClassDisplay(".edit-block", true, false, "block"); // hide
 
 			if(view_edit_button)
-				view_edit_button.innerHTML = "Switch to EDIT mode";
+				view_edit_button.textContent = "Switch to edit mode";
 			root.myGrooveUtils.viewMode = true;
 			if(!dontUpdateURL)
 				root.updateCurrentURL();
@@ -3361,10 +3287,10 @@ function GrooveWriter() {
 			root.swapViewEditMode(true);
 
 		// set the background and text color of the current subdivision
-		selectButton(document.getElementById("subdivision_" + class_notes_per_measure + "ths"));
+		root.setTimeDivisionSelectionOnOrOff();
 
 		// add html for the midi player
-		root.myGrooveUtils.AddMidiPlayerToPage("midiPlayer", class_time_division);
+		root.myGrooveUtils.AddMidiPlayerToPage("midiPlayer", class_time_division, false, true);
 
 		// load the groove from the URL data if it was passed in.
 		set_Default_notes(window.location.search);
@@ -3825,76 +3751,45 @@ function GrooveWriter() {
 			popup.style.display = "none";
 	};
 
-	root.timeSigPopupOpen = function(type) {
-		var popup = document.getElementById("timeSigPopup");
+	root.getSubdivision = function () { return class_time_division; };
+	root.getTimeSignature = function () { return class_num_beats_per_measure + "/" + class_note_value_per_measure; };
 
-		if (popup)
-			popup.style.display = "block";
-
+	root.setTimeDivisionSelectionOnOrOff = function () {
+		var select = document.getElementById("gl-notes");
+		for (var option of select.options) {
+			var division = Number(option.value);
+			option.disabled = division % 12 === 0 ? class_note_value_per_measure != 4 : (division * class_num_beats_per_measure / class_note_value_per_measure) % 1 !== 0;
+		}
+		select.value = String(class_time_division);
+		document.dispatchEvent(new Event("groove:controls-change"));
 	};
 
-	// turns on or off triplet 1/4 and 1/8 note selection based on the current time sig setting
-	root.setTimeDivisionSelectionOnOrOff = function() {
-
-		// check for incompatible odd time signature division  9/16 and 1/8 notes for instance
-		if( (8 * class_num_beats_per_measure / class_note_value_per_measure) % 1 != 0 ) {
-			addOrRemoveKeywordFromClassById("subdivision_8ths", "disabled", true);
-		} else {
-			addOrRemoveKeywordFromClassById("subdivision_8ths", "disabled", false);
-		}
-
-		if(class_note_value_per_measure != 4) {
-			// triplets are too complicated right now outside of x/4 time.
-			// disable them
-
-			addOrRemoveKeywordFromClassById("subdivision_12ths", "disabled", true);
-			addOrRemoveKeywordFromClassById("subdivision_24ths", "disabled", true);
-			addOrRemoveKeywordFromClassById("subdivision_48ths", "disabled", true);
-
-		} else {
-			addOrRemoveKeywordFromClassById("subdivision_12ths", "disabled", false);
-			addOrRemoveKeywordFromClassById("subdivision_24ths", "disabled", false);
-			addOrRemoveKeywordFromClassById("subdivision_48ths", "disabled", false);
-
-		}
+	root.setTimeSigLabel = function () {
+		document.dispatchEvent(new Event("groove:controls-change"));
 	};
 
-
-	root.setTimeSigLabel = function() {
-		// turn on/off special features that are only available in 4/4 time
-
-		// set the label
-		document.getElementById("timeSigLabel").innerHTML = '<sup>' + class_num_beats_per_measure + "</sup>/<sub>" + class_note_value_per_measure + "</sub>";
-	};
-
-	root.timeSigPopupClose = function(type, callback) {
-		var popup = document.getElementById("timeSigPopup");
-
-		if (popup)
-			popup.style.display = "none";
-
-		// ignore type "cancel"
-		if(type == "ok") {
-			var newTimeSigTop = document.getElementById("timeSigPopupTimeSigTop").value;
-			var newTimeSigBottom = document.getElementById("timeSigPopupTimeSigBottom").value;
-
-			if(usingTriplets() && newTimeSigBottom != 4) {
-				root.changeDivision(16);  // switch to a non triplet division since they are not supported in this time signature
-			}
-
-			class_num_beats_per_measure = newTimeSigTop;
-			class_note_value_per_measure = newTimeSigBottom;
-			var new_notes_per_measure = root.myGrooveUtils.calc_notes_per_measure(class_time_division, class_num_beats_per_measure, class_note_value_per_measure);
-			// If new_notes_per_measure is greater it will cause the changeDivision code to error
-			// as it tries to read the notes from the UI.   Setting it lower will allow the code to truncate
-			// the groove properly to something smaller rather than interpolating the groove into something weird
-			if(new_notes_per_measure < class_notes_per_measure)
-				class_notes_per_measure = new_notes_per_measure;
-			root.changeDivision(class_time_division);   // use this function because it will relayout everything
+	root.changeTimeSignature = function (newTimeSigTop, newTimeSigBottom) {
+		newTimeSigTop = Number(newTimeSigTop);
+		newTimeSigBottom = Number(newTimeSigBottom);
+		if (!Number.isInteger(newTimeSigTop) || newTimeSigTop < 1 || newTimeSigTop > 15 || ![4, 8, 16].includes(newTimeSigBottom)) return;
+		if(usingTriplets() && newTimeSigBottom != 4) {
+			root.changeDivision(16);  // switch to a non triplet division since they are not supported in this time signature
 		}
-		if (callback) {
-			callback();
+
+		if (class_time_division === 4 && (4 * newTimeSigTop / newTimeSigBottom) % 1 !== 0) {
+			// Keep a whole number of grid steps when changing to an odd eighth/sixteenth meter.
+			root.changeDivision((8 * newTimeSigTop / newTimeSigBottom) % 1 === 0 ? 8 : 16);
 		}
+
+		class_num_beats_per_measure = newTimeSigTop;
+		class_note_value_per_measure = newTimeSigBottom;
+		var new_notes_per_measure = root.myGrooveUtils.calc_notes_per_measure(class_time_division, class_num_beats_per_measure, class_note_value_per_measure);
+		// If new_notes_per_measure is greater it will cause the changeDivision code to error
+		// as it tries to read the notes from the UI.   Setting it lower will allow the code to truncate
+		// the groove properly to something smaller rather than interpolating the groove into something weird
+		if(new_notes_per_measure < class_notes_per_measure)
+			class_notes_per_measure = new_notes_per_measure;
+		root.changeDivision(class_time_division);   // use this function because it will relayout everything
 	};
 
 	root.updateRangeLabel = function (event, idToUpdate) {
@@ -3923,78 +3818,56 @@ function GrooveWriter() {
 	};
 
 	root.show_FullURLPopup = function () {
-		var popup = document.getElementById("fullURLPopup");
-
-		var ShareBut = new ShareButton({
-				ui: {
-					flyout: 'bottom center', // change the flyout direction of the shares. chose from `top left`, `top center`, `top right`, `bottom left`, `bottom right`, `bottom center`, `middle left`, or `middle right` [Default: `top center`]
-					button_font: false, // include the Lato font set from the Google Fonts API. [Default: `true`]
-					buttonText: 'SHARE', // change the text of the button, [Default: `Share`]
-					icon_font: false,   // include the minified Entypo font set. [Default: `true`]
-				},
-				networks: {
-					facebook: {
-						before: function () {
-							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.description = "Check out this groove in Groove Lab.";
-						},
-						//app_id : "839699029418014"    // staging id
-						// app_id : "1499163983742002"   // MLDC id, lou created
-						appId: "445510575651140",   // MLDC id, brad created
-						loadSdk: true
-					},
-					googlePlus : {
-						enabled : false
-					},
-					twitter: {
-						before: function () {
-							this.url = encodeURIComponent(document.getElementById("fullURLPopupTextField").value);
-							this.description = "Groove Lab - check out this groove:  " + document.getElementById("fullURLPopupTextField").value;
-						}
-					},
-					reddit: {
-						before: function () {
-							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.title = "Groove Lab - check out this groove: " + document.getElementById("fullURLPopupTextField").value;
-						}
-					},
-					email: {
-						before : function () {
-							this.url = document.getElementById("fullURLPopupTextField").value;
-							this.description = "Check out this groove in Groove Lab. %0A%0A " + encodeURIComponent(document.getElementById("fullURLPopupTextField").value);
-						}
-					},
-					pinterest: {
-						enabled: false
-					},
-					linkedin: {
-						enabled: false
-					},
-					whatsapp: {
-						enabled: false
-					}
-				}
-			});
-
-			// The public URL contains the complete pattern and can be copied directly.
-			root.fillInFullURLInFullURLPopup();
+		document.getElementById("groove-share-status").textContent = "";
+		root.fillInFullURLInFullURLPopup();
 	};
 
-	root.copyShareURLToClipboard = function() {
-		var copyText = document.getElementById("fullURLPopupTextField");
+	// Prefer the modern clipboard, with a selectable-field fallback when denied.
+	root.copyShareURLToClipboard = async function(value) {
+		var field = document.getElementById("fullURLPopupTextField");
+		var status = document.getElementById("groove-share-status");
+		var original = field.value;
+		var text = typeof value === "string" ? value : original;
+		try {
+			try { await navigator.clipboard.writeText(text); }
+			catch {
+				field.value = text;
+				field.focus();
+				field.select();
+				field.setSelectionRange(0, text.length);
+				if (!document.execCommand("copy")) throw new Error("Clipboard unavailable");
+			}
+			status.textContent = text.startsWith("<iframe") ? "Embed code copied." : "Link copied. Paste it into a message or save it for later.";
+			return true;
+		} catch {
+			status.textContent = "Copy was blocked. Select the link above and copy it manually.";
+			return false;
+		} finally { field.value = original; }
+	};
 
-		copyText.select();
-		// hack fix for mobile
-		copyText.setSelectionRange(0, 99999);
-
-		document.execCommand("copy");
-	}
+	root.shareGroove = async function() {
+		var button = document.getElementById("shareButton");
+		if (button.disabled) return;
+		button.disabled = true;
+		var status = document.getElementById("groove-share-status");
+		status.textContent = "";
+		var url = get_FullURLForPage();
+		try {
+			if (navigator.share) {
+				await navigator.share({ title: "Groove Lab", url: url });
+				status.textContent = "Groove shared.";
+			} else await root.copyShareURLToClipboard(url);
+		} catch (error) {
+			if (error.name !== "AbortError") await root.copyShareURLToClipboard(url);
+		} finally { button.disabled = false; }
+	};
 
 	root.close_FullURLPopup = function () {
 		var popup = document.getElementById("fullURLPopup");
 
 		if (popup)
 			popup.style.display = "none";
+		document.getElementById("shareSaveButton").focus({ preventScroll: true });
 	};
 
 	// embed looks something like this:
@@ -4070,6 +3943,8 @@ function GrooveWriter() {
 
 	root.loadNewGroove = function (encodedURLData) {
 		set_Default_notes(encodedURLData);
+		root.myGrooveUtils.hideContextMenu(document.getElementById("grooveListWrapper"));
+		document.getElementById("groovesAnchor").focus({ preventScroll: true });
 	};
 
 	function getABCDataWithLineEndings() {
@@ -4098,7 +3973,6 @@ function GrooveWriter() {
 	// OMG this needs to be refactored really bad.   There is a GrooveData struct from groove utils that
 	//      would make this whole thing much easier.  :(
 	function changeDivisionWithNotes(newDivision, Stickings, HH, Tom1, Tom4, Snare, Kick) {
-		var oldDivision = class_time_division;
 		var wasStickingsVisable = isStickingsVisible();
 		var wasTomsVisable = isTomsVisible();
 
@@ -4132,12 +4006,6 @@ function GrooveWriter() {
 			setNotesFromURLData("S", Snare, class_number_of_measures);
 			setNotesFromURLData("K", Kick, class_number_of_measures);
 		}
-
-		// un-highlight the old div
-		unselectButton(document.getElementById("subdivision_" + oldDivision + "ths"));
-
-		// highlight the new div
-		selectButton(document.getElementById("subdivision_" + class_time_division + "ths"));
 
 		// This may disable or enable the menu
 		setupPermutationMenu();
@@ -4394,12 +4262,12 @@ function GrooveWriter() {
 							'		<ellipse id="drag_hd" rx="4.1" ry="2.9" transform="rotate(-20)" class="drag_fill"></ellipse>' +
 							'	</defs>' +
 							'	<g id="note" transform="translate(-44 -35)">' +
-							'       <path class="fill" d="m51.81 38.34 l8.58 0.00v1.60l-8.58 0.00"></path>' +
-							'	    <path class="fill" d="m52.10 41.34 l8.00 0.00v1.60l-8.00 0.00"></path>' +
-							'		<path class="drag_stroke" d="m52.1 53.34v-15.00"></path>' +
+							'       <path class="fill" d="m51.81 39.34 l8.58 0.00v1.60l-8.58 0.00"></path>' +
+							'	    <path class="fill" d="m52.10 42.34 l8.00 0.00v1.60l-8.00 0.00"></path>' +
+							'		<path class="drag_stroke" d="m52.1 53.34v-14.00"></path>' +
 							'		<use x="50.50" y="53.34" xlink:href="#drag_ghd"></use>' +
-							'		<path class="drag_stroke" d="m49.50 49.34l8.00 -15.00"></path>' +
-							'		<path class="drag_stroke" d="m60.10 53.34v-15.00"></path>' +
+							'		<path class="drag_stroke" d="m49.50 49.34l9 -5"></path>' +
+							'		<path class="drag_stroke" d="m60.10 53.34v-14.00"></path>' +
 							'		<use x="58.50" y="53.34" xlink:href="#drag_ghd"></use>' +
 							'		<path class="drag_stroke" d="m50.5 58.34c2.9 3 11.6 3 14.5 0M69.5 53.34v-21"></path><use x="66.00" y="53.34" xlink:href="#drag_hd"></use>' +
 
@@ -4464,9 +4332,9 @@ function GrooveWriter() {
 						</span>\n');
 
 		if (class_number_of_measures > 1)
-			newHTML += '<span title="Remove Measure" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></span>';
+			newHTML += '<button type="button" title="Delete bar ' + baseindex + '" aria-label="Delete bar ' + baseindex + '" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></button>';
 		else
-			newHTML += '<span class="closeMeasureButton"><i class="fa">&nbsp;&nbsp;&nbsp;</i></span>';
+			newHTML += '<span class="measure-control-spacer" aria-hidden="true"></span>';
 
 
 		if (baseindex == class_number_of_measures) // add new measure button

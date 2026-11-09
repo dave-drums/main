@@ -268,10 +268,13 @@ function GrooveUtils() {
 	// close a popup if one is up and we click off of it.
 	root.documentOnClickHanderCloseContextMenu = function (event) {
 		if (root.visible_context_menu) {
+			var opener = document.querySelector('[aria-controls="' + root.visible_context_menu.id + '"]');
+			if (opener && opener.contains(event.target)) return;
 			root.hideContextMenu(root.visible_context_menu);
 		}
 	};
 
+	var contextMenuCloseTimer;
 	root.showContextMenu = function (contextMenu) {
 
 		// if there is another context menu open, close it
@@ -280,18 +283,33 @@ function GrooveUtils() {
 		}
 
 		contextMenu.style.display = "block";
+		contextMenu.style.left = Math.max(8, Math.min(contextMenu.offsetLeft, document.documentElement.clientWidth - contextMenu.offsetWidth - 8)) + "px";
 		root.visible_context_menu = contextMenu;
+		var opener = document.querySelector('[aria-controls="' + contextMenu.id + '"]');
+		if (opener) opener.setAttribute("aria-expanded", "true");
 
-		// Check for screen visibility of the bottom of the menu
-		if(contextMenu.offsetTop + contextMenu.clientHeight > document.documentElement.clientHeight) {
-			// the menu has gone off the bottom of the screen
-			contextMenu.style.top = document.documentElement.clientHeight - contextMenu.clientHeight + 'px';
+		// A naturally sized iframe can extend beyond the visible parent page.
+		var visibleTop = 0, visibleBottom = window.innerHeight;
+		try {
+			if (window.frameElement) {
+				var frameBounds = window.frameElement.getBoundingClientRect();
+				var header = window.parent.document.fullscreenElement ? null : window.parent.document.querySelector('.site-header');
+				var headerBottom = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+				visibleTop = Math.max(0, headerBottom - frameBounds.top);
+				visibleBottom = Math.min(visibleBottom, window.parent.innerHeight - frameBounds.top);
+			}
+		} catch (error) { /* Cross-origin embeds use their own viewport. */ }
+		if (contextMenu.matches('.noteContextMenu > ul.list')) {
+			contextMenu.style.maxHeight = Math.max(80, visibleBottom - visibleTop - 16) + 'px';
 		}
+		contextMenu.style.top = Math.max(visibleTop + 8, Math.min(contextMenu.offsetTop, visibleBottom - contextMenu.offsetHeight - 8)) + 'px';
 
 		// use a timeout to setup the onClick handler.
 		// otherwise the click that opened the menu will close it
 		// right away.  :(
-		setTimeout(function () {
+		contextMenuCloseTimer = setTimeout(function () {
+			contextMenuCloseTimer = undefined;
+			if (root.visible_context_menu !== contextMenu) return;
 			document.onclick = root.documentOnClickHanderCloseContextMenu;
 			document.body.style.cursor = "pointer"; // make document.onclick work on iPad
 
@@ -299,12 +317,16 @@ function GrooveUtils() {
 	};
 
 	root.hideContextMenu = function (contextMenu) {
+		clearTimeout(contextMenuCloseTimer);
+		contextMenuCloseTimer = undefined;
 		document.onclick = false;
 		document.body.style.cursor = "auto"; // make document.onclick work on iPad
 
 
 		if (contextMenu) {
 			contextMenu.style.display = "none";
+			var opener = document.querySelector('[aria-controls="' + contextMenu.id + '"]');
+			if (opener) opener.setAttribute("aria-expanded", "false");
 		}
 		root.visible_context_menu = false;
 	};
@@ -1108,6 +1130,8 @@ function GrooveUtils() {
 		};
 
 		document.onkeydown = function (e) {
+			// Focused controls own their keys; Space activates their native button.
+			if (e.defaultPrevented || e.target.closest('input,textarea,select,button,[role="button"],[role="combobox"]')) return;
 			if (e.which == 17)
 				isCtrl = true;
 			/*
@@ -1213,7 +1237,8 @@ function GrooveUtils() {
 		fullABC += "K:C clef=perc\n";
 
 		if (showLegend) {
-			fullABC += 'V:Stickings\n' +
+			fullABC += '%%annotationfont DM-Sans ' + (renderWidth < 450 ? 10 : 12) + '\n' +
+			'V:Stickings\n' +
 			'x8 x8 x8 x8 x8 x8 x8 x8 ||\n' +
 			'V:Hands stem=up \n' +
 			'%%voicemap drum\n' +
@@ -1222,7 +1247,8 @@ function GrooveUtils() {
 			'V:Feet stem=down \n' +
 			'%%voicemap drum\n' +
 			'x52 "^Kick"F4 "^HH foot"^d,4 x4 ||\n' +
-			'T:\n';
+			'T:\n' +
+			'%%annotationfont DM-Sans 16\n';
 		}
 
 		// tempo setting
@@ -2258,6 +2284,15 @@ function GrooveUtils() {
 		return root.getGrooveUtilsBaseLocation() + "images/";
 	};
 
+	function setPlaybackState(control, state) {
+		control.classList.remove("Playing", "Paused", "Stopped");
+		control.classList.add(state);
+		if (control.matches("button")) {
+			control.disabled = false;
+			control.querySelector(".MIDIPlayTime").textContent = state === "Playing" ? CONSTANT_Midi_play_time_zero : "Start";
+		}
+	}
+
 	root.midiEventCallbackClass = function (classRoot) {
 		this.classRoot = classRoot;
 		this.noteHasChangedSinceLastDataLoad = false;
@@ -2265,7 +2300,7 @@ function GrooveUtils() {
 		this.playEvent = function (root) {
 			var icon = document.getElementById("midiPlayImage" + root.grooveUtilsUniqueIndex);
 			if (icon)
-				icon.className = "midiPlayImage Playing";
+				setPlaybackState(icon, "Playing");
 				if (root.playEventCallback) {
 					root.playEventCallback();
 				}
@@ -2290,14 +2325,14 @@ function GrooveUtils() {
 		this.pauseEvent = function (root) {
 			var icon = document.getElementById("midiPlayImage" + root.grooveUtilsUniqueIndex);
 			if (icon)
-				icon.className = "midiPlayImage Paused";
+				setPlaybackState(icon, "Paused");
 		};
 
 		this.resumeEvent = function (root) {};
 		this.stopEvent = function (root) {
 			var icon = document.getElementById("midiPlayImage" + root.grooveUtilsUniqueIndex);
 			if (icon)
-				icon.className = "midiPlayImage Stopped";
+				setPlaybackState(icon, "Stopped");
 		};
 		this.repeatChangeEvent = function (root, newValue) {
 			if (newValue)
@@ -2311,7 +2346,7 @@ function GrooveUtils() {
 		this.midiInitialized = function (root) {
 			var icon = document.getElementById("midiPlayImage" + root.grooveUtilsUniqueIndex);
 			if (icon)
-				icon.className = "midiPlayImage Stopped";
+				setPlaybackState(icon, "Stopped");
 			document.getElementById("midiPlayImage" + root.grooveUtilsUniqueIndex).onclick = function (event) {
 				root.startOrStopMIDI_playback();
 			}; // enable play button
@@ -3038,12 +3073,12 @@ function GrooveUtils() {
 	}
 
 	root.getTempo = function () {
-		var tempoInput = document.getElementById("tempoInput" + root.grooveUtilsUniqueIndex);
+		var tempoInput = document.getElementById("tempoInput" + root.grooveUtilsUniqueIndex) || document.getElementById("tempoTextField" + root.grooveUtilsUniqueIndex);
 		var tempo = constant_DEFAULT_TEMPO;
 
 		if(tempoInput) {
 			tempo = parseInt(tempoInput.value, 10);
-			if (tempo < 19 && tempo > 281)
+			if (!Number.isFinite(tempo) || tempo < 30 || tempo > 300)
 				tempo = constant_DEFAULT_TEMPO;
 		}
 
@@ -3081,7 +3116,7 @@ function GrooveUtils() {
 	root.tempoUpdate = function (tempo) {
 		document.getElementById('tempoTextField' + root.grooveUtilsUniqueIndex).value = "" + tempo;
 
-		updateRangeSlider('tempoInput' + root.grooveUtilsUniqueIndex);
+		if (document.getElementById('tempoInput' + root.grooveUtilsUniqueIndex)) updateRangeSlider('tempoInput' + root.grooveUtilsUniqueIndex);
 		root.midiNoteHasChanged();
 
 		if(root.tempoChangeCallback)
@@ -3089,10 +3124,7 @@ function GrooveUtils() {
 	};
 
 	root.tempoUpdateFromTextField = function (event) {
-		var newTempo = event.target.value;
-
-		document.getElementById("tempoInput" + root.grooveUtilsUniqueIndex).value = newTempo;
-		root.tempoUpdate(newTempo);
+		root.setTempo(event.target.value);
 	};
 
 	// update the tempo string display
@@ -3119,11 +3151,15 @@ function GrooveUtils() {
 		root.setTempo(tempo);
 	};
 
-	root.setTempo = function (newTempo) {
-		if (newTempo < 19 && newTempo > 281)
-			return;
+	function boundedInteger(value, min, max, fallback) {
+		var number = String(value).trim() === "" ? NaN : Number(value);
+		return Number.isFinite(number) ? Math.min(max, Math.max(min, Math.round(number))) : fallback;
+	}
 
-		document.getElementById("tempoInput" + root.grooveUtilsUniqueIndex).value = newTempo;
+	root.setTempo = function (newTempo) {
+		newTempo = boundedInteger(newTempo, 30, 300, root.getTempo());
+		var slider = document.getElementById("tempoInput" + root.grooveUtilsUniqueIndex);
+		if (slider) slider.value = newTempo;
 		root.tempoUpdate(newTempo);
 	};
 
@@ -3137,7 +3173,7 @@ function GrooveUtils() {
 
 	root.setSwingSlider = function (newSetting) {
 		document.getElementById("swingInput" + root.grooveUtilsUniqueIndex).value = newSetting;
-		updateRangeSlider('swingInput' + root.grooveUtilsUniqueIndex);
+		if (document.getElementById('swingInput' + root.grooveUtilsUniqueIndex).type === 'range') updateRangeSlider('swingInput' + root.grooveUtilsUniqueIndex);
 	};
 
 	root.swingEnabled = function (trueElseFalse) {
@@ -3170,18 +3206,23 @@ function GrooveUtils() {
 	// used to update the on screen swing display
 	// also the onClick handler for the swing slider
 	root.swingUpdateText = function (swingAmount) {
-
-		if (root.swingIsEnabled === false) {
-			document.getElementById('swingOutput' + root.grooveUtilsUniqueIndex).innerHTML = "N/A";
+		var input = document.getElementById("swingInput" + root.grooveUtilsUniqueIndex);
+		var output = document.getElementById("swingOutput" + root.grooveUtilsUniqueIndex);
+		if (input.type === "number") {
+			input.disabled = !root.swingIsEnabled;
+			var row = input.closest(".swingRow");
+			row.querySelectorAll("button").forEach(function (button) { button.disabled = !root.swingIsEnabled; });
+			row.title = root.swingIsEnabled ? "" : "Swing is unavailable for this subdivision";
+			output.textContent = "%";
 		} else {
-			document.getElementById('swingOutput' + root.grooveUtilsUniqueIndex).innerHTML = "" + swingAmount + "%";
-			root.swingPercent = swingAmount;
-			root.midiNoteHasChanged();
+			output.textContent = root.swingIsEnabled ? swingAmount + "%" : "N/A";
 		}
-
+		root.swingPercent = root.swingIsEnabled ? swingAmount : 0;
+		root.midiNoteHasChanged();
 	};
 
 	root.setSwing = function (swingAmount) {
+		swingAmount = boundedInteger(swingAmount, 0, 50, root.getSwing());
 		if (root.swingIsEnabled === false)
 			swingAmount = 0;
 
@@ -3191,6 +3232,7 @@ function GrooveUtils() {
 	};
 
 	root.swingUpdateEvent = function (event) {
+		if (event.target.type === "number") { root.setSwing(event.target.value); return; }
 
 		if (root.swingIsEnabled === false) {
 			root.setSwingSlider(0);
@@ -3303,12 +3345,27 @@ function GrooveUtils() {
 				'</svg>';
 	}
 
-	root.HTMLForMidiPlayer = function (expandable) {
+	function HTMLForStepControls() {
+		function button(kind, amount) {
+			var direction = amount < 0 ? "Decrease" : "Increase";
+			var label = direction + " " + kind + " by " + Math.abs(amount) + (kind === "tempo" ? " BPM" : " percent");
+			return '<button type="button" class="tool-control tool-tempo-step gl-step-button" data-adjust="' + kind + '" data-step="' + amount + '" aria-label="' + label + '">' + '<svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#' + (amount < 0 ? 'minus' : 'plus') + '"></use></svg></button>';
+		}
+		return '<div class="tempoRow gl-stepper" role="group" aria-label="Tempo">' +
+			'<label class="tempoLabel" for="tempoTextField' + root.grooveUtilsUniqueIndex + '">BPM</label>' + button("tempo", -5) +
+			'<input type="number" min="30" max="300" step="1" class="tempoTextField gl-step-value" aria-label="Tempo in beats per minute" inputmode="numeric" id="tempoTextField' + root.grooveUtilsUniqueIndex + '" value="80">' + button("tempo", 5) + '</div>' +
+			'<div class="swingRow gl-stepper" role="group" aria-label="Swing">' + button("swing", -5) +
+			'<label class="swingLabel" for="swingInput' + root.grooveUtilsUniqueIndex + '">Swing</label>' +
+			'<span class="gl-swing-value"><input type="number" min="0" max="50" step="1" class="swingInput gl-step-value" aria-label="Swing amount in percent" inputmode="numeric" id="swingInput' + root.grooveUtilsUniqueIndex + '" value="0"><span class="swingOutput" id="swingOutput' + root.grooveUtilsUniqueIndex + '">%</span></span>' + button("swing", 5) + '</div>';
+	}
+
+	root.HTMLForMidiPlayer = function (expandable, stepControls) {
 		var newHTML = '' +
 			'<div id="playerControl' + root.grooveUtilsUniqueIndex + '" class="playerControl">' +
 			'	<div class="playerControlsRow" id="playerControlsRow' + root.grooveUtilsUniqueIndex + '">' +
-			'		<span title="Play/Stop" class="midiPlayImage" id="midiPlayImage' + root.grooveUtilsUniqueIndex + '"></span>' +
-			'       <span class="MIDIPlayTime" id="MIDIPlayTime' + root.grooveUtilsUniqueIndex + '">' + CONSTANT_Midi_play_time_zero + '</span>';
+			(stepControls
+				? '<button type="button" class="midiPlayImage tool-control tool-primary tool-playback" id="midiPlayImage' + root.grooveUtilsUniqueIndex + '" aria-label="Start groove playback" disabled><span class="MIDIPlayTime" id="MIDIPlayTime' + root.grooveUtilsUniqueIndex + '">Start</span></button>'
+				: '<span title="Play/Stop" class="midiPlayImage" id="midiPlayImage' + root.grooveUtilsUniqueIndex + '"></span><span class="MIDIPlayTime" id="MIDIPlayTime' + root.grooveUtilsUniqueIndex + '">' + CONSTANT_Midi_play_time_zero + '</span>');
 
 			if(expandable)
 				newHTML += '' +
@@ -3317,6 +3374,8 @@ function GrooveUtils() {
 			'       </span>'
 
 
+        if (stepControls) newHTML += '<span class="tempoAndProgress gl-step-controls" id="tempoAndProgress' + root.grooveUtilsUniqueIndex + '">' + HTMLForStepControls() + '</span>';
+        else {
 		newHTML +=	'<span class="tempoAndProgress" id="tempoAndProgress' + root.grooveUtilsUniqueIndex + '">' +
 			'			<div class="tempoRow">' +
 			'				<span class="tempoLabel">BPM</span>' +
@@ -3329,6 +3388,8 @@ function GrooveUtils() {
 			'				<input aria-label="Swing amount in percent" type=range min=0 max=50 value=0 class="swingInput' + (root.is_touch_device() ? ' touch' : '') + '" id="swingInput' + root.grooveUtilsUniqueIndex + '" list="swingSettings" step=5 >' +
 			'			</div>' +
 			'       </span>';
+
+        }
 
 		if (expandable)
 			newHTML +=
@@ -3344,10 +3405,10 @@ function GrooveUtils() {
 
 	// pass in a tag ID.  (not a class)
 	// HTML will be put within the tag replacing whatever else was there
-	root.AddMidiPlayerToPage = function (HTML_Id_to_attach_to, division, expandable) {
+	root.AddMidiPlayerToPage = function (HTML_Id_to_attach_to, division, expandable, stepControls) {
 		var html_element = document.getElementById(HTML_Id_to_attach_to);
 		if (html_element)
-			html_element.innerHTML = root.HTMLForMidiPlayer(expandable);
+			html_element.innerHTML = root.HTMLForMidiPlayer(expandable, stepControls);
 
 		var browserInfo = root.getBrowserInfo();
 		var isIE10 = false;
@@ -3370,10 +3431,9 @@ function GrooveUtils() {
 
 		html_element = document.getElementById("swingInput" + root.grooveUtilsUniqueIndex);
 		if (html_element) {
-			if(isIE10)
-				html_element.addEventListener("click", root.swingUpdateEvent, false);
-			else
-				html_element.addEventListener("input", root.swingUpdateEvent, false);
+			if (stepControls) html_element.addEventListener("change", root.swingUpdateEvent, false);
+			else if(isIE10) html_element.addEventListener("click", root.swingUpdateEvent, false);
+			else html_element.addEventListener("input", root.swingUpdateEvent, false);
 		}
 
 		html_element = document.getElementById("midiRepeatImage" + root.grooveUtilsUniqueIndex);

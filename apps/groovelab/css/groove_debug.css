@@ -3,9 +3,6 @@
  * This file is only included when debug mode is on.
  * ?Debug=1 in the URL enables Debug mode
  */
- #permutationAnchor {
-	display: inline-block;   /* enabled for debug mode */
-}
 #showHideABC {
 	display: inline-block;
 }

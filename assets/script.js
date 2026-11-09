@@ -1,6 +1,11 @@
 (() => {
   "use strict";
 
+  // Keep native form controls as a fallback if the shared enhancement cannot load.
+  if (document.currentScript?.src && document.querySelector('.enquiry-form select')) {
+    import(new URL('tool-select.js', document.currentScript.src).href).catch(() => {});
+  }
+
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // Native details stay usable without JavaScript; animation only enhances their presentation.
@@ -47,7 +52,7 @@
     const wasVisible = details.open;
     const startHeight = state.region.getBoundingClientRect().height;
     // A submenu's padding/borders must reach zero with its height to avoid a final snap.
-    const spacing = ["paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth"];
+    const spacing = ["paddingTop", "paddingBottom", "borderTopWidth", "borderBottomWidth", "marginTop"];
     const startingStyle = state.region !== details ? getComputedStyle(state.region) : null;
     const fromSpacing = startingStyle ? Object.fromEntries(spacing.map(key => [key, wasVisible ? startingStyle[key] || "0px" : "0px"])) : {};
     const fromOpacity = startingStyle ? wasVisible ? startingStyle.opacity || "1" : "0" : null;
@@ -398,7 +403,7 @@
       error = document.createElement("span");
       error.id = `${field.id}-error`;
       error.className = "field-error";
-      field.after(error);
+      (field.closest(".tool-select") || field).after(error);
       fieldErrors.set(field, error);
       field.setAttribute("aria-describedby", [field.getAttribute("aria-describedby"), error.id].filter(Boolean).join(" "));
     }

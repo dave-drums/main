@@ -238,6 +238,7 @@ try {
     }
     replaceChildren(...nodes) { this.children = nodes; }
     addEventListener(event, listener) { this.listeners[event] = listener; }
+    dispatchEvent(event) { this.listeners[event.type]?.(event); return true; }
     closest() { return ['input', 'select', 'button', 'textarea', 'a', 'summary'].includes(this.tag) ? this : null; }
     querySelector() { return null; }
     focus() { this.focused = true; }

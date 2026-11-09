@@ -95,6 +95,8 @@ function updatePlayButton() {
 }
 
 function controls() {
+  $('rud-loading').hidden = !starting;
+  $('rud-loader').setAttribute('data-tool-loading', String(starting));
   const running = starting || engine?.running;
   updatePlayButton();
   play.setAttribute('aria-pressed', String(Boolean(running)));
@@ -123,6 +125,7 @@ function stop(message = '') {
 }
 
 function choose() {
+  select.dispatchEvent(new Event('tool-select:refresh', { bubbles: true }));
   stop();
   rudiment = withLead(RUDIMENTS.find((item) => item.id === select.value), lead);
   $('rud-name').textContent = rudiment.name;

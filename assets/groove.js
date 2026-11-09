@@ -12,9 +12,11 @@
   const fallback = document.createElement('a');
   fallback.href = appURL.href;
   fallback.textContent = 'Open the editor directly';
-  feedback.append('Loading the editor… ', fallback);
+  const loader = document.querySelector('#groove-loader');
   frame.setAttribute('aria-busy', 'true');
   const timeout = setTimeout(() => {
+    feedback.classList.remove('tool-loading', 'tool-loading-overlay');
+    loader.setAttribute('data-tool-loading', 'false');
     feedback.replaceChildren('The editor is taking longer than expected. ', fallback);
     frame.removeAttribute('aria-busy');
   }, 15000);
@@ -22,8 +24,17 @@
   // Keep reloads and bookmarks on the public URL as the pattern changes.
   window.addEventListener("message", (event) => {
     if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+    if (event.data?.type === 'dave-drums:groove-size') {
+      const height = event.data.height;
+      if (typeof height === 'number' && Number.isFinite(height) && height >= 320 && height <= 50000) {
+        frame.height = String(Math.ceil(height));
+      }
+      return;
+    }
     if (event.data?.type === 'dave-drums:groove-ready') {
       clearTimeout(timeout);
+      feedback.classList.remove('tool-loading', 'tool-loading-overlay');
+      loader.setAttribute('data-tool-loading', 'false');
       feedback.replaceChildren();
       frame.removeAttribute('aria-busy');
       return;

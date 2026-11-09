@@ -4,6 +4,8 @@ See LICENSE.txt and gscribe_about.html.
 
 This copy includes Dave Drums' existing interface and notation updates and the
 integration with https://www.davedrums.com.au/groove/.
+The local abc2svg renderer aligns two-note percussion grace beams with the
+single grace-note height and uses the same slash angle for both ornaments.
 The editable source is maintained in apps/groovelab in the website repository:
 https://github.com/dave-drums/main
 

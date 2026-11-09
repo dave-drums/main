@@ -142,7 +142,10 @@ for(const options of [{animated:false},{enhance:false}]){
   const f=await fixture('index.html');
   try{
     const toggle=f.d.querySelector('.nav-toggle'),nav=f.d.querySelector('#site-navigation'),main=f.d.querySelector('main');
+    const backdrop=f.d.querySelector('.nav-backdrop');
+    assert.equal(backdrop.hidden,true);
     toggle.click();assert.equal(main.inert,true);await f.finish();
+    assert.equal(backdrop.hidden,false);
     const group=nav.querySelector('.nav-group'),summary=group.querySelector('summary');
     summary.focus();
     summary.dispatchEvent(new f.w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
@@ -163,6 +166,7 @@ for(const options of [{animated:false},{enhance:false}]){
     destination.click();assert.equal(main.inert,false);assert.equal(nav.classList.contains('is-open'),false);
     toggle.click();f.viewport().set(false);await tick();
     assert.equal(main.inert,false);assert.equal(nav.classList.contains('is-open'),false);
+    assert.equal(backdrop.hidden,true,'Resizing to desktop removes the backdrop');
   }finally{f.close();}
 }
 

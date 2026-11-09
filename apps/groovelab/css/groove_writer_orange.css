@@ -42,40 +42,6 @@
 	.nonPrintable {
 		display: block;
 	}
-	#LeftHandNav {
-		width: 70px;
-		height: calc(100% - var(--editor-header-height));
-		position: fixed;
-		/position: absolute;
-		#top: 111px;
-		top: var(--editor-header-height);
-		left: 0px;
-		border-right: 2px solid var(--border-color);
-		background: var(--side-bg-color);
-		z-index: 999;
-	}
-	#TopNav {
-		position: fixed;
-		/position: relative;
-		#top: 111px;
-		top: 0px;
-		left: 0px;
-		z-index: 998;
-		width: 100vw;
-		max-width: none;
-		box-sizing: border-box;
-		padding: 0 24px;
-		height: var(--editor-header-height);
-		border-bottom: 1px solid var(--border-color);
-		background: var(--header-bg-color);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 16px;
-		/* Keep both control groups in the header on narrow portrait screens. */
-		overflow-x: auto;
-		scrollbar-width: none;
-	}
 	#midiPlayer {  /* more #midiPlayer css in groove_display.css */
 		background: var(--bpm-bg-color);
 		width: calc(100% - 72px);
@@ -99,34 +65,6 @@
 	}
 	#logoTextUpperLeft, #logoInSubdivision {
 		display: none;
-	}
-	#upperLeft  {
-		flex-shrink: 0;
-		display: inline-block;
-		white-space: nowrap;
-		vertical-align: top;
-	}
-	#upperRight {
-		flex-shrink: 0;
-		display: inline-block;
-		margin-left: auto;
-		margin-right: 0;
-		white-space: nowrap;
-		vertical-align: top;
-	}
-
-	#divisionButtonContainer {
-
-	}
-	#metronomeContainer {
-	}
-	#metronomeLabel {
-		display: inline-block;
-		height: 20px;
-		font-weight: 500;
-		margin: 0px 5px 0px 0px;
-		text-align: center;
-		color: var(--ui-text-color);
 	}
 	.metronomeButton, .rightButtons {
 		padding: 6px 10px;
@@ -180,14 +118,6 @@
 		justify-content: center;
 		-webkit-justify-content: center;
 		transition: all .1s ease-in-out;
-	}
-	#timeLabel {
-		height: 48px;  /* Override from above */
-	}
-	#timeSigLabel {
-		color: #06b3fd;
-		font-size: 20px;
-		margin-bottom: -5px;
 	}
 	#timeSubLabel {
 		color: #06b3fd;
@@ -252,6 +182,10 @@
 		display: none;
 	}
 	#musicalInput {
+		/* Shared metrics keep instrument labels and note rows aligned. */
+		--groove-hh-row: 44px;
+		--groove-note-row: 30px;
+		--groove-kick-row: 58px;
 		width: 100%;
 		background: #FFF;
 		overflow-x: auto;
@@ -293,60 +227,47 @@
 		font-weight: bold;
 	}
 	.line-labels {
-		display: inline-block;
+		display: table-cell;
 		vertical-align: top;
 		width: 80px;
-		font-size: 20px;
-		display: table-cell;
+		font-size: 18px;
+		line-height: 1.2;
 	}
 	.stickings-label {
 		display: none;
-		height: 25px;
+		height: 34px;
+		line-height: 34px;
 		background: #f7f1cf;
 		color: #000;
-		padding-top: 9px;
 		padding-left: 1px;
 		font-size: 12px;
 		cursor: pointer;
 		text-align: center;
 	}
+	.line-labels > :is(.hh-label, .tom-label, .snare-label, .kick-label) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+		margin: 0;
+		white-space: nowrap;
+		cursor: pointer;
+	}
 	.hh-label {
-		display: block;
-		white-space:nowrap;
-		margin-top: 16px;
-		margin-left: 8px;
-		cursor: pointer;
-		text-align: center;
+		height: var(--groove-hh-row);
+		/* Cymbal symbols sit below the centre of the taller top row. */
+		padding-top: 24px;
 	}
-	#tom1-label {
-		display: block;
-		white-space:nowrap;
-		margin-top: 5px;
-		margin-left: 8px;
-		cursor: pointer;
-		text-align: center;
-		visibility: hidden;
+	.tom-label, .snare-label {
+		height: var(--groove-note-row);
 	}
-	.snare-label {
-		margin-top: 5px;
-		margin-left: 8px;
-		cursor: pointer;
-		text-align: center;
-	}
-	#tom4-label {
-		display: block;
-		white-space:nowrap;
-		margin-top: 5px;
-		margin-left: 8px;
-		cursor: pointer;
-		text-align: center;
+	.tom-label {
 		visibility: hidden;
 	}
 	.kick-label {
-		margin-top: 5px;
-		margin-left: 8px;
-		cursor: pointer;
-		text-align: center;
+		height: var(--groove-kick-row);
+		/* Keep the label beside the kick, above the foot-splash symbols. */
+		padding-bottom: calc(var(--groove-kick-row) - var(--groove-note-row));
 	}
 	.stickings-label:hover {
 		color: var(--highlight-color);
@@ -383,7 +304,7 @@
 		border: 1px solid transparent;
 	}
 	.hi-hat-container {
-		height: 42px;
+		height: calc(var(--groove-hh-row) - 2px);
 		white-space:nowrap;
 		border: 1px solid transparent;
 		-moz-user-select: none;
@@ -391,7 +312,7 @@
 		-ms-user-select: none;
 	}
 	#tom1-container {
-		height: 28px;
+		height: calc(var(--groove-note-row) - 2px);
 		white-space:nowrap;
 		border: 1px solid transparent;
 		-moz-user-select: none;
@@ -401,14 +322,14 @@
 	}
 	.snare-container {
 		border: 1px solid transparent;
-		height: 28px;
+		height: calc(var(--groove-note-row) - 2px);
 		white-space:nowrap;
 		-moz-user-select: none;
 		-webkit-user-select: none;
 		-ms-user-select: none;
 	}
 	#tom4-container {
-		height: 28px;
+		height: calc(var(--groove-note-row) - 2px);
 		white-space:nowrap;
 		border: 1px solid transparent;
 		-moz-user-select: none;
@@ -418,7 +339,7 @@
 	}
 	.kick-container {
 		border: 1px solid transparent;
-		height: 56px;
+		height: calc(var(--groove-kick-row) - 2px);
 		white-space:nowrap;
 		-moz-user-select: none;
 		-webkit-user-select: none;
@@ -743,21 +664,29 @@
 		margin-top: 73px;
 	}
 
-	.closeMeasureButton {
+	.closeMeasureButton, .measure-control-spacer {
 		vertical-align: top;
-		display: inline-block;
-		margin-top: 3px;
-		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		margin: 12px 4px 0;
+		padding: 0;
+		border: 0;
+		border-radius: 8px;
+		background: transparent;
 		color: var(--highlight-color-on-white);
 	}
+	.closeMeasureButton {
+		cursor: pointer;
+	}
+	.closeMeasureButton:hover {
+		background: #e6f6fc;
+	}
+
 	.closeMeasureButton:hover, #addMeasureButton:hover {
 		color: #000;
-	}
-	#permutationAnchor {
-		color: #555;
-	}
-	#permutationAnchor.enabled {
-		color: #EEE;
 	}
 	#PermutationOptions.displayed {
 		padding: 3px 0px 0px 10px;
@@ -909,7 +838,7 @@
 	.noteContextMenu {
 
 	}
-	#permutationContextMenu, #helpContextMenu, #metronomeOptionsContextMenu, #metronomeOptionsOffsetClickContextMenu {
+	#helpContextMenu, #metronomeOptionsContextMenu, #metronomeOptionsOffsetClickContextMenu {
 		position: fixed;
 		top: 0px;
 		right: 0px;
@@ -985,7 +914,7 @@
 		font-family: monospace;
 		font-size: 14px;
 	}
-	#fullURLPopup, #metronomeAutoSpeedupConfiguration, #timeSigPopup {
+	#fullURLPopup, #metronomeAutoSpeedupConfiguration{
 		/visibility: hidden;
 		display: none;
 		position:absolute; left:300px; top:250px; z-index:999;
@@ -995,58 +924,6 @@
 		padding: 10px;
 		border: solid 2px var(--border-color);
 		border-radius: 5px;
-	}
-	#timeSigPopup {
-		font-size: 24px;
-	}
-	#timeSigPopupBeta {
-		text-align: center;
-		margin-top: 8px;
-		margin-bottom: 30px;
-		color: #CC0000;
-	}
-	#timeSigPopupTitle {
-		text-align: center;
-		margin-top: 8px;
-		margin-bottom: 30px;
-	}
-	#timeSigPopupOptions {
-		text-align: center;
-	}
-	#timeSigPopupTimeSigTop, #timeSigPopupTimeSigBottom {
-		font-size: 24px;
-		font-weight: 500;
-		color: var(--ui-text-color);
-		background-color: var(--bpm-bg-color);
-		vertical-align: top;
-		padding-left: 20px;
-		width: 80px;
-	}
-	#timeSigPopupSlash {
-		font-size: 24px;
-		margin: 0px 10px;
-	}
-	#timeSigPopupCancel {
-		font-size: 16px;
-		font-weight: 500;
-		background: var(--bpm-bg-color);
-		color: var(--ui-text-color);
-		border: 0px;
-		border-radius: 5px;
-		padding: 5px 10px;
-	}
-	#timeSigPopupOK {
-		font-size: 16px;
-		font-weight: 500;
-		background: var(--highlight-color);
-		color: #FFF;
-		border: 0px;
-		border-radius: 5px;
-		padding: 5px 10px;
-	}
-	#timeSigPopupButtons {
-		margin-top: 30px;
-		text-align: center;
 	}
 	#fullURLPopupCloseButton {
 		font-size: 100%;
@@ -1114,9 +991,6 @@
 	#shareButton {
 		background: var(--bpm-bg-color);
 		color: var(--ui-text-color);
-	}
-	#shareButton::before {
-		filter: invert(1);
 	}
 	.metronomeAutoSpeedupInputRow {
 		vertical-align: text-bottom;
@@ -1208,8 +1082,7 @@
 	#PermutationOptions input[type=checkbox]:not(:checked) + label,
 	#metronomeAutoSpeedupConfiguration input[type=checkbox]:not(:checked) + label {
 		color: var(--ui-muted-text-color);
-	}
-	#timeSigPopupCancel:hover, #fullURLPopupCopyButton:hover, #shareButton:hover {
+	} #fullURLPopupCopyButton:hover, #shareButton:hover {
 		background: var(--border-color);
 	}
 	#totalPlayTime {
@@ -1336,13 +1209,6 @@
 		}
 	}
 
-
-
-
-
-
-
-
 /** Dave – simple mobile tweaks (safe) **/
 @media (max-width: 768px) {
 
@@ -1358,15 +1224,6 @@
   /* Smaller labels in the left menu so they don’t wrap */
   .left-button-content {
     font-size: 11px;
-  }
-
-  #timeSigLabel {
-    font-size: 18px;
-  }
-
-  /* Hide METRONOME: word to save horizontal space */
-  #metronomeLabel {
-    display: none;
   }
 
   /* Bottom action buttons – slightly smaller */

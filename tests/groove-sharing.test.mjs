@@ -49,5 +49,18 @@ try {
   assert.equal(window.location.pathname, '/groove/');
   assert.equal(window.location.search, '?Tempo=108&Title=Updated');
   assert.equal(window.location.hash, '#top');
+  const size = (source, origin, height) => window.dispatchEvent(new window.MessageEvent('message', {
+    source, origin, data: { type: 'dave-drums:groove-size', height }
+  }));
+  const initialHeight = frame.height;
+  size(window, window.location.origin, 1400);
+  size(frame.contentWindow, 'https://example.com', 1400);
+  for (const height of [NaN, Infinity, -1, 100000, '1400']) size(frame.contentWindow, window.location.origin, height);
+  assert.equal(frame.height, initialHeight, 'Only bounded numeric heights from the embedded editor are accepted');
+  size(frame.contentWindow, window.location.origin, 1400.2);
+  assert.equal(frame.height, '1401');
+  size(frame.contentWindow, window.location.origin, 650);
+  assert.equal(frame.height, '650', 'Closing expanded content can shrink the editor again');
+
 } finally { page.window.close(); }
 console.log('PASS: Groove pattern round-trip, same-origin share/embed URLs, retained accent marks, query forwarding and authenticated editor-to-page history updates.');
