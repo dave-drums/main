@@ -13,6 +13,7 @@ Website and free tools for **www.davedrums.com.au**, maintained in this one repo
 | `rudiments/`, `assets/rudiments*.js` | Rudiment Trainer page, patterns, engraving and playback |
 | `img/` | Website photography and release artwork |
 | `help/` | Independent HELP site with its own assets |
+| `3zone/` | Independent 3 Zone source; built into `/3zone/` during deployment |
 | `build/` | Build, preview and asset-sync utilities; authoring tools and configuration |
 | `tests/` | Website behaviour, integration and browser checks |
 | `.github/workflows/` | Automated checks and GitHub Pages deployment |
@@ -28,7 +29,7 @@ Lab's isolated document use those generated directories.
 
 ## Run locally
 
-Install Node.js 22.12 or newer, then run these commands from this folder:
+Install Node.js 22.12 or newer and Python 3.11+ (for the 3 Zone demo), then run these commands from this folder:
 
 ```sh
 npm ci
@@ -77,7 +78,7 @@ new tool maintenance belongs here.
 
 ## Less frequent authoring tasks
 
-Python 3.11+ is required only for these optional authoring checks:
+Python 3.11+ also supports these optional authoring checks:
 
 ```sh
 python build/authoring/audit-seo.py
