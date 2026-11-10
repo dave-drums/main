@@ -1,17 +1,22 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 test('Start contains its timer and returns to Start after stopping on both layouts', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     const play = app.getByRole('button', { name: 'Start groove playback' });
     await expect(play).toHaveText('Start');
     await app.locator('body').evaluate(() => document.fonts.ready);
     await expect(play.locator('.MIDIPlayTime')).toHaveCount(1);
     await expect(app.locator('.playerControlsRow > .MIDIPlayTime')).toHaveCount(0);
     const geometry = await app.locator('#midiPlayer').evaluate(player => {
-      const row = player.querySelector('.playerControlsRow').getBoundingClientRect();
+      const rowNode = player.querySelector('.playerControlsRow');
+      const toolbarNode = document.getElementById('groove-controls');
+      const mobile = getComputedStyle(rowNode).display === 'contents';
+      const row = mobile ? toolbarNode.getBoundingClientRect() : rowNode.getBoundingClientRect();
       const play = player.querySelector('.midiPlayImage').getBoundingClientRect();
       const bpm = player.querySelector('.tempoAndProgress').getBoundingClientRect();
       const metronome = document.querySelector('#gl-metronome-toggle').getBoundingClientRect();
@@ -29,7 +34,8 @@ test('Start contains its timer and returns to Start after stopping on both layou
       const contentTop = Math.min(...labels.map(el => el.getBoundingClientRect().top), play.top);
       const topStyle = getComputedStyle(document.getElementById('groove-controls'));
       const bottomStyle = getComputedStyle(document.getElementById('bottomButtonRow'));
-      return { left: play.x - row.x, right: row.right - bpm.right, gap: bpm.x - play.right,
+      const settings = document.getElementById('gl-settings-toggle').getBoundingClientRect();
+      return { left: play.x - row.x - (mobile ? 12 : 0), right: row.right - settings.right - 12, gap: bpm.x - play.right, settingsButtonGap: settings.x - bpm.right,
         labelBeforeMinus: label.right <= minus.left, inputAfterMinus: input.left >= minus.right,
         labelGap: minus.left - label.right, inputWidth: input.width,
         fullTempoFits: context.measureText('300').width <= textSpace,
@@ -55,14 +61,14 @@ test('Start contains its timer and returns to Start after stopping on both layou
     for (const height of geometry.heights) expect(Math.abs(height - geometry.dropdownHeight)).toBeLessThan(1);
     if (width < 1100) {
       expect(Math.abs(geometry.right)).toBeLessThan(1);
-      expect(Math.abs(geometry.playWidth - geometry.columnWidth)).toBeLessThan(1);
-      expect(Math.abs(geometry.bpmLeft - geometry.columnLeft)).toBeLessThan(1);
-      expect(geometry.gap).toBe(24);
-      expect(geometry.divider).toBe('1px');
+      expect(geometry.playWidth).toBeLessThanOrEqual(160);
+      expect(geometry.playWidth).toBeGreaterThanOrEqual(72);
+      expect(Math.abs(geometry.gap - geometry.settingsButtonGap)).toBeLessThan(1);
+      expect(geometry.gap).toBeGreaterThanOrEqual(6);
       expect(geometry.topPadding).toEqual(geometry.bottomPadding);
       expect(geometry.inputWidth).toBeGreaterThanOrEqual(42);
       expect(geometry.inputWidth).toBeLessThanOrEqual(60);
-      expect(geometry.labelGap).toBeGreaterThanOrEqual(width === 320 ? 2 : 10);
+      expect(geometry.labelGap).toBeGreaterThanOrEqual(3);
     } else {
       expect(Math.abs(geometry.playWidth - geometry.columnWidth)).toBeLessThan(1);
       expect(geometry.gap).toBe(64);

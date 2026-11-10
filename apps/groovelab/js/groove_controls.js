@@ -14,6 +14,46 @@ import { bindTempoStepper } from './tempo-stepper.js';
   const optionItems = [...document.querySelectorAll('#gl-click-options > li[onclick]')];
   let pending = false;
 
+  // The drawer changes presentation only: these are the same live settings on
+  // desktop and mobile, including during playback and after rotating a phone.
+  const toolbar = document.getElementById('groove-controls');
+  const settingsToggle = document.getElementById('gl-settings-toggle');
+  const drawer = document.getElementById('gl-settings-drawer');
+  const compact = matchMedia('(max-width: 1100px)');
+  let settingsOpen = false;
+  function dismissMenus() {
+    document.dispatchEvent(new Event('tool-select:close'));
+    const menu = writer.myGrooveUtils.visible_context_menu;
+    if (menu) writer.myGrooveUtils.hideContextMenu(menu);
+  }
+  function syncDrawer() {
+    const visible = !compact.matches || settingsOpen;
+    if (!visible && drawer.contains(document.activeElement)) settingsToggle.focus({ preventScroll: true });
+    drawer.inert = !visible;
+    drawer.setAttribute('aria-hidden', String(!visible));
+    drawer.classList.toggle('is-open', visible);
+    settingsToggle.setAttribute('aria-expanded', String(compact.matches && settingsOpen));
+    if (!compact.matches && document.activeElement === settingsToggle) clickToggle.focus({ preventScroll: true });
+    document.dispatchEvent(new Event('groove:layout-change'));
+  }
+  settingsToggle.hidden = false;
+  toolbar.dataset.settingsReady = 'true';
+  settingsToggle.addEventListener('click', () => {
+    dismissMenus();
+    settingsOpen = !settingsOpen;
+    syncDrawer();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || event.defaultPrevented || !compact.matches || !settingsOpen) return;
+    // Let an open select or action menu consume the first Escape.
+    if (writer.myGrooveUtils.visible_context_menu || toolbar.querySelector('[aria-expanded="true"]:not(#gl-settings-toggle)')) return;
+    settingsOpen = false;
+    syncDrawer();
+    settingsToggle.focus({ preventScroll: true });
+  }, true);
+  compact.addEventListener('change', () => { dismissMenus(); syncDrawer(); });
+  syncDrawer();
+
   const clickIcons = { 0: 'speaker-off', 4: 'note-quarter', 8: 'note-eighth', 16: 'note-sixteenth' };
   function clickIcon(value) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

@@ -1,4 +1,5 @@
 import { transform } from 'lightningcss';
+import { existsSync } from 'node:fs';
 import { cp, copyFile, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { ROOT, resetOutput } from './common.mjs';
@@ -12,6 +13,10 @@ for (const name of ['assets', 'img', 'lessons', 'recording', 'watch', 'notation'
   await cp(resolve(ROOT, name), resolve(output, name), {
     recursive: true
   });
+}
+// 3 Zone supplies its own built, self-contained demo when present.
+if (existsSync(resolve(ROOT, '3zone/index.html'))) {
+  await cp(resolve(ROOT, '3zone'), resolve(output, '3zone'), { recursive: true });
 }
 for (const name of ['index.html', '404.html', 'robots.txt', 'sitemap.xml', 'CNAME', 'LICENSE']) await copyFile(resolve(ROOT, name), resolve(output, name));
 // Minify the deployed stylesheet; keep the labelled source readable.

@@ -33,7 +33,7 @@ for name, source in icons.items():
         symbol.append(child)
 # Custom icons use the same 24-unit grid and matching optical weight.
 custom = {
-    'kick-drum': '<circle cx="10" cy="10" r="7"/><path d="m5 16-2 5m12-5 2 5m0-11h4v10h-5"/>',
+    'kick-drum': '<ellipse cx="7" cy="11" rx="4.5" ry="8.5"/><path d="M7 2.5h9c6 0 6 17 0 17H7m4-12.5h9M11.5 12H21m-10.5 5H19M6.5 15.5v5L3 22"/><circle cx="6.5" cy="14.5" r="1"/>',
     'stacker': '<path d="M4 9h16M4 15h16"/>',
     'cowbell': '<path d="m12 4 9 16H3Z"/>',
     'home': '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-8h6v8"/>',

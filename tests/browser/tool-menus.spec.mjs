@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 test('grid context menus use sentence case and retain note and row actions', async ({ page }) => {
   await page.goto('/groove/');
@@ -76,6 +77,7 @@ test('documented Groove keyboard shortcuts work without replacing grid navigatio
 test('Groove selectors use shared grouped menus with keyboard selection and disabled options', async ({ page }) => {
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const meter = app.getByRole('combobox', { name: 'Time signature', exact: true });
   await meter.click();
   const menu = app.getByRole('listbox', { name: 'Time signature', exact: true });

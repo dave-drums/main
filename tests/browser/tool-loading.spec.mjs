@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 async function expectSpinner(spinner) {
   await expect(spinner).toBeVisible();
@@ -71,7 +72,7 @@ test('Rudiment Trainer clears the spinner after click audio loads and keeps erro
   await expect(page.getByRole('button', { name: 'Start playback', exact: true })).toBeEnabled();
 });
 
-test('Groove transport keeps Start at left and BPM at right on phones, with desktop spacing', async ({ page }) => {
+test('Groove transport fits phones with a settings button and preserves desktop spacing', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/groove/');
@@ -93,8 +94,11 @@ test('Groove transport keeps Start at left and BPM at right on phones, with desk
     expect(geometry.overflow).toBeLessThanOrEqual(0);
     if (width >= 1100) expect(geometry.settings.x - geometry.player.x - geometry.player.width).toBeGreaterThanOrEqual(32);
     else {
-      expect(geometry.row.width).toBeLessThanOrEqual(geometry.player.width);
-      expect(Math.abs(geometry.row.x + geometry.row.width / 2 - geometry.player.x - geometry.player.width / 2)).toBeLessThan(1);
+      const settings = await app.getByRole('button', { name: 'Groove settings', exact: true }).evaluate(el => el.getBoundingClientRect().toJSON());
+      expect(settings.width).toBe(44);
+      expect(settings.height).toBe(44);
+      expect(settings.x).toBeGreaterThan(geometry.input.x + geometry.input.width);
+      expect(settings.y + 22).toBeCloseTo(geometry.play.y + 22, 1);
     }
   }
 });
@@ -102,6 +106,7 @@ test('Groove transport keeps Start at left and BPM at right on phones, with desk
 test('Subdivision icons update with selection, omit Mixed, and align with metronome icons', async ({ page }) => {
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const subdivision = app.getByRole('combobox', { name: 'Subdivision', exact: true });
   await subdivision.click();
   const menu = app.getByRole('listbox', { name: 'Subdivision', exact: true });

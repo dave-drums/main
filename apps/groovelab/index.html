@@ -88,12 +88,15 @@
 	<div id="GrooveWriter">
         <div class="nonPrintable" id="groove-controls">
           <div id="midiPlayer" class="gl-playback-strip" role="group" aria-label="Playback, tempo and swing"><!-- Live playback controls are attached by GrooveUtils. --></div>
+          <button type="button" class="tool-control" id="gl-settings-toggle" aria-label="Groove settings" title="Groove settings" aria-expanded="false" aria-controls="gl-settings-drawer" hidden><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#settings"></use></svg></button>
+          <div id="gl-settings-drawer"><div class="gl-settings-clip">
           <div id="gl-settings">
             <div class="gl-setting"><span>Metronome</span><span class="tool-select"><select id="gl-metronome" class="tool-select-native" aria-label="Metronome" aria-hidden="true" tabindex="-1"><option value="0">Off</option><option value="4">Quarter note</option><option value="8">Eighth note</option><option value="16">Sixteenth note</option></select><button type="button" class="tool-select-trigger" id="gl-metronome-toggle" aria-label="Metronome" aria-describedby="gl-metronome-value" aria-haspopup="dialog" aria-expanded="false" aria-controls="gl-metronome-menu"><svg class="tool-icon gl-click-icon" id="gl-metronome-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#speaker-off"></use></svg><span id="gl-metronome-value" class="tool-select-value">Off</span></button></span></div>
             <label class="gl-setting" for="gl-meter"><span>Time Signature</span><select data-tool-select id="gl-meter" aria-label="Time signature"></select><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#chevron-down"></use></svg></label>
             <label class="gl-setting" for="gl-notes"><span>Subdivision</span><select data-tool-select id="gl-notes" aria-label="Subdivision" data-icon-sprite="images/tool-icons.svg"><optgroup label="Straight notes"><option data-icon="note-quarter" value="4">Quarter note</option><option data-icon="note-eighth" value="8">Eighth note</option><option data-icon="note-sixteenth" value="16" selected>Sixteenth note</option><option data-icon="note-thirty-second" value="32">Thirty-second note</option></optgroup><optgroup label="Triplets"><option data-icon="note-eighth" value="12">Eighth-note triplets</option><option data-icon="note-sixteenth" value="24">Sixteenth-note triplets</option></optgroup><optgroup label="Mixed values"><option value="48">Mixed note values</option></optgroup></select><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#chevron-down"></use></svg></label>
             <div class="gl-setting" id="gl-grooves-slot"><span>Grooves</span><button type="button" class="tool-select-trigger" id="groovesAnchor" aria-label="Grooves" aria-haspopup="dialog" aria-expanded="false" aria-controls="grooveListWrapper" onclick="myGrooveWriter.groovesAnchorClick();"><span>Browse</span></button></div>
           </div>
+          </div></div>
         </div>
 
 		<div id="RightHandContent">
@@ -432,7 +435,7 @@
 		<script>
 			// set up the page after it has fully loaded
 			window.onload = function () { 'use strict';
-				myGrooveWriter.runsOnPageLoad();   // Initialize the notes
+				myGrooveWriter.runsOnPageLoad(grooves.defaultGroove);   // Initialize the notes
 			};
 		</script>
 

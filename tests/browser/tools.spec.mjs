@@ -53,3 +53,29 @@ test('the exported notation embed and its assets load from the same website', as
   await expect(page.locator('.svgTarget svg').first()).toBeVisible();
   expect(missing).toEqual([]);
 });
+
+
+test('fresh Groove editors load the chosen starting pattern and shared patterns still override it', async ({ page }) => {
+  for (const path of ['/groove/', '/groove/app/']) {
+    await page.goto(path);
+    const app = path.endsWith('/app/') ? page : page.frameLocator('#groove-frame');
+    await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
+    const hitIndices = type => app.locator(`[data-groove-note="${type}"][aria-pressed="true"]`)
+      .evaluateAll(cells => cells.map(cell => Number(cell.dataset.noteIndex)));
+    expect(await hitIndices('hh')).toEqual([0, 2, 4, 6, 8, 10, 12, 14]);
+    expect(await hitIndices('snare')).toEqual([4, 12]);
+    expect(await hitIndices('kick')).toEqual([0, 8, 10]);
+    for (const snare of await app.locator('[data-groove-note="snare"][aria-pressed="true"]').all()) await expect(snare).toHaveAttribute('data-note-state', 'hit');
+    await expect(app.locator('.tempoTextField')).toHaveValue('80');
+    await expect(app.locator('#gl-meter')).toHaveValue('4/4');
+    await expect(app.locator('#gl-notes')).toHaveValue('16');
+    await expect(app.locator('.staff-container')).toHaveCount(1);
+  }
+  await page.goto('/groove/?TimeSig=4/4&Div=16&Tempo=96&Measures=1&H=|xxxxxxxxxxxxxxxx|&S=|----O-------O---|&K=|o-------o-------|');
+  const app = page.frameLocator('#groove-frame');
+  await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
+  await expect(app.locator('[data-groove-note="hh"][aria-pressed="true"]')).toHaveCount(16);
+  await expect(app.locator('[data-groove-note="snare"][data-note-state="accent"]')).toHaveCount(2);
+  await expect(app.locator('[data-groove-note="kick"][aria-pressed="true"]')).toHaveCount(2);
+  await expect(app.locator('.tempoTextField')).toHaveValue('96');
+});

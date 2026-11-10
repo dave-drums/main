@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 test('mobile practice cards share Groove Lab outer edges', async ({ page }) => {
   for (const width of [320, 390, 768]) {
@@ -21,6 +22,7 @@ test('Groove printing shows the score and excludes open menus and editor control
   await page.goto('/groove/app/?Tempo=92');
   await expect(page.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
   await expect(page.locator('#svgTarget svg')).toBeVisible();
+  await openGrooveSettings(page);
   await page.getByRole('button', { name: 'Metronome', exact: true }).click();
   await expect(page.getByRole('dialog', { name: 'Metronome options' })).toBeVisible();
   await page.emulateMedia({ media: 'print' });
@@ -34,4 +36,32 @@ test('Groove printing shows the score and excludes open menus and editor control
   expect(extras).toEqual([]);
   await page.emulateMedia({ media: 'screen' });
   await expect(page.getByRole('dialog', { name: 'Metronome options' })).toBeVisible();
+});
+
+test('Print uses the styled document on Windows Chrome and excludes all editing overlays', async ({ page, browserName }, testInfo) => {
+  await page.goto('/groove/app/?Measures=4&Div=16');
+  await expect(page.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
+  await expect(page.locator('.gl-score-bar-highlight.is-current-bar')).toBeVisible();
+  await page.locator('#musicalInput').evaluate(node => { node.scrollLeft = node.scrollWidth; });
+  await expect(page.locator('.gl-score-bar-highlight.is-current-bar')).toHaveAttribute('data-score-bar', '4');
+  await page.evaluate(() => {
+    window.printCalls = 0;
+    window.print = () => { window.printCalls++; };
+    window.myGrooveWriter.browserInfo.browser = 'Chrome';
+    window.myGrooveWriter.browserInfo.platform = 'windows';
+    window.open = () => { throw new Error('Print must not copy the score into an unstyled popup'); };
+  });
+  await page.getByRole('button', { name: 'Print', exact: true }).click();
+  expect(await page.evaluate(() => window.printCalls)).toBe(1);
+  await page.emulateMedia({ media: 'print' });
+  for (const node of await page.locator('.gl-score-bar-highlight').all()) await expect(node).toBeHidden();
+  for (const selector of ['#groove-controls', '#musicalInput', '#bottomButtonRow', '.gl-score-controls']) await expect(page.locator(selector)).toBeHidden();
+  await expect(page.locator('#svgTarget svg').first()).toBeVisible();
+  if (browserName === 'chromium') {
+    const pdf = await page.pdf({ path: testInfo.outputPath('groove-notation.pdf'), format: 'A4' });
+    expect(pdf.subarray(0, 4).toString()).toBe('%PDF');
+  }
+  await page.emulateMedia({ media: 'screen' });
+  await expect(page.locator('.gl-score-bar-highlight.is-current-bar')).toHaveAttribute('data-score-bar', '4');
+  await expect(page.getByRole('button', { name: 'Print', exact: true })).toBeVisible();
 });

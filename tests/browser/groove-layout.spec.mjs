@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 test('instrument labels stay centred on their notes with toms and stickings toggled', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/groove/?Div=32&Measures=2');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
     await app.locator('body').evaluate(() => document.fonts.ready);
     const aligned = async () => {
@@ -46,6 +48,7 @@ test('Groove Lab places transport, step controls and four dropdowns on one deskt
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const play = app.getByRole('button', { name: 'Start groove playback' });
   await expect(play).toBeVisible();
   const controls = [play, app.getByRole('button', { name: 'Increase tempo by 5 BPM' }),
@@ -70,6 +73,7 @@ test('expanded permutations resize the iframe in normal and full screen modes', 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const iframe = page.locator('#groove-frame');
   await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
   const noInnerScroll = async () => {
@@ -100,6 +104,7 @@ test('mobile editor avoids a nested scrollbar while standalone editing remains s
     await page.setViewportSize({ width, height: width === 844 ? 390 : 844 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
     await expect(app.locator('html')).toHaveCSS('overflow-y', 'hidden');
     await expect.poll(() => app.locator('body').evaluate(() => document.documentElement.scrollHeight <= innerHeight)).toBe(true);
@@ -119,6 +124,7 @@ test('Groove Lab settings and share dialogs fit narrow screens without iframe sc
     await page.setViewportSize({ width, height: width === 844 ? 390 : 900 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
     const fits = async () => {
       await expect.poll(() => app.locator('body').evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2 && document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -153,6 +159,7 @@ test('playback totals update inside the notation controls', async ({ page }) => 
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const tempo = app.locator('.tempoTextField');
   await expect(tempo).toBeVisible();
   await tempo.fill('240');
@@ -176,6 +183,7 @@ test('compact settings update the groove and keep live controls intact across la
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/groove/?TimeSig=4/4&Div=16&Tempo=92&Measures=1&Swing=5');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const metronome = app.locator('#gl-metronome');
   const meter = app.locator('#gl-meter');
   const notes = app.locator('#gl-notes');
@@ -183,6 +191,8 @@ test('compact settings update the groove and keep live controls intact across la
   await expect(meter).toHaveValue('4/4');
   await expect(notes).toHaveValue('16');
   await app.getByRole('button', { name: 'Increase tempo by 5 BPM' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(app.getByRole('button', { name: 'Groove settings', exact: true })).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(app.getByRole('button', { name: 'Metronome', exact: true })).toBeFocused();
   await metronome.selectOption('8');
@@ -245,6 +255,7 @@ test('mobile settings and bottom toolbar align, with actions inside the notation
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
     const legend = app.getByRole('button', { name: 'Legend', exact: true });
     await expect(app.locator('#sheetMusicDiv #LegendLabel')).toBeVisible();
@@ -323,6 +334,7 @@ for (const width of [320, 390, 768, 844]) {
     await page.setViewportSize({ width, height: width === 844 ? 390 : 1000 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
+    await openGrooveSettings(app);
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
     const toggle = app.getByRole('button', { name: 'Metronome', exact: true });
     const menu = app.getByRole('dialog', { name: 'Metronome options', exact: true });
@@ -384,6 +396,7 @@ test('tempo buttons step and repeat while hidden swing remains in playback and s
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/groove/?Tempo=80&Div=16&Swing=17');
   const app = page.frameLocator('#groove-frame');
+  await openGrooveSettings(app);
   const tempo = app.getByRole('spinbutton', { name: 'Tempo in beats per minute' });
   const swing = app.locator('.swingInput');
   await expect(tempo).toHaveValue('80');

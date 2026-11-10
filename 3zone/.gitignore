@@ -1,0 +1,6 @@
+dist/
+.local/
+__pycache__/
+.tools/
+
+demo/

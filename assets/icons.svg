@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <!-- Lucide 0.468.0, ISC / Feather MIT; see icons-LICENSE.txt. Custom icons by Dave Drums. -->
   <symbol id="kick-drum" viewBox="0 0 24 24">
-    <circle cx="10" cy="10" r="7"/><path d="m5 16-2 5m12-5 2 5m0-11h4v10h-5"/>
+    <ellipse cx="7" cy="11" rx="4.5" ry="8.5"/><path d="M7 2.5h9c6 0 6 17 0 17H7m4-12.5h9M11.5 12H21m-10.5 5H19M6.5 15.5v5L3 22"/><circle cx="6.5" cy="14.5" r="1"/>
   </symbol>
   <symbol id="stacker" viewBox="0 0 24 24">
     <path d="M4 9h16M4 15h16"/>

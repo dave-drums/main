@@ -2116,11 +2116,15 @@ function GrooveUtils() {
 		// for possible playback or linkage
 		this.get_abcmodel = function (tsfirst, voice_tb, music_types) {
 			this.scoreBarBySource = Object.create(null);
+			this.scoreSymbolBySource = Object.create(null);
 			var callback = this;
 			voice_tb.forEach(function (voice) {
 				var bar = callback.hasScoreLegend ? 0 : 1, lastBarTime = -1;
 				for (var symbol = voice.sym; symbol; symbol = symbol.next) {
-					if (typeof symbol.istart === "number") callback.scoreBarBySource[symbol.istart] = bar;
+					if (typeof symbol.istart === "number") {
+						callback.scoreBarBySource[symbol.istart] = bar;
+						callback.scoreSymbolBySource[symbol.istart] = symbol;
+					}
 					if (music_types[symbol.type] === "bar" && symbol.time > lastBarTime) {
 						if (symbol.time > 0) bar++;
 						lastBarTime = symbol.time;
@@ -2142,10 +2146,17 @@ function GrooveUtils() {
 				this.svg_highlight_h = h + 10;
 			}
 			var scoreBar = this.scoreBarBySource && this.scoreBarBySource[start];
-			if (scoreBar > 0 && (type === "note" || type === "rest" || type === "bar")) {
+			if (scoreBar > 0 && (type === "note" || type === "rest")) {
 				root.abc_obj.out_svg('<rect class="gl-score-bar-marker" data-score-bar="' + scoreBar + '" fill="none" x="');
-				root.abc_obj.out_sxsy(x, '" y="', this.svg_highlight_y);
-				root.abc_obj.out_svg('" width="' + w.toFixed(2) + '" height="' + this.svg_highlight_h.toFixed(2) + '"/>\n');
+				root.abc_obj.out_sxsy(x, '" y="', y);
+				root.abc_obj.out_svg('" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '"/>\n');
+			}
+			if (scoreBar > 0 && type === "bar") {
+				var barSymbol = this.scoreSymbolBySource[start];
+				var barX = barSymbol && typeof barSymbol.x === "number" ? barSymbol.x : x + w / 2;
+				root.abc_obj.out_svg('<rect class="gl-score-bar-edge" fill="none" x="');
+				root.abc_obj.out_sxsy(barX, '" y="', y);
+				root.abc_obj.out_svg('" width="0" height="' + h.toFixed(2) + '"/>\n');
 			}
 			if (type == "note" || type == "grace") {
 				y = this.svg_highlight_y;

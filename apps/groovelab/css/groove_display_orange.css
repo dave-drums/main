@@ -532,7 +532,13 @@ html, body { width: 100%; min-width: 0; height: auto; }
 html[data-embedded="true"] { overflow-y: hidden; }
 #GrooveWriter { --gl-mobile-column-gap: 24px; min-width: 0; height: auto; display: flow-root; }
 #GrooveWriter .fullWidthEle { max-width: none; }
-#groove-controls { --gl-toolbar-gap: 64px; --gl-tempo-width: 240px; --gl-tempo-step: 44px; --gl-tempo-field: 84px; container-type: inline-size; display: flex; align-items: center; gap: var(--gl-toolbar-gap); min-width: 0; padding: 46px 32px 24px; background: var(--tool-panel-fill); box-sizing: border-box; }
+#groove-controls { --gl-toolbar-gap: 64px; --gl-tempo-width: 240px; --gl-tempo-step: 44px; --gl-tempo-field: 84px; position: sticky; top: 0; z-index: 30; container-type: inline-size; display: flex; align-items: center; gap: var(--gl-toolbar-gap); min-width: 0; padding: 46px 32px 24px; background: var(--tool-panel-fill); box-sizing: border-box; }
+/* In an auto-height embed the parent owns scrolling. groove_layout.js moves
+   this same toolbar within the editor, without cloning controls or audio. */
+html[data-embedded="true"] #groove-controls { position: relative; top: var(--gl-toolbar-offset,0px); }
+#groove-controls[data-stuck="true"] { box-shadow: 0 6px 18px #0003; }
+#gl-settings-toggle { display: none; }
+#gl-settings-drawer,.gl-settings-clip { display: contents; }
 #midiPlayer { position: static; inset: auto; flex: 0 0 auto; min-width: 0; width: auto; height: auto; border: 0; background: transparent; }
 #midiPlayer .playerControl { background: transparent; }
 #midiPlayer .playerControlsRow { display: flex; align-items: center; flex-wrap: nowrap; gap: var(--gl-toolbar-gap); width: max-content; height: auto; min-height: 44px; padding: 0; }
@@ -577,16 +583,16 @@ html[data-embedded="true"] { overflow-y: hidden; }
 #groove-share-status { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; }
 #groove-share-status:empty { display: none; }
 /* Score canvas and beat editor. Note glyph colours still belong to the music engine. */
-.gl-score-bar-marker { pointer-events: none; }
+.gl-score-bar-marker,.gl-score-bar-edge { pointer-events: none; }
 .gl-score-bar-highlight { fill: #77c6de; fill-opacity: .16; stroke: #6eb6cb; stroke-opacity: .25; stroke-width: 1; opacity: 0; pointer-events: none; }
 .gl-score-bar-highlight.is-current-bar { opacity: 1; }
 .staff-container.is-current-bar .gl-bar-title { color: #006e8d; }
 #musicalInput {
-  --groove-hh-row: 44px;
-  --groove-note-row: 44px;
-  --groove-kick-row: 44px;
-  --gl-step: 36px;
-  --gl-step-pitch: 40px;
+  --groove-hh-row: 36px;
+  --groove-note-row: 36px;
+  --groove-kick-row: 36px;
+  --gl-step: 30px;
+  --gl-step-pitch: 34px;
   box-sizing: border-box;
   max-width: 100%;
   padding: 16px;
@@ -612,7 +618,7 @@ html[data-embedded="true"] { overflow-y: hidden; }
 #addMeasureButton .tool-icon,.closeMeasureButton .tool-icon { width: 22px; height: 22px; stroke-width: 2.75; }
 #addMeasureButton:hover { background: #e1f5fc; border-color: #00749a; }
 .staff-container .line-labels { position: sticky; left: 0; z-index: 6; width: 132px; min-width: 132px; background: #fff; font-family: var(--body); }
-.line-labels > :is(.hh-label,.snare-label,.tom-label,.kick-label,.stickings-label) { height: 44px; padding: 0 8px; border: 0; font-size: 13px; color: #344e59; background: #f2f6f8; }
+.line-labels > :is(.hh-label,.snare-label,.tom-label,.kick-label,.stickings-label) { height: var(--groove-note-row); padding: 0 8px; border: 0; font-size: 13px; color: #344e59; background: #f2f6f8; }
 .line-labels > :is(.hh-label,.kick-label) { background: #f7f9fa; }
 .gl-instrument-content { display: flex; align-items: center; gap: 8px; width: 100%; height: 100%; white-space: nowrap; }
 .gl-instrument-icon { flex: none; width: 18px; height: 18px; color: #19728c; }
@@ -620,29 +626,32 @@ html[data-embedded="true"] { overflow-y: hidden; }
 .gl-instrument-caret { flex: none; width: 12px; height: 12px; margin-left: auto; color: #607e8b; }
 .line-labels > [role="button"]:is(:hover,:focus-visible) { background: #e6f3f8; color: #006b88; }
 .staff-container .notes-container { font-size: 0; }
-#musicalInput .notes-container > :is(.hi-hat-container,.snare-container,.toms-container,.kick-container,.stickings-container) { box-sizing: border-box; height: 44px; margin: 0; border: 0; background: #f2f6f8; font-size: 0; line-height: 0; }
+#musicalInput .notes-container > :is(.hi-hat-container,.snare-container,.toms-container,.kick-container,.stickings-container) { box-sizing: border-box; height: var(--groove-note-row); margin: 0; border: 0; background: #f2f6f8; font-size: 0; line-height: 0; }
 .notes-container > :is(.hi-hat-container,.kick-container) { background: #f7f9fa; }
 .notes-container > .background-highlight-container { inset: 0; z-index: 5; height: 100%; border: 0; pointer-events: none; font-size: 0; }
 .bg-highlight { width: var(--gl-step-pitch); height: 100%; border-radius: 8px; }
-.notes-container :is(.hi-hat,.snare,.tom,.kick,.sticking) { box-sizing: border-box; position: relative; vertical-align: middle; width: var(--gl-step); height: var(--gl-step); margin: 4px 2px; border: 1px solid #c6d5dc; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px #17394805; cursor: pointer; font-size: 14px; line-height: normal; scroll-margin-inline: 144px 12px; }
-.notes-container [data-groove-note][aria-pressed="false"]::after { content: ""; position: absolute; width: 8px; height: 2px; border-radius: 2px; left: calc(50% - 4px); top: calc(50% - 1px); background: #a6b9c2; pointer-events: none; }
+.notes-container :is(.hi-hat,.snare,.tom,.kick,.sticking) { box-sizing: border-box; position: relative; vertical-align: middle; width: var(--gl-step); height: var(--gl-step); margin: 3px 2px; border: 1px solid #c6d5dc; border-radius: 6px; background: #fff; box-shadow: 0 1px 2px #17394805; cursor: pointer; font-size: 14px; line-height: normal; scroll-margin-inline: 144px 12px; }
+.notes-container [data-groove-note][aria-pressed="false"]::after { content: ""; position: absolute; width: 8px; height: 2px; border-radius: 2px; left: calc(50% - 4px); top: calc(50% - 1px); background: #78909c; pointer-events: none; }
 .notes-container [data-groove-note][aria-pressed="false"] .note_part { opacity: 0; }
 .notes-container [data-groove-note][aria-pressed="true"] { background: #d6f2fc; border-color: #3187a1; box-shadow: inset 0 0 0 1px #3187a11a; }
 .notes-container [data-groove-note]:hover { border-color: #00749a; }
 #musicalInput [data-groove-note]:focus-visible { outline: 2px solid #006580; outline-offset: 2px; z-index: 7; }
-.notes-container :is(.hi-hat,.snare,.tom,.kick) > .note_part { pointer-events: none; }
-.hi-hat > :is(.hh_crash,.hh_ride,.hh_ride_bell,.hh_cow_bell,.hh_stacker,.hh_metronome_normal,.hh_metronome_accent,.hh_cross) { top: 7px; left: 8px; font-size: 18px; line-height: 20px; }
-.hi-hat > :is(.hh_open,.hh_close,.hh_accent) { top: 0; left: 13px; font-size: 11px; line-height: 12px; }
-.notes-container :is(.snare_circle,.tom_circle,.kick_circle) { box-sizing: border-box; top: 9px; left: 9px; width: 16px; height: 16px; border-width: 1px; }
-.snare > .snare_accent { top: 10px; left: 13px; }
-.snare > .snare_ghost { top: 3px; left: 5px; font-size: 22px; line-height: 30px; }
-.snare > :is(.snare_xstick,.snare_buzz) { top: 7px; left: 8px; font-size: 20px; line-height: 22px; }
-.snare > :is(.snare_flam,.snare_drag) { top: 2px; left: 2px; line-height: 30px; }
-.hi-hat :is(.hh_cow_bell,.hh_stacker) .tool-icon { width: 18px; height: 18px; }
-.kick[data-note-state="kick and foot splash"] .kick_circle { top: 6px; left: 5px; width: 14px; height: 14px; }
-.kick[data-note-state="kick and foot splash"] .kick_splash { top: 18px; left: 19px; font-size: 12px; line-height: 12px; }
-.kick > .kick_splash { top: 7px; left: 9px; font-size: 18px; line-height: 20px; }
-.sticking > :is(.sticking_left,.sticking_right,.sticking_both,.sticking_count) { inset: 0; text-align: center; font: var(--weight-semibold) 16px/34px var(--body); }
+/* Centre glyphs by their own dimensions, rather than fixed offsets that only
+   worked for one font or cell size. Colours remain owned by the note engine. */
+.notes-container :is(.hi-hat,.snare,.tom,.kick,.sticking) > .note_part { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; width: auto; height: auto; margin: 0; pointer-events: none; font-size: 16px; line-height: 1; }
+.notes-container .note_part > .fa { display: block; line-height: 1; }
+.notes-container :is(.snare,.tom,.kick) > :is(.snare_circle,.tom_circle,.kick_circle) { box-sizing: border-box; inset: auto; top: 50%; left: 50%; width: 14px; height: 14px; transform: translate(-50%,-50%); border-width: 1px; }
+.snare_accent .groove-accent-mark { width: 6px; height: 8px; stroke-width: 1.75; }
+.notes-container .hi-hat > :is(.hh_open,.hh_close,.hh_accent) { inset: 3px 0 auto; height: 8px; font-size: 7px; }
+.hi-hat[data-note-state="open hi-hat"] .hh_cross,.hi-hat[data-note-state="closed hi-hat"] .hh_cross,.hi-hat[data-note-state="accent"] .hh_cross { padding-top: 6px; font-size: 14px; }
+.notes-container .snare > .snare_ghost { font-size: 14px; }
+.snare_ghost .dot_in_snare_ghost_note { top: 0; left: 0; font-size: 9px; }
+.snare :is(.snare_flam,.snare_drag) > .fa { display: flex; }
+.snare :is(.snare_flam,.snare_drag) svg { display: block; width: 20px; height: 22px; }
+.hi-hat :is(.hh_cow_bell,.hh_stacker) .tool-icon { width: 16px; height: 16px; }
+.notes-container .kick[data-note-state="kick and foot splash"] .kick_circle { top: calc(50% - 4.5px); left: calc(50% - 5.5px); width: 11px; height: 11px; }
+.notes-container .kick[data-note-state="kick and foot splash"] .kick_splash { inset: auto; top: 50%; left: calc(50% + 1px); width: 10px; height: 10px; font-size: 10px; }
+.notes-container .sticking > :is(.sticking_left,.sticking_right,.sticking_both,.sticking_count) { font: var(--weight-semibold) 14px/1 var(--body); }
 #totalPlayTime.gl-play-stats { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 24px; padding: 10px 16px; color: #334147; background: #fff; font-size: 14px; line-height: 1.5; white-space: normal; }
 #totalPlayTime.gl-play-stats > span { white-space: nowrap; }
 .gl-score-controls { display: grid; grid-template-columns: 36px minmax(0,1fr) 84px; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid #e2eaee; background: #f8fafb; color: #334147; }
@@ -697,14 +706,21 @@ html[data-embedded="true"] { overflow-y: hidden; }
 #gl-metronome-menu .groove-menu-section { border-top: 1px solid var(--tool-menu-divider); margin-top: 6px; padding-top: 6px; }
 .groove-menu-note { margin: 0; padding: 0 12px 6px; color: var(--muted); font-size: 12px; }
 @media (max-width: 1100px) {
-  #groove-controls { --gl-tempo-step: clamp(24px,8.6vw,44px); --gl-tempo-field: clamp(42px,13.5vw,60px); flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 12px; }
-  #midiPlayer.gl-playback-strip { width: 100%; max-width: 100%; flex: none; }
-  #midiPlayer .playerControlsRow { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: 100%; gap: var(--gl-mobile-column-gap); padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-  #midiPlayer .midiPlayImage { width: 100%; height: 44px; padding-inline: 10px; }
-  #midiPlayer .tempoAndProgress.gl-step-controls { display: block; width: 100%; }
-  #midiPlayer .tempoRow.gl-stepper { gap: 2px; height: 44px; }
+  #groove-controls { --gl-tempo-step: clamp(24px,8vw,44px); --gl-tempo-field: clamp(42px,13.5vw,60px); --gl-mobile-tempo-width: calc(30px + var(--gl-tempo-step) + var(--gl-tempo-step) + var(--gl-tempo-field) + 12px); display: grid; grid-template-columns: minmax(72px,160px) var(--gl-mobile-tempo-width) 44px; justify-content: space-between; align-items: center; gap: 0 clamp(8px,2vw,24px); padding: 16px 12px; }
+  #midiPlayer.gl-playback-strip,#midiPlayer .playerControl,#midiPlayer .playerControlsRow { display: contents; }
+  #midiPlayer .midiPlayImage { width: 100%; height: 44px; padding-inline: 8px; gap: 6px; }
+  #midiPlayer .tempoAndProgress.gl-step-controls { display: block; width: var(--gl-mobile-tempo-width); }
+  #midiPlayer .tempoRow.gl-stepper { grid-template-columns: minmax(0,1fr) var(--gl-tempo-step) var(--gl-tempo-field) var(--gl-tempo-step); gap: 4px; height: 44px; }
   #midiPlayer .gl-stepper .tempoLabel { font-size: clamp(11px,3.4vw,14px); }
   #midiPlayer .gl-step-value { width: 100%; padding-inline: 1px; font-size: clamp(18px,4.5vw,20px); }
+  #groove-controls[data-settings-ready="true"] #gl-settings-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 44px; padding: 0; }
+  #gl-settings-toggle .tool-icon { width: 22px; height: 22px; }
+  #gl-settings-toggle[aria-expanded="true"] { background: var(--ui-selected-bg); border-color: var(--accent); color: var(--link-color); }
+  #gl-settings-drawer { grid-column: 1 / -1; display: grid; grid-template-rows: 1fr; min-width: 0; }
+  #groove-controls[data-settings-ready="true"] #gl-settings-drawer { grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 280ms ease,visibility 280ms; }
+  #groove-controls[data-settings-ready="true"] #gl-settings-drawer.is-open { grid-template-rows: 1fr; visibility: visible; }
+  .gl-settings-clip { display: block; min-width: 0; min-height: 0; overflow: hidden; }
+  #gl-settings { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
   #gl-settings .gl-setting > span:first-child { position: static; }
   #gl-settings { flex: none; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px var(--gl-mobile-column-gap); width: 100%; }
   #bottomButtonRow { --gl-bottom-icon: 18px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px 12px; padding: 16px 12px; }
@@ -719,6 +735,9 @@ html[data-embedded="true"] { overflow-y: hidden; }
   .gl-score-controls #totalPlayTime.gl-play-stats { flex-wrap: nowrap; line-height: 36px; gap: 8px; font-size: 12px; }
   .gl-trainer-area .tool-trainer-fields { grid-template-columns: repeat(2,minmax(0,1fr)); }
   #totalPlayTime.gl-play-stats { gap: 4px 12px; padding: 10px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #groove-controls[data-settings-ready="true"] #gl-settings-drawer { transition: none; }
 }
 /* Compact icons keep mobile action labels on one line on narrow phones. */
 @media (max-width: 330px) {

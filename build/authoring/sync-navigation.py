@@ -99,7 +99,6 @@ def render_footer(config, current):
         '     <img alt="Dave Drums" height="97" loading="lazy" src="/img/dd-logo-320.webp" width="320"/>',
         '    </a>',
         '    <p class="footer-signature">A life in <em class="editorial-word">rhythm.</em></p>',
-        '    <p class="footer-location">' + icon("pin") + ' Melbourne, Australia</p>',
         '   </div>',
         '   <div class="footer-links">',
         '    <nav aria-label="Footer navigation" class="footer-navigation">',

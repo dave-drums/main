@@ -12,6 +12,9 @@ if (typeof(grooves) === "undefined")
 
 	var root = grooves;
 
+	// Starting pattern for a fresh editor. Shared groove URLs take precedence.
+	root.defaultGroove = '?TimeSig=4/4&Div=16&Tempo=80&Measures=1&H=|x-x-x-x-x-x-x-x-|&S=|----o-------o---|&K=|o-------o-o-----|';
+
 	root.Rock_Grooves = {
 		'Empty 16th note groove' : '?TimeSig=4/4&Div=16&Tempo=80&Measures=1&H=|----------------|&S=|----------------|&K=|----------------|',
 		'8th Note Rock' : '?TimeSig=4/4&Div=8&Tempo=80&Measures=1&H=|xxxxxxxx|&S=|--O---O-|&K=|o---o--|',

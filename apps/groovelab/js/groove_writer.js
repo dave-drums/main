@@ -954,10 +954,8 @@ function GrooveWriter() {
 	};
 
 	// Position settings menus within the visible part of an embedded editor.
-	root.toggleControlMenu = function (menu, anchor) {
+	root.positionControlMenu = function (menu, anchor) {
 		if (!menu || !anchor) return;
-		if (menu.style.display === "block") { root.myGrooveUtils.hideContextMenu(menu); return; }
-		menu.style.display = "block";
 		var bounds = anchor.getBoundingClientRect();
 		var visibleTop = 0, visibleBottom = window.innerHeight;
 		try {
@@ -973,6 +971,13 @@ function GrooveWriter() {
 		menu.style.left = Math.max(8, Math.min(bounds.right - menu.offsetWidth, window.innerWidth - menu.offsetWidth - 8)) + "px";
 		var preferredTop = showAbove ? bounds.top - menu.offsetHeight - 6 : bounds.bottom + 6;
 		menu.style.top = Math.max(visibleTop + 8, Math.min(preferredTop, visibleBottom - menu.offsetHeight - 8)) + "px";
+	};
+
+	root.toggleControlMenu = function (menu, anchor) {
+		if (!menu || !anchor) return;
+		if (menu.style.display === "block") { root.myGrooveUtils.hideContextMenu(menu); return; }
+		menu.style.display = "block";
+		root.positionControlMenu(menu, anchor);
 		root.myGrooveUtils.showContextMenu(menu);
 		menu.querySelector('button:not(:disabled), [role="button"]').focus({ preventScroll: true });
 	};
@@ -3175,28 +3180,9 @@ function GrooveWriter() {
 	}
 
 	root.printMusic = function () {
-
-		var oldMethod = true;
-
-		if ((root.browserInfo.browser == "Chrome" && root.browserInfo.platform == "windows")) {
-			oldMethod = false;
-		}
-
-		if (oldMethod) {
-			// css media queries wiil hide all but the music
-			// force a print
-
-			window.print();
-
-		} else {
-			// open a new window just for printing   (new method)
-			var win = window.open("", class_app_title + " Print");
-			win.document.body.innerHTML = "<title>" + class_app_title + "</title>\n<center>\n";
-			win.document.body.innerHTML += document.getElementById("svgTarget").innerHTML;
-			win.document.body.innerHTML += "\n</center>";
-			win.print();
-		}
-
+		// Keep the notation's fonts and print stylesheet in every browser.
+		// Copying raw SVG into an unstyled popup turns editing overlays black.
+		window.print();
 	};
 
 	root.setupWriterHotKeys = function () {
@@ -3235,7 +3221,7 @@ function GrooveWriter() {
 
 	// public function.
 	// This function initializes the data for the groove Scribe web page
-	root.runsOnPageLoad = function () {
+	root.runsOnPageLoad = function (startingGroove) {
 
 		root.setupWriterHotKeys(); // there are other hot keys in GrooveUtils for the midi player
 
@@ -3252,8 +3238,8 @@ function GrooveWriter() {
 		// add html for the midi player
 		root.myGrooveUtils.AddMidiPlayerToPage("midiPlayer", class_time_division, false, true);
 
-		// load the groove from the URL data if it was passed in.
-		set_Default_notes(window.location.search);
+		// A saved/shared URL always wins over the fresh editor's starting pattern.
+		set_Default_notes(window.location.search || startingGroove || "");
 
 		root.myGrooveUtils.midiEventCallbacks.beforePlay = root.prepareSpeedTrainer;
 		['playEvent', 'stopEvent', 'pauseEvent'].forEach(function(name) {
@@ -4204,7 +4190,7 @@ function GrooveWriter() {
 							'<div class="snare_xstick note_part" id="snare_xstick' + i + '"><i class="fa fa-times"></i></div>' +
 							'<div class="snare_buzz note_part" id="snare_buzz' + i + '"><i class="fa fa-bars"></i></div>' +
 							'<div class="snare_flam note_part" id="snare_flam' + i + '"><i class="fa ">' +
-								'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="30" height="30">' +
+								'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" viewBox="3 -4 25 32" width="20" height="22">' +
 								'	<style type="text/css">' +
 								'		.flam_fill {fill: currentColor}' +
 								'		.flam_stroke {stroke: currentColor; fill: none; stroke-width: .7}' +
@@ -4222,7 +4208,7 @@ function GrooveWriter() {
 								'</svg>' +
 							'</i></div>' +
 							'<div class="snare_drag note_part" id="snare_drag' + i + '"><i class="fa ">' +
-							'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" width="30" height="30">' +
+							'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" viewBox="3 -4 25 32" width="20" height="22">' +
 							'	<style type="text/css">' +
 							'		.drag_fill {fill: currentColor}' +
 							'		.drag_stroke {stroke: currentColor; fill: none; stroke-width: .7}' +

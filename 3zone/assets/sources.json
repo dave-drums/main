@@ -1,0 +1,65 @@
+[
+  {
+    "file": "logo.svg",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2021/02/Group_-1.svg",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "sauna-source.png",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/01/3F364CE7-EDC3-42B6-9BE1-3208CBA2FACC.png",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "water-source.png",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/03/EAF0EBFB-3DA1-43B5-B535-55D2D3FD99CC.png",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "compression-source.png",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/03/Screenshot-2024-03-04-at-2.12.29-pm-680x1024.png",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "studio-source.jpg",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2023/12/IMG_0930-768x1024.jpg",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "room-source.jpg",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2023/12/IMG_3160-1-768x1024.jpg",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "file": "visit-source.jpeg",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/01/IMG_5091-820x1024.jpeg",
+    "context": "Existing 3 Zone Recovery website asset; confirm studio permission before public release."
+  },
+  {
+    "kind": "font",
+    "file": "fonts/manrope-variable.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/manrope",
+    "licence": "fonts/MANROPE-OFL.txt"
+  },
+  {
+    "file": "studio-hero.webp",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2023/12/IMG_0930-scaled.jpg",
+    "context": "Original studio photo from the existing business website; confirm owner permission before release."
+  },
+  {
+    "kind": "font",
+    "file": "fonts/lora-italic-latin.woff2",
+    "source": "https://fonts.google.com/specimen/Lora",
+    "licence": "fonts/LORA-OFL.txt",
+    "context": "Owner-selected option 06, Lora Italic at weight 500."
+  },
+  {
+    "file": "water-session.webp",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/01/IMG_5050-1152x1536.jpeg",
+    "context": "Owner-selected existing 3 Zone website photo for the zone card. Self-hosted WebP variants; source retained for authoring."
+  },
+  {
+    "file": "compression-session.webp",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2024/01/E8B1C9D4-49F0-437E-8719-BB72E0BF5C55.jpeg",
+    "context": "Owner-selected existing 3 Zone website photo for the zone card. Self-hosted WebP variants; source retained for authoring."
+  }
+]

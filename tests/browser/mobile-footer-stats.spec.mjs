@@ -1,12 +1,17 @@
 import { test, expect } from '@playwright/test';
+import { openGrooveSettings } from './groove-helpers.mjs';
 
 test('mobile footer has a balanced branding row above credits and Back to top', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
-    if (width > 900) { await expect(page.locator('.footer-location')).toBeVisible(); continue; }
-    await expect(page.locator('.footer-location')).toBeHidden();
+    await expect(page.locator('.footer-location')).toHaveCount(0);
+    await expect(page.locator('.site-footer')).toHaveCSS('border-top-width', '1px');
+    if (width > 900) {
+      await expect(page.getByRole('link', { name: 'Back to top', exact: true })).toHaveCSS('font-size', '13px');
+      continue;
+    }
     const positions = await page.locator('.site-footer').evaluate(footer => {
       const box = selector => { const b = footer.querySelector(selector).getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, right: b.right, bottom: b.bottom }; };
       return { logo: box('.footer-brand'), motto: box('.footer-signature'), credit: box('.footer-copyright'), top: box('.footer-top'), frame: footer.getBoundingClientRect().toJSON() };
@@ -15,8 +20,13 @@ test('mobile footer has a balanced branding row above credits and Back to top', 
     expect(positions.motto.x).toBeGreaterThan(positions.logo.right);
     expect((positions.logo.x + positions.motto.right) / 2).toBeCloseTo(positions.frame.x + positions.frame.width / 2, 1);
     expect(positions.credit.y).toBeGreaterThan(Math.max(positions.logo.bottom, positions.motto.bottom));
-    expect(positions.top.y + (positions.top.bottom - positions.top.y) / 2).toBeCloseTo(positions.credit.y + (positions.credit.bottom - positions.credit.y) / 2, 1);
-    expect(positions.top.x).toBeGreaterThan(positions.credit.right);
+    expect(positions.credit.x + positions.credit.width / 2).toBeCloseTo(positions.frame.x + positions.frame.width / 2, 1);
+    if (width <= 360) {
+      expect(positions.top.y).toBeGreaterThanOrEqual(positions.credit.bottom);
+    } else {
+      expect(positions.top.y + (positions.top.bottom - positions.top.y) / 2).toBeCloseTo(positions.credit.y + (positions.credit.bottom - positions.credit.y) / 2, 1);
+      expect(positions.top.x).toBeGreaterThan(positions.credit.right);
+    }
     expect(positions.frame.height).toBeLessThan(200);
     await expect(page.locator('.footer-navigation')).toBeHidden();
     const creditLines = await page.locator('.footer-copyright').evaluate(node => {
@@ -57,6 +67,7 @@ test('Groove trainer validates settings, skips count-in and ramps after complete
   await expect(app.getByRole('alert')).toContainText('Target BPM');
   await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
   await app.getByLabel('Target BPM', { exact: true }).fill('252');
+  await openGrooveSettings(app);
   await app.getByRole('button', { name: 'Metronome', exact: true }).click();
   await app.getByRole('button', { name: 'Count in', exact: true }).click();
   await app.locator('body').evaluate(() => {

@@ -191,6 +191,8 @@ export function enhanceToolSelect(select) {
   });
   menu.addEventListener('toggle', event => { if (event.newState === 'closed') close(); });
   doc.addEventListener('pointerdown', event => { if (opened && !wrapper.contains(event.target) && !menu.contains(event.target)) close(); });
+  doc.addEventListener('tool-select:close', () => close());
+  doc.addEventListener('tool-select:reposition', position);
   win.addEventListener('resize', position);
   try { if (win.parent !== win) win.parent.addEventListener('scroll', position, { passive: true }); } catch { /* Cross-origin embed. */ }
   doc.addEventListener('scroll', event => { if (!menu.contains(event.target)) position(); }, true);
