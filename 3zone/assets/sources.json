@@ -61,5 +61,15 @@
     "file": "compression-session.webp",
     "source": "https://3zonerecovery.com/wp-content/uploads/2024/01/E8B1C9D4-49F0-437E-8719-BB72E0BF5C55.jpeg",
     "context": "Owner-selected existing 3 Zone website photo for the zone card. Self-hosted WebP variants; source retained for authoring."
+  },
+  {
+    "file": "favicon.png",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2021/02/Path-18-2-150x150.png",
+    "context": "Original existing studio website icon, reused unchanged at the owner's request."
+  },
+  {
+    "file": "apple-touch-icon.png",
+    "source": "https://3zonerecovery.com/wp-content/uploads/2021/02/Path-18-2.png",
+    "context": "Original existing studio website icon, reused unchanged at the owner's request."
   }
 ]
