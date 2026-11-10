@@ -128,12 +128,8 @@ test('Groove Lab settings and share dialogs fit narrow screens without iframe sc
     expect(await app.locator('#groove-controls').evaluate(el => el.getBoundingClientRect().height)).toBeLessThan(280);
     const metronome = app.getByRole('button', { name: 'Metronome', exact: true });
     await metronome.click();
-    const speedTrainer = app.getByRole('button', { name: 'Speed trainer', exact: true });
-    await expect(speedTrainer).toBeVisible();
-    expect(await speedTrainer.evaluate(el => {
-      const range = document.createRange(); range.selectNodeContents(el);
-      return range.getClientRects().length;
-    })).toBe(1);
+    await expect(app.getByRole('button', { name: 'Speed trainer', exact: true })).toBeVisible();
+    await expect(app.locator('#gl-click-options')).not.toContainText('Speed trainer');
     await page.keyboard.press('Escape');
     await expect(metronome).toBeFocused();
     await app.locator('#gl-meter').selectOption('3/4');
@@ -153,7 +149,7 @@ test('Groove Lab settings and share dialogs fit narrow screens without iframe sc
   }
 });
 
-test('playback totals update below the controls and the view-mode icon survives toggles', async ({ page }) => {
+test('playback totals update inside the notation controls', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/groove/');
   const app = page.frameLocator('#groove-frame');
@@ -163,15 +159,15 @@ test('playback totals update below the controls and the view-mode icon survives 
   await tempo.press('Tab');
   await app.getByRole('button', { name: 'Start groove playback' }).click();
   const totals = app.locator('#totalPlayTime .totalTimeNum');
+  await expect(totals).toHaveCount(2);
+  await expect.poll(async () => totals.nth(0).textContent()).not.toBe('0:00');
   await expect.poll(async () => Number(await totals.nth(1).textContent())).toBeGreaterThan(0);
-  await expect.poll(async () => Number(await totals.nth(2).textContent())).toBeGreaterThan(0);
+  await expect(app.locator('#totalPlayTime')).toContainText('Total time:');
+  await expect(app.locator('#totalPlayTime')).toContainText('Reps:');
+  await expect(app.locator('#totalPlayTime')).not.toContainText('Notes:');
   await app.getByRole('button', { name: 'Stop groove playback' }).click();
-  await expect(app.locator('#totalPlayTime')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-  await app.getByRole('button', { name: 'Switch to view mode' }).click();
-  const edit = app.getByRole('button', { name: 'Switch to edit mode' });
-  await expect(edit.locator('svg use')).toHaveAttribute('href', 'images/tool-icons.svg#layers');
-  await edit.click();
-  await expect(app.getByRole('button', { name: 'Switch to view mode' }).locator('svg')).toBeVisible();
+  await expect(app.locator('.gl-score-controls')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(app.locator('#switchModeButton')).toHaveCount(0);
   await app.locator('#LegendLabel').click();
   await expect(app.locator('#svgTarget text').filter({ hasText: /^Hi-Hat$/ })).toHaveCSS('font-size', '12px');
 });
@@ -223,7 +219,7 @@ test('compact settings update the groove and keep live controls intact across la
   await expect(tempo).toHaveValue('145');
   await expect(swing).toHaveValue('5');
   await expect(app.locator('#midiPlayer .swingRow')).not.toBeVisible();
-  await expect(app.locator('#gl-click-options > li')).toHaveCount(4);
+  await expect(app.locator('#gl-click-options > li')).toHaveCount(3);
   await expect(app.locator('#gl-settings')).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(metronome).toHaveValue('8');
@@ -231,10 +227,10 @@ test('compact settings update the groove and keep live controls intact across la
   await expect(notes).toHaveValue('16');
   await expect(app.getByRole('button', { name: 'Stop groove playback' })).toBeVisible();
   await app.getByRole('button', { name: 'Stop groove playback' }).click();
-  await app.getByRole('button', { name: 'Switch to view mode' }).click();
+  await app.locator('body').evaluate(() => window.myGrooveWriter.swapViewEditMode());
   await expect(meter).toBeDisabled();
   await expect(notes).toBeDisabled();
-  await app.getByRole('button', { name: 'Switch to edit mode' }).click();
+  await app.locator('body').evaluate(() => window.myGrooveWriter.swapViewEditMode());
   await expect(meter).toBeEnabled();
   await expect(notes).toBeEnabled();
   await page.reload();
@@ -244,20 +240,40 @@ test('compact settings update the groove and keep live controls intact across la
 });
 
 
-test('mobile settings form a two by two grid and the score owns its compact legend', async ({ page }) => {
+test('mobile settings and bottom toolbar align, with actions inside the notation section', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/groove/');
     const app = page.frameLocator('#groove-frame');
     await expect(app.getByRole('button', { name: 'Start groove playback' })).toBeVisible();
-    const legend = app.getByRole('button', { name: 'Show drum key legend' });
+    const legend = app.getByRole('button', { name: 'Legend', exact: true });
     await expect(app.locator('#sheetMusicDiv #LegendLabel')).toBeVisible();
-    const scoreBounds = await app.locator('#sheetMusicDiv').boundingBox();
-    const keyBounds = await legend.boundingBox();
-    expect(keyBounds.width).toBe(44);
-    expect(keyBounds.height).toBe(44);
-    expect(scoreBounds.x + scoreBounds.width - keyBounds.x - keyBounds.width).toBeLessThan(12);
-    expect(keyBounds.y - scoreBounds.y).toBeLessThan(2);
+    await expect(app.locator('#sheetMusicDiv .gl-score-action')).toHaveCount(3);
+    if (width <= 900) {
+      const layout = await app.locator('#bottomButtonRow').evaluate(bar => {
+        const buttons = [...bar.querySelectorAll('button')].filter(button => getComputedStyle(button).display !== 'none');
+        return { gap: getComputedStyle(bar).columnGap,
+          topGap: getComputedStyle(document.getElementById('gl-settings')).columnGap,
+          topHeight: document.querySelector('#gl-settings .tool-select-trigger').getBoundingClientRect().height,
+          buttons: buttons.map(button => { const { x, y, width, height } = button.getBoundingClientRect();
+            const icon = button.querySelector('.tool-icon,.stickings-icon').getBoundingClientRect();
+            const label = button.querySelector('.bottomButtonContents > span:last-child').getBoundingClientRect();
+            return { name: button.textContent.trim(), x, y, width, height, iconRight: icon.right, textLeft: label.left, overflow: button.scrollWidth > button.clientWidth + 1 }; }) };
+      });
+      expect(layout.gap).toBe('12px');
+      expect(parseFloat(layout.gap)).toBeLessThan(parseFloat(layout.topGap));
+      expect(layout.buttons.map(button => button.name)).toEqual(['Toms', 'Stickings', 'Speed trainer', 'Download', 'Print', 'Share']);
+      for (const row of [layout.buttons.slice(0, 3), layout.buttons.slice(3, 6)]) {
+        expect(new Set(row.map(button => button.y)).size).toBe(1);
+        for (const button of row) {
+          expect(button.height).toBe(layout.topHeight);
+          expect(button.iconRight).toBeLessThan(button.textLeft);
+          expect(button.width).toBeCloseTo(row[0].width, 1);
+          expect(button.overflow).toBe(false);
+        }
+      }
+      expect(layout.buttons[3].y).toBeGreaterThan(layout.buttons[0].y);
+    }
     await legend.click();
     await expect(legend).toHaveAttribute('aria-pressed', 'true');
     await legend.press('Space');
@@ -343,13 +359,13 @@ for (const width of [320, 390, 768, 844]) {
     await expect(offset).not.toBeVisible();
     await page.setViewportSize({ width: 1440, height: 1000 });
     await toggle.click();
-    await expect(app.locator('#gl-click-options > li')).toHaveCount(4);
+    await expect(app.locator('#gl-click-options > li')).toHaveCount(3);
     await expect(app.getByRole('button', { name: 'Count in', exact: true })).toHaveAttribute('aria-pressed', 'true');
     await page.keyboard.press('Escape');
     await page.setViewportSize({ width, height: 1000 });
     await toggle.click();
     await expect(menu.getByRole('button', { name: 'Count in', exact: true })).toHaveAttribute('aria-pressed', 'true');
-    await expect(app.locator('#gl-click-options > li')).toHaveCount(4);
+    await expect(app.locator('#gl-click-options > li')).toHaveCount(3);
     const solo = menu.getByRole('button', { name: 'Solo (no drums)', exact: true });
     await expect(solo).toHaveAttribute('aria-pressed', 'true');
     await solo.click();

@@ -85,7 +85,7 @@ def render(config):
     if featured and video_info(featured)[0] != "youtube":
         raise ValueError("The featured performance must be a YouTube video.")
     sections = ['''<section class="page-hero service-hero watch-hero section-shell section-band theme-dark" aria-labelledby="watch-heading">
- <div class="service-title"><p class="eyebrow section-label">Dave D'Amore / Behind the kit</p><h1 id="watch-heading">Performances</h1></div>
+ <div class="service-title"><p class="eyebrow section-label">Behind the kit</p><h1 id="watch-heading">Performances</h1></div>
  <div class="service-summary"><p class="page-hero-subtitle">Drum performances and covers.</p><p class="page-hero-lead">Explore full drum covers, short performances and collaborations, with free notation for Karnivool's &quot;Drone&quot;.</p>
   <div class="service-actions"><a class="button button--primary" href="#featured-performance">Watch the performances <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#arrow-down"></use></svg></a><a class="button" href="https://www.instagram.com/drumswithdave/" target="_blank" rel="noopener noreferrer">Follow on Instagram <svg class="icon" aria-hidden="true" focusable="false"><use href="/assets/icons.svg#arrow-up-right"></use></svg></a></div>
  </div>
@@ -98,7 +98,7 @@ def render(config):
         heading = (escape(featured["artist"]) + " &quot;" + escape(featured["song"]) + "&quot;") if featured.get("artist") and featured.get("song") else title
         home_caption = (escape(featured["artist"]) + ' &quot;' + escape(featured["song"]) + '&quot; – Drum Cover') if featured.get("artist") and featured.get("song") else title + " – Drum Cover"
         sections.append(f'''<section class="watch-featured section-shell section-band page-section theme-medium surface-panel" id="featured-performance" aria-labelledby="featured-heading">
- <div class="watch-featured-copy"><p class="eyebrow section-label">Full drum cover</p><h2 id="featured-heading">Featured</h2><h3 id="featured-title">{heading}</h3><p>{description}</p></div>
+ <div class="watch-featured-copy"><p class="eyebrow section-label">Featured cover</p><h2 id="featured-heading">{escape(featured.get("artist", "Featured"))}</h2><h3 id="featured-title">&quot;{escape(featured.get("song", featured["title"]))}&quot;</h3><p>{description}</p></div>
  <div class="watch-featured-media" aria-labelledby="featured-title">{player(featured, "watch-featured", external_link=False)}</div>
  <div class="watch-featured-actions"><a class="button button--primary" href="/notation/karnivool-drone">View free drum notation {icon("arrow-up-right")}</a></div>
 </section>''')
@@ -107,7 +107,7 @@ def render(config):
  <div class="home-watch-media">{player(featured, "home-performance", external_link=False)}</div>
  <div class="home-watch-action"><a class="button button--primary" href="/watch/">More performances {icon("arrow-up-right")}</a></div>
 </section>'''
-        notation = f'''<section class="notation-performance" aria-labelledby="notation-performance-heading"><h2 id="notation-performance-heading">Watch the cover</h2>{player(featured, "notation-performance", external_link=False)}<a class="text-link" href="/watch/">More performances {icon("arrow-up-right")}</a></section>'''
+        notation = f'''<section class="notation-performance section-shell section-band page-section theme-medium surface-panel" aria-labelledby="notation-performance-heading"><div class="notation-performance-copy"><p class="eyebrow section-label">Behind the score</p><h2 id="notation-performance-heading">Watch the cover</h2><p>{heading} performed by Dave D'Amore.</p><a class="text-link" href="/watch/">More performances {icon("arrow-up-right")}</a></div>{player(featured, "notation-performance", external_link=False)}</section>'''
     if reels:
         cards = []
         for index, item in enumerate(reels, 1):

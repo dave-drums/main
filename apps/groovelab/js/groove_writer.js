@@ -47,6 +47,9 @@ function GrooveWriter() {
 	var class_note_value_per_measure = 4;     // TimeSigBottom
 	var class_notes_per_measure = root.myGrooveUtils.calc_notes_per_measure(class_time_division, class_num_beats_per_measure, class_note_value_per_measure);
 	var class_metronome_auto_speed_up_active = false;
+	var trainerSettings = null;
+	var trainerCompleted = 0;
+	var trainerRunning = false;
 	var class_metronome_count_in_active = false;
 	var class_metronome_count_in_is_playing = false;
 
@@ -57,7 +60,6 @@ function GrooveWriter() {
 	// private vars in the scope of the class
 	var class_app_title = "Groove Lab | Dave Drums";
 	var class_permutation_type = "none";
-	var class_advancedEditIsOn = false;
 	var class_measure_for_note_label_click = 0;
 	var class_which_index_last_clicked = 0; // which note was last clicked for the context menu
 
@@ -1064,18 +1066,6 @@ function GrooveWriter() {
 				root.myGrooveUtils.midiNoteHasChanged(); // if playing need to refresh
 				break;
 
-			case "SpeedUp":
-				if (class_metronome_auto_speed_up_active) {
-					// just turn it off if it is on, don't show the configurator
-					class_metronome_auto_speed_up_active = false;
-					addOrRemoveKeywordFromClassById("metronomeOptionsContextMenuSpeedUp", "menuChecked", false);
-				} else {
-					class_metronome_auto_speed_up_active = true;
-					addOrRemoveKeywordFromClassById("metronomeOptionsContextMenuSpeedUp", "menuChecked", true);
-					root.show_MetronomeAutoSpeedupConfiguration();
-				}
-				break;
-
 			case "CountIn":
 				if (class_metronome_count_in_active) {
 					// just turn it off if it is on, don't show the configurator
@@ -1271,18 +1261,6 @@ function GrooveWriter() {
 				break;
 		}
 
-	};
-
-	// user has clicked on the advanced edit button
-	this.toggleAdvancedEdit = function () {
-		if (class_advancedEditIsOn) {
-			// turn it off
-			class_advancedEditIsOn = false;
-			unselectButton(document.getElementById("advancedEditAnchor"));
-		} else {
-			class_advancedEditIsOn = true;
-			selectButton(document.getElementById("advancedEditAnchor"));
-		}
 	};
 
 	// context menu for labels
@@ -1487,41 +1465,30 @@ function GrooveWriter() {
 	};
 
 	root.noteLeftClick = function (event, type, id) {
-
-		// use a popup if advanced edit is on
-		if (class_advancedEditIsOn === true && !event.fromKeyboard) {
-			root.noteRightClick(event, type, id);
-
-		} else {
-
-			// this is a non advanced edit left click
-			switch (type) {
-				case "hh":
-					set_hh_state(id, is_hh_on(id) ? "off" : "normal", true);
-					break;
-				case "snare":
-					set_snare_state(id, is_snare_on(id) ? "off" : "normal", true);
-					break;
-				case "tom1":
-					set_tom_state(id, 1, is_tom_on(id, 1) ? "off" : "normal", true);
-					break;
-				case "tom4":
-					set_tom_state(id, 4, is_tom_on(id, 4) ? "off" : "normal", true);
-					break;
-				case "kick":
-					set_kick_state(id, is_kick_on(id) ? "off" : "normal", true);
-					break;
-				case "sticking":
-					sticking_rotate_state(id);
-					break;
-				default:
-					console.log("Bad case in noteLeftClick: " + type);
-					break;
-			}
-
-			updateSheetMusic();
+		switch (type) {
+			case "hh":
+				set_hh_state(id, is_hh_on(id) ? "off" : "normal", true);
+				break;
+			case "snare":
+				set_snare_state(id, is_snare_on(id) ? "off" : "normal", true);
+				break;
+			case "tom1":
+				set_tom_state(id, 1, is_tom_on(id, 1) ? "off" : "normal", true);
+				break;
+			case "tom4":
+				set_tom_state(id, 4, is_tom_on(id, 4) ? "off" : "normal", true);
+				break;
+			case "kick":
+				set_kick_state(id, is_kick_on(id) ? "off" : "normal", true);
+				break;
+			case "sticking":
+				sticking_rotate_state(id);
+				break;
+			default:
+				console.log("Bad case in noteLeftClick: " + type);
+				break;
 		}
-
+		updateSheetMusic();
 	};
 
 	root.notePopupClick = function (type, new_setting) {
@@ -3117,6 +3084,8 @@ function GrooveWriter() {
 
 	// clear all the notes on all measures
 	root.clearAllNotes = function () {
+		// Preserve the complete pre-delete state; the normal history deduplicates it.
+		root.updateCurrentURL();
 		for (var i = 0; i < class_number_of_measures * class_notes_per_measure; i++) {
 			set_sticking_state(i, 'off');
 			set_hh_state(i, 'off');
@@ -3242,6 +3211,7 @@ function GrooveWriter() {
 			if (event.target.closest('button,[role="button"]')) return;
 			if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
 				event.preventDefault();
+				if (trainerRunning && class_metronome_auto_speed_up_active) return;
 				if (event.key === "ArrowLeft") root.myGrooveUtils.downTempo();
 				else root.myGrooveUtils.upTempo();
 			}
@@ -3249,27 +3219,14 @@ function GrooveWriter() {
 	};
 
 	root.swapViewEditMode = function(dontUpdateURL) {
-		var view_edit_button = document.getElementById("view-edit-switch");
-
-		if(root.myGrooveUtils.viewMode) {
-
-			showHideCSS_ClassDisplay(".edit-block", true, true, "block"); // show
-
-			if(view_edit_button)
-				view_edit_button.textContent = "Switch to view mode";
-			root.myGrooveUtils.viewMode = false;
-
-			if(!dontUpdateURL)
-				root.updateCurrentURL();
-		} else {
-
-			showHideCSS_ClassDisplay(".edit-block", true, false, "block"); // hide
-
-			if(view_edit_button)
-				view_edit_button.textContent = "Switch to edit mode";
-			root.myGrooveUtils.viewMode = true;
-			if(!dontUpdateURL)
-				root.updateCurrentURL();
+		root.myGrooveUtils.viewMode = !root.myGrooveUtils.viewMode;
+		showHideCSS_ClassDisplay(".edit-block", true, !root.myGrooveUtils.viewMode, "block");
+		document.querySelectorAll("#GrooveWriter [data-edit-control]").forEach(function(control) {
+			control.disabled = root.myGrooveUtils.viewMode;
+		});
+		document.dispatchEvent(new Event("groove:controls-change"));
+		if (!dontUpdateURL) {
+			root.updateCurrentURL();
 		}
 	};
 
@@ -3295,6 +3252,21 @@ function GrooveWriter() {
 		// load the groove from the URL data if it was passed in.
 		set_Default_notes(window.location.search);
 
+		root.myGrooveUtils.midiEventCallbacks.beforePlay = root.prepareSpeedTrainer;
+		['playEvent', 'stopEvent', 'pauseEvent'].forEach(function(name) {
+			var original = root.myGrooveUtils.midiEventCallbacks[name];
+			root.myGrooveUtils.midiEventCallbacks[name] = function(myroot) {
+				original(myroot);
+				root.syncSpeedTrainerControls(name === 'playEvent');
+			};
+		});
+		document.querySelectorAll('[data-gl-trainer-field]').forEach(function(field) {
+			field.addEventListener('input', function() {
+				document.getElementById('gl-trainer-error').textContent = '';
+				root.updateSpeedTrainerCycle();
+			});
+		});
+
 		root.myGrooveUtils.midiEventCallbacks.loadMidiDataEvent = function (myroot, playStarting) {
 			var midiURL;
 
@@ -3317,10 +3289,8 @@ function GrooveWriter() {
 		};
 
 		root.myGrooveUtils.midiEventCallbacks.notePlaying = function (myroot, note_type, percent_complete) {
-			if (note_type == "complete" && class_metronome_auto_speed_up_active) {
-				// reload with new tempo
-				root.myGrooveUtils.midiNoteHasChanged();
-				root.metronomeAutoSpeedUpTempoUpdate();
+			if (note_type == "complete" && class_metronome_auto_speed_up_active && !class_metronome_count_in_is_playing) {
+				root.advanceSpeedTrainer();
 			}
 
 			hilight_note(note_type, percent_complete);
@@ -3354,64 +3324,6 @@ function GrooveWriter() {
 
 		// get updates when the tempo changes
 		root.myGrooveUtils.tempoChangeCallback = root.tempoChangeCallback
-	};
-
-	// called right before the midi reloads for the next replay
-	// set the new tempo based on the delta required for the time interval
-	var class_our_midi_start_time = null;
-	var class_our_midi_start_tempo = 0;
-	var class_our_last_midi_tempo_increase_time = null;
-	var class_our_last_midi_tempo_increase_remainder = 0;
-	root.metronomeAutoSpeedUpTempoUpdate = function () {
-
-		var totalTempoIncreaseAmount = 1;
-		if (document.getElementById("metronomeAutoSpeedupTempoIncreaseAmount"))
-			totalTempoIncreaseAmount = parseInt(document.getElementById("metronomeAutoSpeedupTempoIncreaseAmount").value, 10);
-		var tempoIncreaseInterval = 60;
-		if (document.getElementById("metronomeAutoSpeedupTempoIncreaseInterval")) {
-			tempoIncreaseInterval = parseInt(document.getElementById("metronomeAutoSpeedupTempoIncreaseInterval").value, 10);
-			tempoIncreaseInterval = tempoIncreaseInterval * 60; // turn mins to secs
-		}
-
-		var keepIncreasingForever = false;
-		if (document.getElementById("metronomeAutoSpeedUpKeepGoingForever"))
-			keepIncreasingForever = document.getElementById("metronomeAutoSpeedUpKeepGoingForever").checked;
-
-		var curTempo = root.myGrooveUtils.getTempo();
-
-		var midiStartTime = root.myGrooveUtils.getMidiStartTime();
-		if (class_our_midi_start_time != midiStartTime) {
-			class_our_midi_start_time = midiStartTime;
-			class_our_last_midi_tempo_increase_remainder = 0;
-			class_our_last_midi_tempo_increase_time = new Date(0);
-			class_our_midi_start_tempo = curTempo;
-
-		} else if (!keepIncreasingForever) {
-			if (curTempo >= class_our_midi_start_tempo + totalTempoIncreaseAmount) {
-				return; // don't increase any more after we have gone up the total amount
-			}
-		}
-		var totalMidiPlayTime = root.myGrooveUtils.getMidiPlayTime();
-		var timeDiffMilliseconds = totalMidiPlayTime.getTime() - class_our_last_midi_tempo_increase_time.getTime();
-		var tempoDiffFloat = (totalTempoIncreaseAmount) * (timeDiffMilliseconds / (tempoIncreaseInterval * 1000));
-
-		// round the number down, but keep track of the remainder so we carry it forward.   Otherwise
-		// rounding errors cause us to be way off.
-		tempoDiffFloat += class_our_last_midi_tempo_increase_remainder;
-		var tempoDiffInt = Math.floor(tempoDiffFloat);
-		class_our_last_midi_tempo_increase_remainder = tempoDiffFloat - tempoDiffInt;
-
-		class_our_last_midi_tempo_increase_time = totalMidiPlayTime;
-
-		if (!keepIncreasingForever) {
-			if (curTempo + tempoDiffInt > class_our_midi_start_tempo + totalTempoIncreaseAmount) {
-				// increase to the total max amount, then we are done
-				tempoDiffInt = (class_our_midi_start_tempo + totalTempoIncreaseAmount) - curTempo;
-			}
-		}
-
-		if (tempoDiffInt > 0)
-			root.myGrooveUtils.setTempo(root.myGrooveUtils.getTempo() + tempoDiffInt);
 	};
 
 	// takes a string of notes encoded in a serialized string and sets the notes on or off
@@ -3733,22 +3645,74 @@ function GrooveWriter() {
 		return root.myGrooveUtils.getUrlStringFromGrooveData(myGrooveData, url_destination || "share")
 	}
 
-	root.show_MetronomeAutoSpeedupConfiguration = function () {
-		var popup = document.getElementById("metronomeAutoSpeedupConfiguration");
-
-		if (popup) {
-			popup.style.display = "block";
-		}
-
-		document.getElementById('metronomeAutoSpeedupTempoIncreaseAmountOutput').innerHTML = document.getElementById('metronomeAutoSpeedupTempoIncreaseAmount').value;
-		document.getElementById('metronomeAutoSpeedupTempoIncreaseIntervalOutput').innerHTML = document.getElementById('metronomeAutoSpeedupTempoIncreaseInterval').value;
+	root.toggleSpeedTrainer = function () {
+		var button = document.getElementById('gl-trainer-toggle');
+		var panel = document.getElementById('metronomeAutoSpeedupConfiguration');
+		var open = button.getAttribute('aria-expanded') !== 'true';
+		button.setAttribute('aria-expanded', String(open));
+		panel.classList.toggle('is-open', open);
+		panel.setAttribute('aria-hidden', String(!open));
+		panel.inert = !open;
 	};
-
-	root.close_MetronomeAutoSpeedupConfiguration = function (type) {
-		var popup = document.getElementById("metronomeAutoSpeedupConfiguration");
-
-		if (popup)
-			popup.style.display = "none";
+	root.setSpeedTrainerEnabled = function (enabled) {
+		class_metronome_auto_speed_up_active = Boolean(enabled);
+		trainerSettings = null;
+		trainerCompleted = 0;
+		document.getElementById('gl-trainer-enabled').checked = Boolean(enabled);
+		document.getElementById('gl-trainer-status').textContent = 'Speed trainer ' + (enabled ? 'active' : 'inactive');
+		document.getElementById('gl-trainer-error').textContent = '';
+		root.syncSpeedTrainerControls(trainerRunning);
+	};
+	root.updateSpeedTrainerCycle = function () {
+		var every = trainerSettings ? trainerSettings.every : Math.max(1, Number(document.getElementById('gl-trainer-every').value) || 1);
+		var cycle = document.getElementById('gl-trainer-cycle');
+		cycle.hidden = !class_metronome_auto_speed_up_active;
+		cycle.textContent = 'Repetition ' + (trainerRunning ? trainerCompleted % every + 1 : 0) + ' of ' + every;
+	};
+	root.syncSpeedTrainerControls = function (running) {
+		trainerRunning = Boolean(running);
+		document.getElementById('gl-trainer-enabled').disabled = trainerRunning;
+		document.querySelectorAll('[data-gl-trainer-field]').forEach(function(field) {
+			field.disabled = trainerRunning || !class_metronome_auto_speed_up_active;
+		});
+		document.querySelectorAll('#midiPlayer .tempoRow input,#midiPlayer .tempoRow button').forEach(function(control) {
+			control.disabled = trainerRunning && class_metronome_auto_speed_up_active;
+		});
+		root.updateSpeedTrainerCycle();
+	};
+	root.prepareSpeedTrainer = function () {
+		trainerSettings = null;
+		trainerCompleted = 0;
+		if (!class_metronome_auto_speed_up_active) return true;
+		var fields = Array.from(document.querySelectorAll('[data-gl-trainer-field]'));
+		var invalid = fields.find(function(field) { return !field.checkValidity(); });
+		var settings = { start: Number(fields[0].value), target: Number(fields[1].value), increase: Number(fields[2].value), every: Number(fields[3].value) };
+		var error = document.getElementById('gl-trainer-error');
+		if (invalid || settings.target < settings.start) {
+			if (document.getElementById('gl-trainer-toggle').getAttribute('aria-expanded') !== 'true') root.toggleSpeedTrainer();
+			error.textContent = invalid ? 'Enter a valid value for each speed trainer setting.' : 'Target BPM must be equal to or above starting BPM.';
+			(invalid || fields[1]).focus();
+			if (invalid) invalid.reportValidity();
+			return false;
+		}
+		error.textContent = '';
+		trainerSettings = settings;
+		root.myGrooveUtils.setTempo(settings.start);
+		return true;
+	};
+	// One repetition is the complete groove, including every bar currently shown.
+	root.advanceSpeedTrainer = function () {
+		if (!class_metronome_auto_speed_up_active || !trainerSettings || !trainerRunning) return;
+		trainerCompleted++;
+		if (trainerCompleted % trainerSettings.every === 0) {
+			var current = root.myGrooveUtils.getTempo();
+			var next = Math.min(trainerSettings.target, current + trainerSettings.increase);
+			if (next !== current) {
+				root.myGrooveUtils.setTempo(next);
+				root.myGrooveUtils.midiNoteHasChanged();
+			}
+		}
+		root.updateSpeedTrainerCycle();
 	};
 
 	root.getSubdivision = function () { return class_time_division; };
@@ -4333,12 +4297,10 @@ function GrooveWriter() {
 
 		if (class_number_of_measures > 1)
 			newHTML += '<button type="button" title="Delete bar ' + baseindex + '" aria-label="Delete bar ' + baseindex + '" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></button>';
-		else
-			newHTML += '<span class="measure-control-spacer" aria-hidden="true"></span>';
 
 
 		if (baseindex == class_number_of_measures) // add new measure button
-			newHTML += '<span id="addMeasureButton" title="Add measure" onClick="myGrooveWriter.addMeasureButtonClick(event)"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#plus"></use></svg></span>';
+			newHTML += '<button type="button" id="addMeasureButton" title="Add measure" aria-label="Add measure" onClick="myGrooveWriter.addMeasureButtonClick(event)"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#plus"></use></svg></button>';
 
 		newHTML += ('</div>');
 

@@ -147,11 +147,6 @@
 		display: block;
 		font-size: 18px;
 	}
-	#advancedEditAnchor.buttonSelected {
-		background: #009ffa;
-		color: #FFF;
-		font-size: 14px;
-	}
 	.buttonText {
 	}
 	#undoButton {
@@ -173,10 +168,6 @@
 		font-weight: bold;
 		text-align: center;
 		padding-left: 62px;
-	}
-	#KeyButton {
-		display: inline-block;
-		vertical-align: top;
 	}
 	#hiddenDescription {
 		display: none;
@@ -655,16 +646,11 @@
 		background: transparent;
 	}
 	#addMeasureButton {
-		vertical-align: top;
-		display: inline-block;
 		color: var(--highlight-color-on-white);
 		cursor: pointer;
-		font-size: 40px;
-		padding-top: 2px;
-		margin-top: 73px;
 	}
 
-	.closeMeasureButton, .measure-control-spacer {
+	.closeMeasureButton {
 		vertical-align: top;
 		display: inline-flex;
 		align-items: center;
@@ -914,7 +900,7 @@
 		font-family: monospace;
 		font-size: 14px;
 	}
-	#fullURLPopup, #metronomeAutoSpeedupConfiguration{
+	#fullURLPopup{
 		/visibility: hidden;
 		display: none;
 		position:absolute; left:300px; top:250px; z-index:999;
@@ -992,48 +978,6 @@
 		background: var(--bpm-bg-color);
 		color: var(--ui-text-color);
 	}
-	.metronomeAutoSpeedupInputRow {
-		vertical-align: text-bottom;
-	}
-	#metronomeAutoSpeedupConfigurationSliders {
-		width: 370px;
-		margin: 0px auto;
-	}
-	#metronomeAutoSpeedupTempoIncreaseAmount, #metronomeAutoSpeedupTempoIncreaseInterval {
-		background: var(--highlight-color);
-		width: 365px;
-	}
-	#metronomeAutoSpeedupOutputText {
-		font-size: 25px;
-		text-align: center;
-	}
-	#metronomeAutoSpeedupTempoIncreaseAmountOutput, #metronomeAutoSpeedupTempoIncreaseIntervalOutput {
-		color: var(--highlight-color);
-		font-weight: 700;
-	}
-	#metronomeAutoSpeedupConfigurationAmountLable, #metronomeAutoSpeedupConfigurationIntervalLable {
-		font-size: 12px;
-	}
-	#metronomeAutoSpeedupConfigurationKeepIncreasing {
-		font-size: 12px;
-		color: var(--highlight-color);
-		text-align: center;
-		vertical-align: middle;
-		margin-bottom: 10px;
-	}
-	#metronomeAutoSpeedupCloseButtonDiv {
-		text-align: center;
-		margin-top: 15px;
-	}
-	#metronomeAutoSpeedupConfigurationCloseButton {
-		font-size: 16px;
-		font-weight: 500;
-		background: var(--highlight-color);
-		color: #FFF;
-		border: 0px;
-		border-radius: 5px;
-		padding: 5px 10px;
-	}
 	#showHideSecondMeasureButton {
 	}
 	#stickingsButton {
@@ -1075,12 +1019,10 @@
 		color: #888;
 		cursor: pointer;
 	}
-	#PermutationOptions input[type=checkbox]:checked + label,
-	#metronomeAutoSpeedupConfiguration input[type=checkbox]:checked + label {
+	#PermutationOptions input[type=checkbox]:checked + label {
 		color: var(--ui-text-color);
 	}
-	#PermutationOptions input[type=checkbox]:not(:checked) + label,
-	#metronomeAutoSpeedupConfiguration input[type=checkbox]:not(:checked) + label {
+	#PermutationOptions input[type=checkbox]:not(:checked) + label {
 		color: var(--ui-muted-text-color);
 	} #fullURLPopupCopyButton:hover, #shareButton:hover {
 		background: var(--border-color);
@@ -1120,26 +1062,6 @@
 	.hiddenCheckbox {
 		/* checkbox for the key (legend) */
 		visibility: hidden;
-	}
-	#LegendLabel {
-		border: 0;
-		padding: 6px 10px;
-		border-radius: 6px;
-	}
-	.legendToggle {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		border: 0;
-		clip-path: inset(50%);
-		white-space: nowrap;
-		overflow: hidden;
-	}
-	.legendToggle:focus-visible + #LegendLabel {
-		outline: 2px solid var(--ui-accent-soft-color);
-		outline-offset: 2px;
 	}
 	#GrooveDB_source {
 		width: calc(100% - 6px);

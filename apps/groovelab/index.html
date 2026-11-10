@@ -96,7 +96,7 @@
         </div>
 
 		<div id="RightHandContent">
-            <div id="totalPlayTime" class="nonPrintable gl-play-stats" aria-label="Playback totals"><span>Total Play Time: <span class="totalTimeNum">0:00</span></span><span>Notes: <span class="totalTimeNum">0</span></span><span>Repetitions: <span class="totalTimeNum">0</span></span></div>
+
 			<p class="groove-sr-only nonPrintable" id="groove-keyboard-help">Use arrow keys to move between notes and Space to toggle a hit.</p>
 			<div class="nonPrintable">
 
@@ -112,7 +112,11 @@
 			<div class="Printable">
 				<!-- rendering area -->
 				<div id="sheetMusicDiv" class="fullWidthEle">
-                  <span id="KeyButton" class="nonPrintable"><input type="checkbox" id="showLegend" hidden><button type="button" id="LegendLabel" aria-label="Show drum key legend" aria-pressed="false" title="Show drum key legend" onclick="myGrooveWriter.toggleLegend();"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#key"></use></svg></button></span>
+                  <div class="gl-score-controls nonPrintable">
+                    <input type="checkbox" id="showLegend" hidden><button type="button" class="gl-score-action" id="LegendLabel" aria-label="Legend" aria-pressed="false" title="Show drum key legend" onclick="myGrooveWriter.toggleLegend();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#key"></use></svg></span></button>
+                    <div id="totalPlayTime" class="nonPrintable gl-play-stats" aria-label="Playback totals"><span>Total time: <span class="totalTimeNum">0:00</span></span><span>Reps: <span class="totalTimeNum">0</span></span></div>
+                    <div class="gl-score-actions"><button type="button" class="gl-score-action" id="undoButton" aria-label="Undo" title="Undo" data-edit-control disabled onclick="myGrooveWriter.undoCommand();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#undo"></use></svg></span></button><button type="button" class="gl-score-action" id="clearAllNotesButton" aria-label="Delete all notes" title="Delete all notes (Undo restores them)" data-edit-control disabled onclick="event.preventDefault(); myGrooveWriter.clearAllNotes();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#trash"></use></svg></span></button></div>
+                  </div>
 					<div id="svgTarget" class="svgTarget">
 						<!-- space for the SVG sheet music to display -->
 					</div>
@@ -142,23 +146,32 @@
 
 
 				<div id="bottomButtonRow" class="fullWidthEle">
-                    <script>
-                      if (!myGrooveWriter.myGrooveUtils.grooveDBAuthoring) {
-                        document.write('<button type="button" class="pageBottomButton" onclick="myGrooveWriter.swapViewEditMode();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#layers"></use></svg><span id="view-edit-switch">Switch to edit mode</span></span></button>');
-                      }
-                      if (myGrooveWriter.myGrooveUtils.is_touch_device()) {
-                        document.write('<button type="button" class="pageBottomButton edit-block" id="advancedEditAnchor" onclick="myGrooveWriter.toggleAdvancedEdit();">Advanced edit</button>');
-                      }
-                    </script>
-                    <button type="button" class="pageBottomButton edit-block" id="undoButton" onclick="myGrooveWriter.undoCommand();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#undo"></use></svg> Undo</span></button>
-					<button type="button" class="pageBottomButton edit-block" id="clearAllNotesButton" onclick="event.preventDefault(); myGrooveWriter.clearAllNotes();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#trash"></use></svg></span><span class="bottomButtonLabel">Clear all</span></span></button>
-					<button type="button" class="pageBottomButton edit-block" id="showHideTomsButton" aria-pressed="false" onclick="event.preventDefault(); myGrooveWriter.showHideToms(false, false);"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon toms-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#toms"></use></svg></span><span class="bottomButtonLabel">Toms</span></span></button>
-					<button type="button" class=" grooveDB_hidden pageBottomButton" id="stickingsButton" onclick="myGrooveWriter.stickingsAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon stickings-icon" aria-hidden="true"></span><span class="bottomButtonLabel">Stickings</span></span></button>
-					<button type="button" class=" grooveDB_hidden pageBottomButton" id="downloadButton" onclick="myGrooveWriter.DownloadAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#download"></use></svg></span><span class="bottomButtonLabel">Download</span></span></button>
+                    <button type="button" class="pageBottomButton" id="showHideTomsButton" data-edit-control disabled aria-pressed="false" onclick="event.preventDefault(); myGrooveWriter.showHideToms(false, false);"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon toms-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#toms"></use></svg></span><span class="bottomButtonLabel">Toms</span></span></button>
+                    <button type="button" class="grooveDB_hidden pageBottomButton" id="stickingsButton" onclick="myGrooveWriter.stickingsAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon stickings-icon" aria-hidden="true"></span><span class="bottomButtonLabel">Stickings</span></span></button>
+
+
+
+
+
+					<button type="button" class="pageBottomButton" id="gl-trainer-toggle" aria-expanded="false" aria-controls="metronomeAutoSpeedupConfiguration" onclick="myGrooveWriter.toggleSpeedTrainer();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="images/tool-icons.svg#sliders"></use></svg><span>Speed trainer</span></span></button>
+                    <button type="button" class=" grooveDB_hidden pageBottomButton" id="downloadButton" onclick="myGrooveWriter.DownloadAnchorClick();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#download"></use></svg></span><span class="bottomButtonLabel">Download</span></span></button>
 					<button type="button" class=" grooveDB_hidden pageBottomButton" id="printButton" onclick="myGrooveWriter.printMusic();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#print"></use></svg></span><span class="bottomButtonLabel">Print</span></span></button>
 					<button type="button" class=" grooveDB_hidden pageBottomButton" id="shareSaveButton" onclick="event.preventDefault(); myGrooveWriter.show_FullURLPopup();"><span class="bottomButtonContents"><span class="bottomButtonIcon"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#share"></use></svg></span><span class="bottomButtonLabel">Share</span></span></button>
 				</div>
 
+				<section class="gl-trainer-area tool-ui" aria-label="Speed trainer">
+                  <div id="metronomeAutoSpeedupConfiguration" class="tool-trainer-drawer" aria-hidden="true" inert><div class="tool-trainer-clip"><div class="tool-trainer-content">
+                    <div class="tool-trainer-heading"><label class="tool-trainer-toggle"><input id="gl-trainer-enabled" type="checkbox" onchange="myGrooveWriter.setSpeedTrainerEnabled(this.checked);"><span id="gl-trainer-status">Speed trainer inactive</span></label><output class="tool-trainer-cycle" id="gl-trainer-cycle" aria-label="Repetition in current cycle" aria-live="off" hidden>Repetition 0 of 4</output></div>
+                    <div class="tool-trainer-fields">
+                      <div class="tool-trainer-field"><label for="gl-trainer-start">Starting BPM</label><input type="number" id="gl-trainer-start" data-gl-trainer-field min="30" max="300" step="1" value="80" inputmode="numeric" required disabled></div>
+                      <div class="tool-trainer-field"><label for="gl-trainer-target">Target BPM</label><input type="number" id="gl-trainer-target" data-gl-trainer-field min="30" max="300" step="1" value="120" inputmode="numeric" required disabled></div>
+                      <div class="tool-trainer-field"><label for="gl-trainer-increase">Increase by</label><input type="number" id="gl-trainer-increase" data-gl-trainer-field min="1" max="270" step="1" value="5" inputmode="numeric" required disabled></div>
+                      <div class="tool-trainer-field"><label for="gl-trainer-every">Every … repetitions</label><input type="number" id="gl-trainer-every" data-gl-trainer-field min="1" max="100" step="1" value="4" inputmode="numeric" required disabled></div>
+                    </div>
+                    <p class="gl-trainer-error" id="gl-trainer-error" role="alert"></p>
+                    <p class="tool-trainer-hint">Stop playback to edit speed trainer settings.</p>
+                  </div></div></div>
+                </section>
 				<div id="midiTextOutput">
 				</div>
 
@@ -204,13 +217,12 @@
 		</div>
 
 
-        <div id="gl-metronome-menu" class="tool-menu gl-metronome-menu" role="dialog" aria-label="Metronome options">
+        <div id="gl-metronome-menu" class="nonPrintable tool-menu gl-metronome-menu" role="dialog" aria-label="Metronome options">
           <div id="gl-click-rates" role="group" aria-label="Click rate"></div>
           <section class="groove-menu-section" aria-labelledby="gl-click-options-heading">
             <h3 class="tool-menu-heading" id="gl-click-options-heading">Options</h3>
             <ul id="gl-click-options" class="gl-metronome-options">
 				<li class="metronomeOptionsContextMenuItem" id="metronomeOptionsContextMenuSolo"      onclick='myGrooveWriter.metronomeOptionsMenuPopupClick("Solo");'  title="Just hear the metronome." >Solo (no drums)</li>
-				<li class="metronomeOptionsContextMenuItem" data-menu-section id="metronomeOptionsContextMenuSpeedUp"   onclick='myGrooveWriter.metronomeOptionsMenuPopupClick("SpeedUp");' title="Increase the tempo automatically" >Speed trainer</li>
 				<li class="metronomeOptionsContextMenuItem" data-menu-section id="metronomeOptionsContextMenuCountIn"   onclick='myGrooveWriter.metronomeOptionsMenuPopupClick("CountIn");' title="One measure of metronome count in at the start" >Count in</li>
 				<li class="metronomeOptionsContextMenuItem" id="metronomeOptionsContextMenuOffTheOne" onclick='myGrooveWriter.metronomeOptionsMenuPopupClick("OffTheOne");' title="Click on the e, &, or a">Offset click</li>
             </ul>
@@ -415,27 +427,6 @@
 				<button type="button" class="tool-control" id="shareButton" onclick="myGrooveWriter.shareGroove();"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#share"></use></svg><span>Share</span></button>
 			</div>
 			<p id="groove-share-status" role="status" aria-live="polite"></p>
-		</div>
-
-
-		<!-- this is used by the metronome auto speed up option menu, and is hidden by default -->
-		<div id="metronomeAutoSpeedupConfiguration">
-			<div id="metronomeAutoSpeedupOutputText">
-				Increase <span id="metronomeAutoSpeedupTempoIncreaseAmountOutput">5</span> bpm in
-				<span id="metronomeAutoSpeedupTempoIncreaseIntervalOutput">2</span> min
-			</div>
-			<div id="metronomeAutoSpeedupConfigurationKeepIncreasing">
-				<input type="checkbox" checked id="metronomeAutoSpeedUpKeepGoingForever"><label for="metronomeAutoSpeedUpKeepGoingForever">Keep increasing after the first interval</label>
-			</div>
-			<div id="metronomeAutoSpeedupConfigurationSliders">
-				<div id="metronomeAutoSpeedupConfigurationAmountLable">Amount in BPM</div>
-				<input type=range min=1 max=100 value=5 class="metronomeAutoSpeedUpRange" id="metronomeAutoSpeedupTempoIncreaseAmount" oninput="myGrooveWriter.updateRangeLabel(event, 'metronomeAutoSpeedupTempoIncreaseAmountOutput');">
-				<div id="metronomeAutoSpeedupConfigurationIntervalLable">Interval in Minutes</div>
-				<input type=range min=1 max=20 value=2 class="metronomeAutoSpeedUpRange" id="metronomeAutoSpeedupTempoIncreaseInterval" step="1" oninput="myGrooveWriter.updateRangeLabel(event, 'metronomeAutoSpeedupTempoIncreaseIntervalOutput');">
-			</div>
-			<div id="metronomeAutoSpeedupCloseButtonDiv">
-				<button id="metronomeAutoSpeedupConfigurationCloseButton" onclick="myGrooveWriter.close_MetronomeAutoSpeedupConfiguration('ok');">Done</button>
-			</div>
 		</div>
 
 

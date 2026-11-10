@@ -141,7 +141,7 @@
        <li>Metronome controls the steady click; Drums controls the pattern sound. Mute Drums to practice the pattern yourself with just the click.</li>
       </ol>
       <p><strong>Reading the notes:</strong> An accent (&gt;) means play that stroke stronger than the surrounding notes. Small notes are grace notes: light strokes played just before the main stroke.</p>
-      <p><strong>Speed trainer:</strong> Stop playback and enable the trainer. Set your starting and target BPM, the increase at each step and the repetitions before each increase. One repetition is the complete displayed pattern. Press Start to begin.</p>
+      <p><strong>Speed trainer:</strong> Press Speed trainer to open its settings, then enable it. Set your starting and target BPM, the increase at each step and the repetitions before each increase. One repetition is the complete displayed pattern. Stop playback to edit these settings.</p>
      </div>
     </details>
     <p class="app-feedback section-shell" id="rud-feedback" data-tool-feedback="" role="status" aria-live="polite"></p>
@@ -182,6 +182,8 @@
        </div>
       </div>
       <div class="rud-ramp-section tool-trainer">
+       <button type="button" class="tool-control tool-trainer-disclosure" id="rud-trainer-toggle" aria-expanded="false" aria-controls="rud-trainer-panel"><svg class="icon" aria-hidden="true"><use href="/assets/icons.svg#sliders"></use></svg>Speed trainer <svg class="icon tool-trainer-caret" aria-hidden="true"><use href="/assets/icons.svg#chevron-down"></use></svg></button>
+       <div class="tool-trainer-drawer" id="rud-trainer-panel" aria-hidden="true" inert><div class="tool-trainer-clip"><div class="tool-trainer-content">
        <div class="rud-ramp-heading tool-trainer-heading"><label class="rud-toggle tool-trainer-toggle" for="rud-ramp"><input id="rud-ramp" type="checkbox"/> <span id="rud-ramp-status">Speed trainer inactive</span></label><output class="tool-trainer-cycle" id="rud-cycle" aria-label="Repetition in current cycle" aria-live="off" hidden="">Repetition 0 of 4</output></div>
        <div class="rud-ramp-fields tool-trainer-fields">
         <div class="rud-field"><label for="rud-start">Starting BPM</label><input id="rud-start" data-ramp-field="" type="number" min="40" max="240" step="1" value="80" required="" inputmode="numeric" disabled=""/></div>
@@ -190,6 +192,7 @@
         <div class="rud-field"><label for="rud-every">Every … repetitions</label><input id="rud-every" data-ramp-field="" type="number" min="1" max="100" step="1" value="4" required="" inputmode="numeric" disabled=""/></div>
        </div>
        <p class="rud-ramp-hint tool-trainer-hint">Stop playback to edit speed trainer settings. <span data-help-label="About speed trainer" data-context-help="Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is the complete pattern shown above."></span></p>
+       </div></div></div>
       </div>
      </fieldset>
     </section>

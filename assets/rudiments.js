@@ -16,6 +16,15 @@ const slider = $('rud-slider');
 const feedback = $('rud-feedback');
 const score = $('rud-notation');
 const rampToggle = $('rud-ramp');
+const trainerButton = $('rud-trainer-toggle');
+const trainerPanel = $('rud-trainer-panel');
+function setTrainerOpen(open) {
+  trainerButton.setAttribute('aria-expanded', String(open));
+  trainerPanel.classList.toggle('is-open', open);
+  trainerPanel.setAttribute('aria-hidden', String(!open));
+  trainerPanel.inert = !open;
+}
+trainerButton.addEventListener('click', () => setTrainerOpen(trainerButton.getAttribute('aria-expanded') !== 'true'));
 const rampFields = [...document.querySelectorAll('[data-ramp-field]')];
 let rudiment;
 let bpm = 80;
@@ -140,8 +149,13 @@ async function start() {
     increase: Number($('rud-increase').value), every: Number($('rud-every').value),
   } : null;
   if (ramp) {
-    for (const field of rampFields) if (!field.reportValidity()) return;
+    for (const field of rampFields) if (!field.checkValidity()) {
+      setTrainerOpen(true);
+      field.reportValidity();
+      return;
+    }
     if (ramp.target < ramp.start) {
+      setTrainerOpen(true);
       feedback.textContent = 'Target BPM must be equal to or above starting BPM.';
       $('rud-target').focus();
       return;

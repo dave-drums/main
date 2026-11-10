@@ -104,6 +104,8 @@ test('Copy and Share use equal native buttons, preserve links and announce clipb
     const a = await copy.boundingBox(), b = await share.boundingBox();
     expect(Math.abs(a.height - b.height)).toBeLessThan(1);
     expect(Math.abs(a.width - b.width)).toBeLessThan(1);
+    expect(a.height).toBe(44);
+    expect(a.width).toBe(100);
     await copy.click();
     await expect(app.locator('#groove-share-status')).toContainText('Link copied');
     expect(await field.evaluate(() => window.copied.at(-1))).toBe(link);

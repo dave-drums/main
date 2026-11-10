@@ -3800,16 +3800,17 @@ body.menu-open .site-header {
 }
 
 .notation-performance {
-  max-width: 1100px;
-  margin-inline: auto;
-  padding-block: var(--space-5);
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1.3fr);
+  gap: var(--column-gap);
+  align-items: center;
 }
 
-.notation-performance > h2 {
+.notation-performance-copy h2 {
   margin-bottom: var(--space-3);
 }
 
-.notation-performance > .text-link {
+.notation-performance-copy .text-link {
   margin-top: var(--space-2);
 }
 
@@ -3849,56 +3850,7 @@ body.menu-open .site-header {
 .app-workspace:fullscreen #groove-loader { width: 100%; max-width: none; }
 #metronome-loader { border-radius: var(--surface-radius); }
 
-.notation-page {
-  padding-block: var(--section-space);
-}
-
-.notation-intro {
-  display: grid;
-  align-items: center;
-  border-bottom: var(--rule);
-  grid-template-columns: clamp(160px,18vw,240px) minmax(0,1fr);
-  gap: 24px clamp(24px,4vw,56px);
-  max-width: 1100px;
-  margin-inline: auto;
-  padding-bottom: 32px;
-  margin-bottom: 32px;
-}
-
-.notation-intro .text-link {
-  margin-top: 0;
-}
-
-.notation-intro>.section-label {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  margin: 0;
-}
-
-.notation-intro>.text-link {
-  grid-column: 2;
-  grid-row: 3;
-  justify-self: start;
-}
-
-.notation-artwork {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  border: var(--rule);
-  grid-column: 1;
-  grid-row: 2;
-  border-radius: 12px;
-  align-self: center;
-}
-
-.notation-intro-copy {
-  min-width: 0;
-  max-width: 48rem;
-  grid-column: 2;
-  grid-row: 2;
-  align-self: center;
-}
+.notation-hero .page-hero-media img { object-position: center 58%; }
 
 .notation-loading { min-height: 1.5em; margin-block: 0 12px; color: var(--muted); font-size: .875rem; }
 
@@ -4200,6 +4152,21 @@ body.menu-open .site-header {
 
 .tool-ui .tool-trainer {
   padding-top: var(--space-2);
+}
+
+/* One accessible, animated drawer treatment for all practice tools. */
+.tool-trainer-disclosure { width: 100%; gap: 10px; }
+.tool-trainer-disclosure .icon,
+.tool-trainer-disclosure .tool-icon { width: 18px; height: 18px; }
+.tool-trainer-caret { margin-left: auto; transition: transform 240ms ease; }
+.tool-trainer-disclosure .tool-trainer-caret { transform: rotate(0deg); }
+.tool-trainer-disclosure[aria-expanded="true"] .tool-trainer-caret { transform: rotate(180deg); }
+.tool-trainer-drawer { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 260ms ease,visibility 0s 260ms; }
+.tool-trainer-drawer.is-open { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 260ms ease,visibility 0s; }
+.tool-trainer-clip { min-height: 0; overflow: hidden; }
+.tool-trainer-content { padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) {
+  .tool-trainer-drawer, .tool-trainer-disclosure :is(.icon,.tool-icon) { transition: none; }
 }
 
 .tool-trainer-heading {
@@ -5236,6 +5203,12 @@ body.menu-open .site-header {
 
 @media (max-width: 900px) {
 
+  /* Tool cards share Groove Lab's outer frame, without a second inner gutter. */
+  .metronome-player,
+  .rud-shell {
+    padding-inline: 0;
+  }
+
   .performance-stage {
     background: var(--bg);
   }
@@ -5380,6 +5353,9 @@ body.menu-open .site-header {
   .service-hero .page-hero-media::after {
     background: linear-gradient(180deg,#11151700 0%,#1115170d 35%,#11151799 72%,#111517 100%);
   }
+
+  .notation-hero .page-hero-media { aspect-ratio: 16/10; }
+  .notation-hero .page-hero-media img { height: 100%; object-fit: cover; object-position: center 58%; }
 
   .recording-copy,
   .recording-preview,
@@ -5861,48 +5837,36 @@ body.menu-open .site-header {
     gap: 20px;
   }
 
-  /* Compact mobile footer, with copyright and the utility link below the identity. */
+  /* Mobile footer: identity left, credit right, one centred utility link below. */
 
   .site-footer {
-    grid-template-columns: minmax(0,1fr) auto;
-    gap: 24px 16px;
+    grid-template-columns: minmax(0,1fr) max-content;
+    gap: 12px;
     padding-block: 28px 20px;
   }
 
   .footer-identity {
-    grid-column: 1 / -1;
-    justify-self: center;
-    display: grid;
-    grid-template-columns: 112px minmax(0,1fr);
-    column-gap: 20px;
-    row-gap: 4px;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    text-align: center;
     max-width: 100%;
   }
 
   .footer-brand {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    width: 112px;
+    width: clamp(112px,30vw,144px);
+    max-width: 100%;
   }
 
   .footer-signature {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: end;
-    margin: 0;
+    margin: 8px 0 0;
+    font-size: clamp(13px,3.5vw,17px);
   }
 
   .footer-location {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    margin: 0;
-    font-size: 11px;
-  }
-
-  .footer-location .icon {
-    width: 14px;
-    height: 14px;
+    display: none;
   }
 
   .footer-links {
@@ -5914,22 +5878,24 @@ body.menu-open .site-header {
   }
 
   .footer-copyright {
-    grid-column: 1;
-    grid-row: 2;
+    grid-column: 2;
+    grid-row: 1;
     align-self: center;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: flex-start;
-    gap: 4px 8px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
     margin: 0;
-    text-align: left;
+    text-align: center;
     font-size: 11px;
   }
 
+  .footer-credit > span[aria-hidden] { display: none; }
+
   .footer-actions {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 2;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .footer-top {
@@ -6363,44 +6329,7 @@ body.menu-open .site-header {
     margin-inline: auto;
   }
 
-  .notation-intro {
-    grid-template-columns: 80px minmax(0,1fr);
-    gap: 16px;
-  }
-
-  .notation-intro-copy {
-    display: contents;
-  }
-
-  .notation-intro-copy h1 {
-    grid-column: 2;
-    grid-row: 2;
-    margin: 0;
-  }
-
-  .notation-intro-copy .lead {
-    grid-column: 2;
-    grid-row: 3;
-    margin: 0;
-    font-size: var(--type-body);
-  }
-
-  .notation-intro-copy .notation-credit {
-    grid-column: 1 / -1;
-    grid-row: 4;
-    margin: 0;
-  }
-
-  .notation-artwork {
-    width: 100%;
-    grid-column: 1;
-    grid-row: 2 / span 2;
-  }
-
-  .notation-intro>.text-link {
-    grid-column: 1 / -1;
-    grid-row: 5;
-  }
+  .notation-performance { grid-template-columns: minmax(0,1fr); gap: var(--space-4); }
 }
 
 @media (max-width: 360px) {
@@ -6410,26 +6339,6 @@ body.menu-open .site-header {
   .performance-hero .hero-tools { gap: 4px; }
   .performance-hero .hero-tool-arrow { width: 10px; height: 10px; margin-inline-start: 2px; }
 
-  .footer-identity {
-    grid-template-columns: minmax(0,1fr);
-    justify-items: center;
-    row-gap: 8px;
-  }
-
-  .footer-brand {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .footer-signature {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .footer-location {
-    grid-column: 1;
-    grid-row: 3;
-  }
 }
 
 @keyframes page-leave {

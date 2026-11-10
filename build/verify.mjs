@@ -39,6 +39,14 @@ export async function verifySite(output) {
   // Check real local references in the public tool shells and imported Groove entry points.
   for (const file of [...files].filter(name => name.endsWith('.html'))) {
     const doc = new JSDOM(await text(file)).window.document;
+    for (const node of doc.querySelectorAll('link[rel="stylesheet"],script[src],use[href]')) {
+      const source = node.getAttribute('src') || node.getAttribute('href');
+      const url = new URL(source, `https://www.davedrums.com.au/${file}`);
+      if (url.origin !== 'https://www.davedrums.com.au' || !/^\/(?:assets|groove\/app\/(?:js|css))\/[^/]+\.(?:css|js|svg)$/.test(url.pathname)) continue;
+      const bytes = await readFile(resolve(output, url.pathname.slice(1)));
+      const expected = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+      assert.equal(url.searchParams.get('v'), expected, `${file} must use the current version of ${url.pathname}`);
+    }
     for (const node of doc.querySelectorAll('script[src],link[rel="stylesheet"],img[src],iframe[src]')) {
       const source = node.getAttribute('src') || node.getAttribute('href');
       const url = new URL(source, `https://www.davedrums.com.au/${file}`);

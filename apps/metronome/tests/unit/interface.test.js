@@ -50,6 +50,7 @@ it('shows trainer state beside the checkbox and the cycle count as the last head
   const view=render(React.createElement(Metronome));await act(async()=>{});
   const controls=view.container.querySelector('.met-controls');
   expect([...controls.children].map(button=>button.textContent)).toEqual(['Start','Tap tempo','Beats: 4','Subdivision: 1']);
+  fireEvent.click(view.getByRole('button',{name:'Speed trainer',exact:true}));
   const toggle=view.getByRole('checkbox',{name:'Speed trainer inactive'});
   expect(view.getByLabelText('Repetition in current cycle').hidden).toBe(true);
   fireEvent.click(toggle);

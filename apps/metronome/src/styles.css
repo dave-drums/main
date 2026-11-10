@@ -5,6 +5,7 @@
 .metronome-surface { font: var(--weight-regular) var(--type-body)/var(--leading-ui) var(--body); color: var(--text); }
 .metronome-wrapper { width: 100%; padding-block: var(--space-4); }
 .metronome-card { width: 100%; max-width: 680px; margin-inline: auto; padding: clamp(16px,3vw,32px); border: 1px solid var(--line); border-radius: var(--panel-radius); background: var(--tool-panel-fill); box-shadow: var(--tool-panel-shadow); }
+@media (max-width: 900px) { .metronome-card { max-width: none; } }
 .bpm-display { text-align: center; }
 .met-bpm-row { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; align-items: center; gap: 8px; max-width: 340px; margin-inline: auto; }
 .met-bpm { width: 100%; max-width: 3.25ch; min-width: 0; justify-self: center; padding: 0; border: 0; border-radius: var(--control-radius); background: transparent; color: var(--text); font: var(--weight-display) clamp(3.125rem,6vw,5rem)/1.2 var(--display); text-align: center; }

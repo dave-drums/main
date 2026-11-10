@@ -31,7 +31,7 @@ export async function syncToolTheme({ check = false } = {}) {
   files.set(resolve(GROOVE, 'js/tool-select.js'), await readFile(resolve(ROOT, 'assets/tool-select.js')));
   files.set(resolve(GROOVE, 'js/tempo-stepper.js'), await readFile(resolve(ROOT, 'assets/tempo-stepper.js')));
   files.set(resolve(METRONOME, 'src/tool-icons.json'), JSON.stringify(Object.fromEntries(
-    ['close', 'minus', 'plus', 'speaker-off', 'chevron-up', 'stop', 'play', 'tap'].map(name => [name, data(name)])
+    ['close', 'minus', 'plus', 'speaker-off', 'chevron-up', 'chevron-down', 'sliders', 'stop', 'play', 'tap'].map(name => [name, data(name)])
   ), null, 2) + '\n');
   for (const name of ['normal', 'high']) files.set(resolve(METRONOME, `public/assets/metronome-${name}.mp3`), await readFile(resolve(ROOT, `assets/metronome-${name}.mp3`)));
   const iconLicense = await readFile(resolve(ROOT, 'assets/icons-LICENSE.txt'));

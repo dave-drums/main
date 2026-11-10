@@ -21,6 +21,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
   const [showBeatsPopup, setShowBeatsPopup] = useState(false);
   const [showSubdivisionsPopup, setShowSubdivisionsPopup] = useState(false);
   const [trainerEnabled, setTrainerEnabled] = useState(false);
+  const [trainerOpen, setTrainerOpen] = useState(false);
   const [trainerStart, setTrainerStart] = useState(80);
   const [trainerCycle, setTrainerCycle] = useState(0);
   const [trainerError, setTrainerError] = useState('');
@@ -266,11 +267,14 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
     let settings = null;
     if (trainerEnabled) {
       const fields = [...trainerInputsRef.current.querySelectorAll('input')];
-      if (fields.some(field => !field.reportValidity())) return;
+      const invalid = fields.find(field => !field.checkValidity());
+      if (invalid) { setTrainerOpen(true); setTimeout(() => invalid.reportValidity(), 0); return; }
       settings = { start: Number(trainerStart), target: Number(trainerStop), increase: Number(trainerAmount), every: Number(trainerInterval) };
       if (settings.target < settings.start) {
+        setTrainerOpen(true);
         setTrainerError('Target BPM must be equal to or above starting BPM.');
-        fields[1].focus(); return;
+        if (trainerOpen) fields[1].focus(); else setTimeout(() => fields[1].focus(), 0);
+        return;
       }
       setBpm(settings.start); bpmRef.current = settings.start;
     }
@@ -373,6 +377,9 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
           audioState === 'unsupported' ? 'This browser does not support audio playback. Try a current browser.' : 'Click sounds could not load. Check your connection and try again.',
           audioState === 'error' && h('button', { className: 'tool-control', onClick: () => setAudioAttempt(value => value + 1) }, 'Retry audio')),
       h('section', { className: 'tool-trainer met-trainer', 'aria-label': 'Speed trainer' },
+        h('button', { type: 'button', className: 'tool-control tool-trainer-disclosure', 'aria-expanded': trainerOpen, 'aria-controls': 'met-trainer-panel', onClick: () => setTrainerOpen(open => !open) }, icon('sliders'), 'Speed trainer', icon('chevron-down', { className: 'tool-icon tool-trainer-caret' })),
+        h('div', { id: 'met-trainer-panel', className: 'tool-trainer-drawer' + (trainerOpen ? ' is-open' : ''), 'aria-hidden': !trainerOpen, inert: trainerOpen ? undefined : '' },
+          h('div', { className: 'tool-trainer-clip' }, h('div', { className: 'tool-trainer-content' },
         h('div', { className: 'tool-trainer-heading' },
           h('label', { className: 'tool-trainer-toggle', htmlFor: 'met-trainer-enabled' },
             h('input', { id: 'met-trainer-enabled', type: 'checkbox', checked: trainerEnabled, disabled: isPlaying,
@@ -389,7 +396,7 @@ export default function Metronome({ keyboardTarget = window, assetBase = new URL
                 disabled: isPlaying || !trainerEnabled, value, onChange: e => { setValue(e.target.value); setTrainerError(''); } })))),
         h('p', { className: 'met-trainer-error', role: 'alert' }, trainerError),
         h('p', { className: 'tool-trainer-hint' }, 'Stop playback to edit speed trainer settings. ',
-          help('speed trainer', 'Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is one complete round of the beat circles.')))),
+          help('speed trainer', 'Build speed gradually. For example, start at 80 BPM and add 5 BPM after every 4 repetitions. Here, one repetition is one complete round of the beat circles.'))))))),
     showBeatsPopup && popup('Beats', h('div', { className: 'beats-popup-grid' },
       [...Array(16)].map((_, i) => choice(i+1, beatsPerBar === i+1, () => { setBeatsPerBar(i+1); closePopup(); }, { key: i+1 })))),
     showSubdivisionsPopup && popup('Subdivision',

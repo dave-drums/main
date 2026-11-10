@@ -48,9 +48,7 @@ import { bindTempoStepper } from './tempo-stepper.js';
     item.addEventListener('click', () => {
       if (item.id === 'metronomeOptionsContextMenuOffTheOne') return;
       writer.myGrooveUtils.hideContextMenu(clickMenu);
-      const speedTrainer = document.getElementById('metronomeAutoSpeedupConfiguration');
-      const focusTarget = speedTrainer.style.display === 'block' ? speedTrainer.querySelector('input') : clickToggle;
-      focusTarget.focus({ preventScroll: true });
+      clickToggle.focus({ preventScroll: true });
       sync();
     });
   }
@@ -92,10 +90,9 @@ import { bindTempoStepper } from './tempo-stepper.js';
   notes.addEventListener('change', () => { writer.changeDivision(Number(notes.value)); sync(); });
   document.addEventListener('groove:controls-change', schedule);
   const observer = new MutationObserver(schedule);
-  for (const target of [document.getElementById('measureContainer'), document.getElementById('view-edit-switch'), clickMenu]) {
+  for (const target of [document.getElementById('measureContainer'), clickMenu]) {
     observer.observe(target, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
   }
-  document.getElementById('metronomeAutoSpeedupConfigurationCloseButton').addEventListener('click', () => clickToggle.focus({ preventScroll: true }));
   window.addEventListener('load', () => {
     document.querySelectorAll('#midiPlayer [data-adjust]').forEach(button => {
       bindTempoStepper(button, () => {

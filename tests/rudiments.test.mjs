@@ -229,7 +229,7 @@ try {
     constructor(tag) {
       this.tag = tag; this.attrs = {}; this.children = []; this.listeners = {};
       this.value = ''; this.clientWidth = 800;
-      this.classList = { add() {}, remove() {} };
+      this.classList = { add() {}, remove() {}, toggle() {} };
     }
     setAttribute(key, value) { this.attrs[key] = String(value); }
     append(...nodes) {
@@ -246,6 +246,7 @@ try {
       return this.value !== '' && Number.isInteger(+this.value)
         && +this.value >= +(this.attrs.min ?? -Infinity) && +this.value <= +(this.attrs.max ?? Infinity);
     }
+    checkValidity() { return this.reportValidity(); }
   }
   globalThis.document = { createElementNS: (_, tag) => new Element(tag) };
   const descendants = (node) => [node, ...node.children.flatMap(descendants)];

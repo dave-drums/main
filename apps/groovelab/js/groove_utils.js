@@ -101,7 +101,6 @@ var constant_OUR_MIDI_TOM4_NORMAL = 43;
 var global_current_midi_start_time = 0;
 var global_last_midi_update_time = 0;
 var global_total_midi_play_time_msecs = 0;
-var global_total_midi_notes = 0;
 var global_total_midi_repeats = 0;
 
 // GrooveUtils class.   The only one in this file.
@@ -2834,7 +2833,10 @@ function GrooveUtils() {
 	root.startMIDI_playback = function () {
 		if (MIDI.Player.playing) {
 			return;
-		} else if (root.isMIDIPaused && false === root.midiEventCallbacks.doesMidiDataNeedRefresh(root.midiEventCallbacks.classRoot)) {
+		}
+		// Let the editor validate and prepare a trainer before generating the first loop.
+		if (root.midiEventCallbacks.beforePlay && root.midiEventCallbacks.beforePlay(root.midiEventCallbacks.classRoot) === false) return;
+		if (root.isMIDIPaused && false === root.midiEventCallbacks.doesMidiDataNeedRefresh(root.midiEventCallbacks.classRoot)) {
 			global_current_midi_start_time = new Date();
 			global_last_midi_update_time = 0;
 			MIDI.Player.resume();
@@ -2938,9 +2940,8 @@ function GrooveUtils() {
 			if (totalTime.getUTCHours() > 0)
 				time_string = totalTime.getUTCHours() + ":" + (totalTime.getUTCMinutes() < 10 ? "0" : "");
 			time_string += totalTime.getUTCMinutes() + ":" + (totalTime.getSeconds() < 10 ? "0" : "") + totalTime.getSeconds();
-			TotalPlayTime.innerHTML = '<span>Total Play Time: <span class="totalTimeNum">' + time_string + '</span></span> ' +
-				'<span>Notes: <span class="totalTimeNum">' + global_total_midi_notes + '</span></span> ' +
-				'<span>Repetitions: <span class="totalTimeNum">' + global_total_midi_repeats + '</span></span>';
+			TotalPlayTime.innerHTML = '<span>Total time: <span class="totalTimeNum">' + time_string + '</span></span> ' +
+				'<span>Reps: <span class="totalTimeNum">' + global_total_midi_repeats + '</span></span>';
 		}
 
 		global_last_midi_update_time = time_now;
@@ -3032,7 +3033,6 @@ function GrooveUtils() {
 				note_type = "tom";
 			}
 			if (note_type) {
-				global_total_midi_notes++;
 				root.midiEventCallbacks.notePlaying(root.midiEventCallbacks.classRoot, note_type, percentComplete);
 				root.highlightNoteInABCSVGFromPercentComplete(percentComplete);
 				if (root.noteCallback) {

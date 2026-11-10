@@ -48,9 +48,6 @@
     cells.forEach(cell => { cell.tabIndex = cell.id === activeId ? 0 : -1; });
     document.querySelectorAll('#groove-controls [onclick],#grooveListWrapper [onclick],#gl-metronome-menu [onclick],.line-labels [onclick],.noteContextMenu li[onclick]').forEach(control => {
       control.setAttribute('role', 'button'); control.tabIndex = 0;
-      if (control.matches('#advancedEditAnchor')) {
-        control.setAttribute('aria-pressed', String(control.classList.contains('buttonSelected')));
-      }
     });
     document.querySelectorAll('.midiPlayImage').forEach(control => {
       const playing = control.classList.contains('Playing');
@@ -68,7 +65,7 @@
   }
   const schedule = () => { if (!pending) pending = requestAnimationFrame(refresh); };
   new MutationObserver(records => {
-    if (records.some(record => record.type === 'childList' || record.target.matches('.note_part,.toms-container,.stickings-container,.tom-label,.midiPlayImage,#advancedEditAnchor'))) schedule();
+    if (records.some(record => record.type === 'childList' || record.target.matches('.note_part,.toms-container,.stickings-container,.tom-label,.midiPlayImage'))) schedule();
   }).observe(document.getElementById('GrooveWriter'), { subtree:true,childList:true,attributes:true,attributeFilter:['style','class'] });
   grid.setAttribute('role', 'group');
   grid.setAttribute('aria-label', 'Drum pattern. Use arrow keys to move between notes.');
@@ -92,7 +89,6 @@
       if (next) { event.preventDefault(); event.stopPropagation(); next.focus(); next.scrollIntoView({block:'nearest',inline:'nearest'}); }
       if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault(); event.stopPropagation();
-        event.fromKeyboard = true;
         writer.noteLeftClick(event, cell.dataset.grooveNote, Number(cell.dataset.noteIndex));
         refresh();
       }
