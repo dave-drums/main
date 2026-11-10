@@ -388,6 +388,7 @@ input[type=range]:active::-webkit-slider-thumb {
 	background: #fff;
 }
 @media print {
+  .gl-score-bar-highlight { display: none !important; }
 	/* keep at bottom so it overrides the styles above */
 	body {margin:0; padding:0; border:0; background-color: transparent}
 	div.newpage {page-break-before: always}
@@ -482,7 +483,7 @@ input[type=range]:active::-webkit-slider-thumb {
   #stickingsButton:before,#stickingsButton.ClickToHide:before { content: none; }
   #stickingsButton .stickings-icon:before { font-family: FontAwesome; content: "\f065"; font-size: 20px; line-height: 24px; }
   #stickingsButton.ClickToHide .stickings-icon:before { content: "\f066"; }
-  #svgTarget { padding-top: 12px; }
+  #svgTarget { box-sizing: border-box; padding: 24px 20px 28px; background: #fff; }
   #PermutationOptions.displayed,#grooveListWrapper,#fullURLPopup,.noteContextMenu > ul.list { background: var(--tool-panel-fill); color: var(--text); border: 1px solid var(--line); border-radius: var(--panel-radius); box-shadow: var(--tool-panel-shadow); }
   .grooveListUL { background: transparent; }
   .grooveListHeaderLI,.noteContextMenu > ul.list li:hover,.grooveListLI:hover { background: var(--tool-selected-fill); color: var(--link-color); }
@@ -575,20 +576,77 @@ html[data-embedded="true"] { overflow-y: hidden; }
 #shareButtonContainer .tool-icon { flex: none; width: 18px; height: 18px; }
 #groove-share-status { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; }
 #groove-share-status:empty { display: none; }
-#musicalInput { max-width: 100%; padding-bottom: 20px; white-space: nowrap; overscroll-behavior-x: contain; }
-.staff-container { display: inline-grid; grid-template-columns: max-content 44px; min-width: max-content; position: relative; margin-right: 0; align-items: center; }
-.staff-container > .stickings-row-container { grid-column: 1; grid-row: 1; }
-.staff-container > .notes-row-container { grid-column: 1; grid-row: 2; }
-.staff-container:has(.closeMeasureButton) { padding-top: 52px; }
-.staff-container > .closeMeasureButton { position: absolute; top: 8px; right: 0; margin: 0; }
-#addMeasureButton { display: inline-flex; align-items: center; justify-content: center; grid-column: 2; grid-row: 1 / 3; align-self: center; width: 44px; height: 44px; padding: 0; margin: 0; border: 0; border-radius: 8px; background: transparent; }
+/* Score canvas and beat editor. Note glyph colours still belong to the music engine. */
+.gl-score-bar-marker { pointer-events: none; }
+.gl-score-bar-highlight { fill: #77c6de; fill-opacity: .16; stroke: #6eb6cb; stroke-opacity: .25; stroke-width: 1; opacity: 0; pointer-events: none; }
+.gl-score-bar-highlight.is-current-bar { opacity: 1; }
+.staff-container.is-current-bar .gl-bar-title { color: #006e8d; }
+#musicalInput {
+  --groove-hh-row: 44px;
+  --groove-note-row: 44px;
+  --groove-kick-row: 44px;
+  --gl-step: 36px;
+  --gl-step-pitch: 40px;
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: 16px;
+  border: 0;
+  border-top: 1px solid #dbe5e9;
+  background: #eef3f5;
+  white-space: nowrap;
+  overscroll-behavior-x: contain;
+  scrollbar-color: #9fb6bf #eef3f5;
+}
+#measureContainer { display: flex; align-items: start; justify-content: center; gap: 20px; width: max-content; min-width: 100%; }
+.staff-container { display: inline-grid; grid-template-columns: max-content; min-width: max-content; position: relative; margin: 0; padding: 6px 10px 10px; border: 1px solid #d3dfe4; border-radius: 12px; background: #fff; box-shadow: 0 2px 6px #182f3b08; }
+.staff-container:has(#addMeasureButton) { grid-template-columns: max-content 88px; column-gap: 16px; }
+.gl-bar-header { grid-column: 1; grid-row: 1; display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-bottom: 6px; border-bottom: 1px solid #e2eaee; }
+.gl-bar-title { padding-left: 10px; color: #405963; font: var(--weight-semibold) 13px/1.4 var(--display); }
+.gl-bar-header .closeMeasureButton { position: static; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin: 0; padding: 0; border: 0; border-radius: 8px; background: transparent; color: #506871; cursor: pointer; }
+.gl-bar-header .closeMeasureButton:hover { color: #a12828; background: #fff0f0; }
+.staff-container > .stickings-row-container { grid-column: 1; grid-row: 2; }
+.staff-container > .notes-row-container { grid-column: 1; grid-row: 3; display: table; }
+#musicalInput:not([data-stickings="true"]) .stickings-row-container,
+#musicalInput:not([data-toms="true"]) :is(.toms-container,.tom-label) { display: none; }
+#addMeasureButton { grid-column: 2; grid-row: 2 / 4; align-self: center; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 88px; height: 80px; padding: 10px; margin: 0; border: 1px dashed #94b4c0; border-radius: 10px; background: #f3fafc; color: #006f8f; cursor: pointer; font: var(--weight-semibold) 12px/1.4 var(--body); }
 #addMeasureButton .tool-icon,.closeMeasureButton .tool-icon { width: 22px; height: 22px; stroke-width: 2.75; }
-#addMeasureButton:hover { background: #e6f6fc; }
-.line-labels { position: sticky; left: 0; z-index: 3; background: white; }
+#addMeasureButton:hover { background: #e1f5fc; border-color: #00749a; }
+.staff-container .line-labels { position: sticky; left: 0; z-index: 6; width: 132px; min-width: 132px; background: #fff; font-family: var(--body); }
+.line-labels > :is(.hh-label,.snare-label,.tom-label,.kick-label,.stickings-label) { height: 44px; padding: 0 8px; border: 0; font-size: 13px; color: #344e59; background: #f2f6f8; }
+.line-labels > :is(.hh-label,.kick-label) { background: #f7f9fa; }
+.gl-instrument-content { display: flex; align-items: center; gap: 8px; width: 100%; height: 100%; white-space: nowrap; }
+.gl-instrument-icon { flex: none; width: 18px; height: 18px; color: #19728c; }
+.gl-instrument-name { font-weight: var(--weight-semibold); }
+.gl-instrument-caret { flex: none; width: 12px; height: 12px; margin-left: auto; color: #607e8b; }
+.line-labels > [role="button"]:is(:hover,:focus-visible) { background: #e6f3f8; color: #006b88; }
+.staff-container .notes-container { font-size: 0; }
+#musicalInput .notes-container > :is(.hi-hat-container,.snare-container,.toms-container,.kick-container,.stickings-container) { box-sizing: border-box; height: 44px; margin: 0; border: 0; background: #f2f6f8; font-size: 0; line-height: 0; }
+.notes-container > :is(.hi-hat-container,.kick-container) { background: #f7f9fa; }
+.notes-container > .background-highlight-container { inset: 0; z-index: 5; height: 100%; border: 0; pointer-events: none; font-size: 0; }
+.bg-highlight { width: var(--gl-step-pitch); height: 100%; border-radius: 8px; }
+.notes-container :is(.hi-hat,.snare,.tom,.kick,.sticking) { box-sizing: border-box; position: relative; vertical-align: middle; width: var(--gl-step); height: var(--gl-step); margin: 4px 2px; border: 1px solid #c6d5dc; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px #17394805; cursor: pointer; font-size: 14px; line-height: normal; scroll-margin-inline: 144px 12px; }
+.notes-container [data-groove-note][aria-pressed="false"]::after { content: ""; position: absolute; width: 8px; height: 2px; border-radius: 2px; left: calc(50% - 4px); top: calc(50% - 1px); background: #a6b9c2; pointer-events: none; }
+.notes-container [data-groove-note][aria-pressed="false"] .note_part { opacity: 0; }
+.notes-container [data-groove-note][aria-pressed="true"] { background: #d6f2fc; border-color: #3187a1; box-shadow: inset 0 0 0 1px #3187a11a; }
+.notes-container [data-groove-note]:hover { border-color: #00749a; }
+#musicalInput [data-groove-note]:focus-visible { outline: 2px solid #006580; outline-offset: 2px; z-index: 7; }
+.notes-container :is(.hi-hat,.snare,.tom,.kick) > .note_part { pointer-events: none; }
+.hi-hat > :is(.hh_crash,.hh_ride,.hh_ride_bell,.hh_cow_bell,.hh_stacker,.hh_metronome_normal,.hh_metronome_accent,.hh_cross) { top: 7px; left: 8px; font-size: 18px; line-height: 20px; }
+.hi-hat > :is(.hh_open,.hh_close,.hh_accent) { top: 0; left: 13px; font-size: 11px; line-height: 12px; }
+.notes-container :is(.snare_circle,.tom_circle,.kick_circle) { box-sizing: border-box; top: 9px; left: 9px; width: 16px; height: 16px; border-width: 1px; }
+.snare > .snare_accent { top: 10px; left: 13px; }
+.snare > .snare_ghost { top: 3px; left: 5px; font-size: 22px; line-height: 30px; }
+.snare > :is(.snare_xstick,.snare_buzz) { top: 7px; left: 8px; font-size: 20px; line-height: 22px; }
+.snare > :is(.snare_flam,.snare_drag) { top: 2px; left: 2px; line-height: 30px; }
+.hi-hat :is(.hh_cow_bell,.hh_stacker) .tool-icon { width: 18px; height: 18px; }
+.kick[data-note-state="kick and foot splash"] .kick_circle { top: 6px; left: 5px; width: 14px; height: 14px; }
+.kick[data-note-state="kick and foot splash"] .kick_splash { top: 18px; left: 19px; font-size: 12px; line-height: 12px; }
+.kick > .kick_splash { top: 7px; left: 9px; font-size: 18px; line-height: 20px; }
+.sticking > :is(.sticking_left,.sticking_right,.sticking_both,.sticking_count) { inset: 0; text-align: center; font: var(--weight-semibold) 16px/34px var(--body); }
 #totalPlayTime.gl-play-stats { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 24px; padding: 10px 16px; color: #334147; background: #fff; font-size: 14px; line-height: 1.5; white-space: normal; }
 #totalPlayTime.gl-play-stats > span { white-space: nowrap; }
-.gl-score-controls { display: grid; grid-template-columns: 36px minmax(0,1fr) 84px; align-items: center; gap: 8px; padding: 8px 10px; background: #fff; color: #334147; }
-.gl-score-controls #totalPlayTime.gl-play-stats { min-width: 0; min-height: 36px; padding: 0; gap: 0 16px; line-height: 36px; }
+.gl-score-controls { display: grid; grid-template-columns: 36px minmax(0,1fr) 84px; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid #e2eaee; background: #f8fafb; color: #334147; }
+.gl-score-controls #totalPlayTime.gl-play-stats { min-width: 0; min-height: 36px; padding: 0; gap: 0 16px; line-height: 36px; background: transparent; }
 .gl-score-actions { display: flex; gap: 12px; }
 .gl-score-action { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 36px; height: 36px; padding: 0; border: 1px solid #ced9dd; border-radius: 8px; background: #f5f8f9; color: #40545e; box-shadow: none; }
 .gl-score-action .tool-icon { width: 18px; height: 18px; }

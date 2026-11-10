@@ -33,6 +33,9 @@ for name, source in icons.items():
         symbol.append(child)
 # Custom icons use the same 24-unit grid and matching optical weight.
 custom = {
+    'kick-drum': '<circle cx="10" cy="10" r="7"/><path d="m5 16-2 5m12-5 2 5m0-11h4v10h-5"/>',
+    'stacker': '<path d="M4 9h16M4 15h16"/>',
+    'cowbell': '<path d="m12 4 9 16H3Z"/>',
     'home': '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-8h6v8"/>',
     'sticks': '<path d="M11 21.5a1 1 0 0 0 2 0L12.55 6c-.05-.5.1-.9.3-1.35C13.3 3.7 12.9 2 12 2s-1.3 1.7-.85 2.65c.2.45.35.85.3 1.35Z" transform="translate(12 12) scale(1.2) rotate(-43) translate(-12 -12)" fill="currentColor" stroke="none"/><path d="M11 21.5a1 1 0 0 0 2 0L12.55 6c-.05-.5.1-.9.3-1.35C13.3 3.7 12.9 2 12 2s-1.3 1.7-.85 2.65c.2.45.35.85.3 1.35Z" transform="translate(12 12) scale(1.2) rotate(43) translate(-12 -12)" fill="currentColor" stroke="none"/>',
     'metronome': '<path d="M8 3h8l5 18H3L8 3Z"/><path d="M7 17h10M12 17l5-11m-2.8 4 2.7 1.2"/>',
@@ -51,6 +54,6 @@ ET.indent(sprite, space='  ')
 (ROOT / 'assets/icons.svg').write_bytes(ET.tostring(sprite, encoding='utf-8') + b'\n')
 notice = ('Dave Drums icon system\n\nStandard icons: Lucide 0.468.0\n'
           'Source: https://github.com/lucide-icons/lucide/tree/0.468.0/icons\n'
-          'Custom icons: home, crossed drumsticks, metronome, toms and note values, by Dave Drums.\n\n')
+          'Custom icons: home, crossed drumsticks, metronome, toms, kick drum, stacker, cowbell and note values, by Dave Drums.\n\n')
 (ROOT / 'assets/icons-LICENSE.txt').write_bytes(notice.encode() + (args.source / 'LICENSE').read_bytes())
 print(f'Compiled {len(icons) + len(custom)} matching SVG icons and retained the upstream licence.')

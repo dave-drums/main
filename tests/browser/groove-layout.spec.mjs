@@ -15,7 +15,7 @@ test('instrument labels stay centred on their notes with toms and stickings togg
           const label = row.querySelector(labelSelector);
           if (getComputedStyle(label).visibility === 'hidden') return [];
           const range = document.createRange();
-          range.selectNodeContents(label);
+          range.selectNodeContents(label.querySelector('.gl-instrument-name'));
           const text = range.getBoundingClientRect(), note = row.querySelector(noteSelector).getBoundingClientRect();
           return [{ label: label.textContent, offset: Math.abs(text.y + text.height / 2 - note.y - note.height / 2) }];
         });
@@ -166,7 +166,7 @@ test('playback totals update inside the notation controls', async ({ page }) => 
   await expect(app.locator('#totalPlayTime')).toContainText('Reps:');
   await expect(app.locator('#totalPlayTime')).not.toContainText('Notes:');
   await app.getByRole('button', { name: 'Stop groove playback' }).click();
-  await expect(app.locator('.gl-score-controls')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(app.locator('.gl-score-controls')).toHaveCSS('background-color', 'rgb(248, 250, 251)');
   await expect(app.locator('#switchModeButton')).toHaveCount(0);
   await app.locator('#LegendLabel').click();
   await expect(app.locator('#svgTarget text').filter({ hasText: /^Hi-Hat$/ })).toHaveCSS('font-size', '12px');

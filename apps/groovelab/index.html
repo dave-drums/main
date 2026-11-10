@@ -67,6 +67,7 @@
 		<script type="module" src="js/tool-select.js"></script>
 		<script type="module" src="js/groove_controls.js"></script>
 		<script defer src="js/groove_layout.js"></script>
+		<script defer src="js/groove_editor.js"></script>
 
 		<script type="text/javascript">
 			/*jslint browser:true evil:true on:true */
@@ -117,7 +118,7 @@
                     <div id="totalPlayTime" class="nonPrintable gl-play-stats" aria-label="Playback totals"><span>Total time: <span class="totalTimeNum">0:00</span></span><span>Reps: <span class="totalTimeNum">0</span></span></div>
                     <div class="gl-score-actions"><button type="button" class="gl-score-action" id="undoButton" aria-label="Undo" title="Undo" data-edit-control disabled onclick="myGrooveWriter.undoCommand();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#undo"></use></svg></span></button><button type="button" class="gl-score-action" id="clearAllNotesButton" aria-label="Delete all notes" title="Delete all notes (Undo restores them)" data-edit-control disabled onclick="event.preventDefault(); myGrooveWriter.clearAllNotes();"><span class="bottomButtonContents"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#trash"></use></svg></span></button></div>
                   </div>
-					<div id="svgTarget" class="svgTarget">
+					<div id="svgTarget" class="svgTarget" role="region" aria-label="Drum notation">
 						<!-- space for the SVG sheet music to display -->
 					</div>
 				</div>
@@ -127,8 +128,6 @@
 				<p class="warnings">Warnings:</p>
 				<div class="warnings" id="diverr">
 				</div>
-
-				<div aria-hidden="true" class="fullWidthEle" id="grooveMetadataDivider"></div>
 
 				<div id="musicalInput" class="fullWidthEle edit-block">
 					<div id="measureContainer">

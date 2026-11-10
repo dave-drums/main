@@ -2,7 +2,7 @@ Dave Drums icon system
 
 Standard icons: Lucide 0.468.0
 Source: https://github.com/lucide-icons/lucide/tree/0.468.0/icons
-Custom icons: home, crossed drumsticks, metronome, toms and note values, by Dave Drums.
+Custom icons: home, crossed drumsticks, metronome, toms, kick drum, stacker, cowbell and note values, by Dave Drums.
 
 ISC License
 

@@ -36,6 +36,7 @@
       const note = writer.accessibleNoteState(type, index);
       cell.dataset.grooveNote = type;
       cell.dataset.noteIndex = String(index);
+      cell.dataset.noteState = note.state;
       cell.setAttribute('role', 'button');
       cell.setAttribute('aria-pressed', String(note.on));
       cell.setAttribute('aria-label', `${name}, bar ${note.bar}, beat ${note.beat}, step ${note.step} of ${note.steps}: ${note.state}`);

@@ -53,7 +53,7 @@ test('notation controls restore a deleted groove and added measures stay aligned
   await expect(app.locator('[data-groove-note][aria-pressed="true"]')).toHaveCount(0);
   await app.getByRole('button', { name: 'Undo', exact: true }).click();
   await expect.poll(snapshot).toBe(before);
-  await app.getByRole('button', { name: 'Add measure', exact: true }).click();
+  await app.getByRole('button', { name: 'Add bar', exact: true }).click();
   await expect(app.locator('.staff-container')).toHaveCount(2);
   const bar = app.locator('.staff-container').last();
   // Read all coordinates in one frame while the editor scrolls to the new bar.
@@ -63,7 +63,8 @@ test('notation controls restore a deleted groove and added measures stay aligned
   });
   const contentTop = stickings?.height ? stickings.y : notes.y;
   expect(Math.abs((add.y + add.height / 2) - (contentTop + notes.y + notes.height) / 2)).toBeLessThan(2);
-  expect(add.x - notes.x - notes.width).toBeLessThanOrEqual(4);
+  expect(add.x - notes.x - notes.width).toBeGreaterThanOrEqual(12);
+  expect(add.x - notes.x - notes.width).toBeLessThanOrEqual(20);
   expect(await bar.locator('.closeMeasureButton svg').evaluate(svg => getComputedStyle(svg).strokeWidth))
     .toBe(await app.locator('#addMeasureButton svg').evaluate(svg => getComputedStyle(svg).strokeWidth));
 });

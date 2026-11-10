@@ -19,6 +19,11 @@ test('mobile footer has a balanced branding row above credits and Back to top', 
     expect(positions.top.x).toBeGreaterThan(positions.credit.right);
     expect(positions.frame.height).toBeLessThan(200);
     await expect(page.locator('.footer-navigation')).toBeHidden();
+    const creditLines = await page.locator('.footer-copyright').evaluate(node => {
+      return [...node.children].map(child => { const b = child.getBoundingClientRect(); return b.y + b.height / 2; });
+    });
+    expect(creditLines[0]).toBeCloseTo(creditLines[1], 1);
+    await expect(page.locator('.footer-credit > span[aria-hidden]')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });

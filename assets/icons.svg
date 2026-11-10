@@ -1,5 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <!-- Lucide 0.468.0, ISC / Feather MIT; see icons-LICENSE.txt. Custom icons by Dave Drums. -->
+  <symbol id="kick-drum" viewBox="0 0 24 24">
+    <circle cx="10" cy="10" r="7"/><path d="m5 16-2 5m12-5 2 5m0-11h4v10h-5"/>
+  </symbol>
+  <symbol id="stacker" viewBox="0 0 24 24">
+    <path d="M4 9h16M4 15h16"/>
+  </symbol>
+  <symbol id="cowbell" viewBox="0 0 24 24">
+    <path d="m12 4 9 16H3Z"/>
+  </symbol>
   <symbol id="arrow-up-right" viewBox="0 0 24 24">
     <path d="M7 7h10v10" />
     <path d="M7 17 17 7" />

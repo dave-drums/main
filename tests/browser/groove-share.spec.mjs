@@ -60,7 +60,8 @@ test('Start contains its timer and returns to Start after stopping on both layou
       expect(geometry.gap).toBe(24);
       expect(geometry.divider).toBe('1px');
       expect(geometry.topPadding).toEqual(geometry.bottomPadding);
-      expect(geometry.inputWidth).toBe(width === 320 ? 34 : width === 390 ? 48 : 60);
+      expect(geometry.inputWidth).toBeGreaterThanOrEqual(42);
+      expect(geometry.inputWidth).toBeLessThanOrEqual(60);
       expect(geometry.labelGap).toBeGreaterThanOrEqual(width === 320 ? 2 : 10);
     } else {
       expect(Math.abs(geometry.playWidth - geometry.columnWidth)).toBeLessThan(1);

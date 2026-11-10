@@ -2879,6 +2879,7 @@ function GrooveWriter() {
 
 		diverr.innerHTML = svg_return.error_html;
 		svgTarget.innerHTML = svg_return.svg;
+		svgTarget.dispatchEvent(new CustomEvent("groove:score-rendered", { bubbles: true }));
 
 	};
 
@@ -3111,6 +3112,7 @@ function GrooveWriter() {
 		showHideCSS_ClassVisibility(".toms-container", force, showElseHide);
 		showHideCSS_ClassVisibility(".tom-label", force, showElseHide);
 		var OnElseOff = isTomsVisible();
+		document.getElementById("musicalInput").setAttribute("data-toms", String(OnElseOff));
 		var tomsButton = document.getElementById("showHideTomsButton");
 		if (tomsButton) tomsButton.setAttribute("aria-pressed", OnElseOff ? "true" : "false");
 		if (OnElseOff)
@@ -3138,6 +3140,7 @@ function GrooveWriter() {
 
 		var OnElseOff = showHideCSS_ClassDisplay(".stickings-container", force, showElseHide, "block");
 		showHideCSS_ClassDisplay(".stickings-label", force, showElseHide, "block");
+		document.getElementById("musicalInput").setAttribute("data-stickings", String(OnElseOff));
 		if (OnElseOff) {
 			addOrRemoveKeywordFromClassById("stickingsButton", "ClickToHide", true);
 		} else {
@@ -4066,16 +4069,23 @@ function GrooveWriter() {
 		updateSheetMusic();
 	};
 
+	function gridInstrumentLabel(icon, text) {
+		return '<span class="gl-instrument-content"><svg class="tool-icon gl-instrument-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#' + icon + '"></use></svg><span class="gl-instrument-name">' + text + '</span><svg class="tool-icon gl-instrument-caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#chevron-down"></use></svg></span>';
+	}
+
 	// public function
 	// function to create HTML for the music staff and notes.   We usually want more than one of these
 	// baseIndex is the index for the css labels "staff-container1, staff-container2"
 	// indexStartForNotes is the index for the note ids.
 	root.HTMLforStaffContainer = function (baseindex, indexStartForNotes) {
-		var newHTML = ('\
-						<div class="staff-container" id="staff-container' + baseindex + '">\
+		var newHTML = '<div class="staff-container" id="staff-container' + baseindex + '" role="group" aria-label="Bar ' + baseindex + '"><div class="gl-bar-header"><span class="gl-bar-title">Bar ' + baseindex + '</span>';
+		if (class_number_of_measures > 1)
+			newHTML += '<button type="button" title="Delete bar ' + baseindex + '" aria-label="Delete bar ' + baseindex + '" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></button>';
+		newHTML += '</div>';
+		newHTML += ('\
 							<div class="stickings-row-container">\
 								<div class="line-labels">\
-									<div class="stickings-label" onClick="myGrooveWriter.noteLabelClick(event, \'stickings\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'stickings\', ' + baseindex + ')">STICKINGS</div>\
+									<div class="stickings-label" onClick="myGrooveWriter.noteLabelClick(event, \'stickings\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'stickings\', ' + baseindex + ')">' + gridInstrumentLabel('sticks', 'Stickings') + '</div>\
 								</div>\
 								<div class="music-line-container">\n\
 									\
@@ -4110,20 +4120,16 @@ function GrooveWriter() {
 		newHTML += ('\
 							<span class="notes-row-container">\
 								<div class="line-labels">\
-									<div class="hh-label" onClick="myGrooveWriter.noteLabelClick(event, \'hh\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'hh\', ' + baseindex + ')">Hi-hat</div>\
-									<div class="tom-label" id="tom1-label" onClick="myGrooveWriter.noteLabelClick(event, \'tom1\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'tom1\', ' + baseindex + ')">Tom</div>\
-									<div class="snare-label" onClick="myGrooveWriter.noteLabelClick(event, \'snare\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'snare\', ' + baseindex + ')">Snare</div>\
-									<div class="tom-label" id="tom4-label" onClick="myGrooveWriter.noteLabelClick(event, \'tom4\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'tom4\', ' + baseindex + ')">Tom</div>\
-									<div class="kick-label" onClick="myGrooveWriter.noteLabelClick(event, \'kick\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'kick\', ' + baseindex + ')">Kick</div>\
+									<div class="hh-label" onClick="myGrooveWriter.noteLabelClick(event, \'hh\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'hh\', ' + baseindex + ')">' + gridInstrumentLabel('disc', 'Hi-hat') + '</div>\
+									<div class="tom-label" id="tom1-label" onClick="myGrooveWriter.noteLabelClick(event, \'tom1\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'tom1\', ' + baseindex + ')">' + gridInstrumentLabel('toms', 'High tom') + '</div>\
+									<div class="snare-label" onClick="myGrooveWriter.noteLabelClick(event, \'snare\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'snare\', ' + baseindex + ')">' + gridInstrumentLabel('drum', 'Snare') + '</div>\
+									<div class="tom-label" id="tom4-label" onClick="myGrooveWriter.noteLabelClick(event, \'tom4\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'tom4\', ' + baseindex + ')">' + gridInstrumentLabel('toms', 'Low tom') + '</div>\
+									<div class="kick-label" onClick="myGrooveWriter.noteLabelClick(event, \'kick\', ' + baseindex + ')" oncontextmenu="event.preventDefault(); myGrooveWriter.noteLabelClick(event, \'kick\', ' + baseindex + ')">' + gridInstrumentLabel('kick-drum', 'Kick') + '</div>\
 								</div>\
 								<div class="music-line-container">\
 									\
 									<div class="notes-container">\
-									<div class="staff-line-1"></div>\
-									<div class="staff-line-2"></div>\
-									<div class="staff-line-3"></div>\
-									<div class="staff-line-4"></div>\
-									<div class="staff-line-5"></div>\n');
+									');
 
 		// backgrounds for highlighting.  Evenly spaced cols of space
 		newHTML += ('\
@@ -4150,8 +4156,8 @@ function GrooveWriter() {
 															<div class="hh_crash note_part"  id="hh_crash' + i + '"><i class="fa fa-asterisk"></i></div>\
 															<div class="hh_ride note_part"   id="hh_ride' + i + '"><i class="fa fa-dot-circle-o"></i></div>\
 															<div class="hh_ride_bell note_part"   id="hh_ride_bell' + i + '"><i class="fa fa-bell-o"></i></div>\
-															<div class="hh_cow_bell note_part"    id="hh_cow_bell' + i + '"><i class="fa fa-plus-square-o"></i></div>\
-															<div class="hh_stacker note_part"   id="hh_stacker' + i + '"><i class="fa fa-bars"></i></div>\
+															<div class="hh_cow_bell note_part"    id="hh_cow_bell' + i + '"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="images/tool-icons.svg#cowbell"></use></svg></div>\
+															<div class="hh_stacker note_part"   id="hh_stacker' + i + '"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="images/tool-icons.svg#stacker"></use></svg></div>\
 															<div class="hh_metronome_normal note_part"   id="hh_metronome_normal' + i + '"><i class="fa fa-neuter"></i></div>\
 															<div class="hh_metronome_accent note_part"   id="hh_metronome_accent' + i + '"><i class="fa fa-map-pin"></i></div>\
 															<div class="hh_cross note_part"  id="hh_cross' + i + '"><i class="fa fa-times"></i></div>\
@@ -4295,12 +4301,8 @@ function GrooveWriter() {
 							</div>\
 						</span>\n');
 
-		if (class_number_of_measures > 1)
-			newHTML += '<button type="button" title="Delete bar ' + baseindex + '" aria-label="Delete bar ' + baseindex + '" id="closeMeasureButton' + baseindex + '" onClick="myGrooveWriter.closeMeasureButtonClick(' + baseindex + ')" class="closeMeasureButton"><svg class="tool-icon " viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#close"></use></svg></button>';
-
-
 		if (baseindex == class_number_of_measures) // add new measure button
-			newHTML += '<button type="button" id="addMeasureButton" title="Add measure" aria-label="Add measure" onClick="myGrooveWriter.addMeasureButtonClick(event)"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#plus"></use></svg></button>';
+			newHTML += '<button type="button" id="addMeasureButton" title="Add bar" aria-label="Add bar" onClick="myGrooveWriter.addMeasureButtonClick(event)"><svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="images/tool-icons.svg#plus"></use></svg><span>Add bar</span></button>';
 
 		newHTML += ('</div>');
 

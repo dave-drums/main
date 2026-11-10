@@ -336,36 +336,6 @@
 		-webkit-user-select: none;
 		-ms-user-select: none;
 	}
-	.staff-line-1{
-		position: absolute; top: 42px;
-		width:100%;
-		height:0px;
-		border-top:3px solid #cacaca;
-	}
-	.staff-line-2{
-		position: absolute; top: 72px;
-		width:100%;
-		height:0px;
-		border-top:3px solid #cacaca;
-	}
-	.staff-line-3{
-		position: absolute; top: 103px;
-		width:100%;
-		height:0px;
-		border-top:3px solid #cacaca;
-	}
-	.staff-line-4{
-		position: absolute; top: 132px;
-		width:100%;
-		height:0px;
-		border-top:3px solid #cacaca;
-	}
-	.staff-line-5{
-		position: absolute; top: 163px;
-		width:100%;
-		height:0px;
-		border-top:3px solid #cacaca;
-	}
 	.sticking {
 		display: inline-block;
 		position: relative;
@@ -645,35 +615,6 @@
 		height:1px;
 		background: transparent;
 	}
-	#addMeasureButton {
-		color: var(--highlight-color-on-white);
-		cursor: pointer;
-	}
-
-	.closeMeasureButton {
-		vertical-align: top;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 44px;
-		height: 44px;
-		margin: 12px 4px 0;
-		padding: 0;
-		border: 0;
-		border-radius: 8px;
-		background: transparent;
-		color: var(--highlight-color-on-white);
-	}
-	.closeMeasureButton {
-		cursor: pointer;
-	}
-	.closeMeasureButton:hover {
-		background: #e6f6fc;
-	}
-
-	.closeMeasureButton:hover, #addMeasureButton:hover {
-		color: #000;
-	}
 	#PermutationOptions.displayed {
 		padding: 3px 0px 0px 10px;
 		/* margin-bottom: -20px; */
@@ -741,13 +682,6 @@
 		/* height: auto; */
 	}
 
-	#grooveMetadataDivider {
-		height: 5px;
-		margin: 0;
-		padding: 0;
-		border: 0;
-		background: var(--header-bg-color);
-	}
 	#grooveDetailsButton {
 		display: block;
 		width: 100%;
