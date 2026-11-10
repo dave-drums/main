@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('mobile footer has left identity, right credits and a centred link below', async ({ page }) => {
+test('mobile footer has a balanced branding row above credits and Back to top', async ({ page }) => {
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');
@@ -11,12 +11,14 @@ test('mobile footer has left identity, right credits and a centred link below', 
       const box = selector => { const b = footer.querySelector(selector).getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, right: b.right, bottom: b.bottom }; };
       return { logo: box('.footer-brand'), motto: box('.footer-signature'), credit: box('.footer-copyright'), top: box('.footer-top'), frame: footer.getBoundingClientRect().toJSON() };
     });
-    expect(positions.logo.x + positions.logo.width / 2).toBeCloseTo(positions.motto.x + positions.motto.width / 2, 1);
-    expect(await page.locator('.footer-copyright').evaluate(node => getComputedStyle(node).alignItems)).toBe('center');
-    expect(positions.motto.y).toBeGreaterThanOrEqual(positions.logo.bottom);
-    expect(positions.credit.x).toBeGreaterThan(positions.logo.right);
-    expect(positions.top.y).toBeGreaterThanOrEqual(positions.motto.bottom);
-    expect(positions.top.x + positions.top.width / 2).toBeCloseTo(positions.frame.x + positions.frame.width / 2, 1);
+    expect(positions.logo.y + (positions.logo.bottom - positions.logo.y) / 2).toBeCloseTo(positions.motto.y + (positions.motto.bottom - positions.motto.y) / 2, 1);
+    expect(positions.motto.x).toBeGreaterThan(positions.logo.right);
+    expect((positions.logo.x + positions.motto.right) / 2).toBeCloseTo(positions.frame.x + positions.frame.width / 2, 1);
+    expect(positions.credit.y).toBeGreaterThan(Math.max(positions.logo.bottom, positions.motto.bottom));
+    expect(positions.top.y + (positions.top.bottom - positions.top.y) / 2).toBeCloseTo(positions.credit.y + (positions.credit.bottom - positions.credit.y) / 2, 1);
+    expect(positions.top.x).toBeGreaterThan(positions.credit.right);
+    expect(positions.frame.height).toBeLessThan(200);
+    await expect(page.locator('.footer-navigation')).toBeHidden();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });
