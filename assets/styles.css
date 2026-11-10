@@ -3850,7 +3850,14 @@ body.menu-open .site-header {
 .app-workspace:fullscreen #groove-loader { width: 100%; max-width: none; }
 #metronome-loader { border-radius: var(--surface-radius); }
 
-.notation-hero .page-hero-media img { object-position: center 58%; }
+.service-hero.notation-hero {
+  min-height: 440px;
+  padding-block: 40px;
+}
+
+.notation-hero .page-hero-media img {
+  object-position: center 68%;
+}
 
 .notation-loading { min-height: 1.5em; margin-block: 0 12px; color: var(--muted); font-size: .875rem; }
 
@@ -5354,8 +5361,9 @@ body.menu-open .site-header {
     background: linear-gradient(180deg,#11151700 0%,#1115170d 35%,#11151799 72%,#111517 100%);
   }
 
-  .notation-hero .page-hero-media { aspect-ratio: 16/10; }
-  .notation-hero .page-hero-media img { height: 100%; object-fit: cover; object-position: center 58%; }
+  .service-hero.notation-hero { min-height: 0; padding-block: clamp(120px,22vw,180px) 28px; }
+  .notation-hero .page-hero-media { height: clamp(200px,40vw,300px); }
+  .notation-hero .page-hero-media img { height: 100%; object-fit: cover; object-position: center 68%; }
 
   .recording-copy,
   .recording-preview,

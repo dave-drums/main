@@ -11,6 +11,12 @@ test('Drone uses a photo-led hero, black score section and green cover card with
     await expect(hero).toHaveClass(/service-hero/);
     await expect(hero.locator('img')).toHaveAttribute('src', '/img/karnivool-drone.jpg');
     await expect(hero.locator('img')).toBeVisible();
+    const imageLayout = await hero.evaluate(node => {
+      const hero = node.getBoundingClientRect(), media = node.querySelector('.page-hero-media').getBoundingClientRect();
+      return { width: hero.width, imageWidth: media.width, fit: getComputedStyle(node.querySelector('img')).objectFit };
+    });
+    expect(imageLayout.imageWidth).toBeCloseTo(imageLayout.width, 0);
+    expect(imageLayout.fit).toBe('cover');
     await expect(page.locator('#drone-notation')).toHaveClass(/theme-dark/);
     await expect(page.locator('.notation-performance')).toHaveClass(/theme-medium/);
     await expect(page.getByRole('link', { name: 'Open the score on Soundslice' })).toHaveAttribute('href', 'https://www.soundslice.com/slices/jXQqc/');
